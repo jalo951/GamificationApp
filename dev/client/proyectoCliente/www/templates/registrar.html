@@ -1,0 +1,37 @@
+<ion-view>
+    <ion-header-bar class="bar-assertive">
+        <h1 class="title">Registrar</h1>
+    </ion-header-bar>
+    <ion-content>
+        <div style="text-align: center; margin-top: 20px;">
+            <img src="img/ionic.png" />
+        </div>
+        <div class="list" style="margin-top: 20px;">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">E-mail</span>
+                <input type="text" ng-model="user.email">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Nombre</span>
+                <input type="text" ng-model="user.nombre">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Apellido</span>
+                <input type="text" ng-model="user.apellido">
+            </label>
+            <ion-radio ng-value="'femenino'" ng-model="user.genero" >Femenino</ion-radio>
+            <ion-radio ng-value="'masculino'" ng-model="user.genero">Masculino</ion-radio>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Clave</span>
+                <input type="password" ng-model="user.contrasena">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Confirmar Clave</span>
+                <input type="password" ng-model="user.contrasenaRep">
+            </label>
+            <label class="item item-input item-stacked-label" style="text-align: center;">
+                <button class="button button-assertive" ng-click="registrar()"> Registrar</button>
+            </label>
+        </div>
+    </ion-content>
+</ion-view>
