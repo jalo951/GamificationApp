@@ -34,6 +34,10 @@ angular.module('login.services', [])
             return $window.localStorage.token;
         }
 
+         $rootScope.passwordToken = function(pToken) {
+            return $window.localStorage.passwordToken = pToken;
+        }
+
         $rootScope.isSessionActive = function() {
             return $window.localStorage.token ? true : false;
         }
@@ -50,6 +54,9 @@ angular.module('login.services', [])
                         token: id
                     }
                 });
+            },
+             resetPassword: function(form) {
+                return $http.post(base+'/resetPassword', form);
             },
             registrar: function(form) {
                 return $http.post(base + '/registrar', form);

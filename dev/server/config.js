@@ -1,6 +1,11 @@
+//'use strict';
+
 module.exports = {
-
-    'secret': 'secretoJCSProyectoIntegrador',
-    'database': 'mongodb://root:root@ds061391.mongolab.com:61391/integrador'
-
+	mailer: {
+		auth: {
+			user: 'jcsudea@gmail.com',
+			pass: '********' //Ustedes saben cual es
+		},
+		defaultFromAddress: 'Gamification App ✔ <jcsudea@gmail.com>'
+	}
 };

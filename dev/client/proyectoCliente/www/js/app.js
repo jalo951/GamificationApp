@@ -28,6 +28,13 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services'])
 
   })
 
+   .state('resetPassword', {
+    url: "/resetPassword",
+    templateUrl: "templates/resetPassword.html",
+    controller: "resetController"
+
+  })
+
 .state('list', {
     url: "/list",
     templateUrl: "templates/logueado.html",

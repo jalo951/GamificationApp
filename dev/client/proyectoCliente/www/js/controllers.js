@@ -33,6 +33,35 @@ angular.module('login.controllers', ['login.services'])
     $scope.irRegistro = function() {
         $window.location.href = ('#/registrar');
     }
+
+     $scope.irPassword = function() {
+        $window.location.href = ('#/resetPassword');
+    }
+})
+
+.controller('resetController', function($rootScope, API, $scope) {
+    $scope.user = {
+        email: ''
+    };
+
+    $scope.enviar = function() { 
+        var email = this.user.email;
+        if (!email) {
+
+            $rootScope.show("No se admiten espacios vacíos");
+
+        } else {
+
+            API.resetPassword({
+                email: email
+            }).success(function(data) {
+                console.log('Successs');
+                $rootScope.show("Revise su bandeja de entrada");
+            }).error(function(error) {
+                $rootScope.show(error.error);
+            });
+        }
+    }
 })
 
 .controller('myListCtrl', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {
