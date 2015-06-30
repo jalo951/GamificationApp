@@ -34,7 +34,7 @@ angular.module('login.controllers', ['login.services'])
         $window.location.href = ('#/registrar');
     }
 
-     $scope.irPassword = function() {
+    $scope.irPassword = function() {
         $window.location.href = ('#/resetPassword');
     }
 })
@@ -44,7 +44,7 @@ angular.module('login.controllers', ['login.services'])
         email: ''
     };
 
-    $scope.enviar = function() { 
+    $scope.enviar = function() {
         var email = this.user.email;
         if (!email) {
 
@@ -64,19 +64,78 @@ angular.module('login.controllers', ['login.services'])
     }
 })
 
-.controller('myListCtrl', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {
-    $scope.newTask = function() {
-        API.getAll($rootScope.getToken()).success(function(data, status, headers, config) {
-            $rootScope.show("Please wait... Processing");
-            console.log(data);
-        }).error(function(data, status, headers, config) {
-            $rootScope.show("Oops something went wrong!! Please try again later");
-        });
-    }
-    $scope.irModificar = function() {
-        $window.location.href = ('#/modificar');
-    }
-})
+.controller('newPassController', function($rootScope, API, $scope,$window) {
+        $scope.user = {
+            id:'',
+            contrasenaRep: '',
+            contrasenaNueva: '',
+            codigo: ''
+        };
+
+
+
+
+        $scope.aceptar = function() {
+
+            var contrasena = this.user.contrasenaNueva;
+            var contrasenaRep = this.user.contrasenaRep;
+            var ident = this.user.id;
+            console.log(ident);
+            if (!contrasenaRep || !contrasena || !ident) {
+
+                $rootScope.show("No se admiten espacios vacíos");
+
+            } else {
+                if (contrasena == contrasenaRep) {
+
+                    API.newPassword({
+                        _id : id,
+                        contrasena: contrasena
+                    }).success(function(data) {
+                        console.log('Successs');
+                        $rootScope.show("contraseña actualizada");
+                        $window.location.href = ('#/entrar');
+                    }).error(function(error) {
+                        $rootScope.show(error.error);
+                    });
+                }
+            }
+        }
+
+        $scope.insertarCodigo = function() {
+            var codigo = this.user.codigo;
+            if (!codigo) {
+                $rootScope.show("No se admiten espacios vacíos");
+            } else {
+                API.buscarCodigo({
+                    token: codigo
+                }).success(function(data) {
+                    console.log('Successs');
+                    console.log(data.electionId);
+                    $scope.id = data.electionId; // no funciona !!!
+                    $window.location.href = ('#/newPassword');
+                   
+                }).error(function(error) {
+                    $rootScope.show(error.error);
+                });
+            }
+
+        }
+    })
+
+    .controller('myListCtrl', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {
+        $scope.newTask = function() {
+            API.getAll($rootScope.getToken()).success(function(data, status, headers, config) {
+                $rootScope.show("Please wait... Processing");
+                console.log(data);
+            }).error(function(data, status, headers, config) {
+                $rootScope.show("Oops something went wrong!! Please try again later");
+            });
+        }
+        $scope.irModificar = function() {
+            $window.location.href = ('#/modificar');
+        }
+    })
 
 .controller('RegistroController', function($rootScope, $scope, API, $window) {
 
@@ -219,6 +278,7 @@ angular.module('login.controllers', ['login.services'])
         /* $timeout(function() {
              myPopup.close(); //close the popup after 3 seconds for some reason
          }, 100000);*/
+
     };
 
     $scope.modificarContrasena = function() {

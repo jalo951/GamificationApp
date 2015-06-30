@@ -87,6 +87,14 @@ angular.module('login.services', [])
                         token: id
                     }
                 });
+            },
+
+            newPassword: function(form){
+                return $http.post(base + '/newPassword', form);
+            },
+
+            buscarCodigo: function(form){
+                return $http.post(base + '/codigo', form);
             }
         }
     });

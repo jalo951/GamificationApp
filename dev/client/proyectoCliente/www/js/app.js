@@ -56,5 +56,20 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services'])
 
   })
 
+.state('newPassword', {
+    url: "/newPassword",
+    templateUrl: "templates/newPassword.html",
+    controller: "newPassController"
+
+  })
+
+.state('insertarCodigo', {
+    url: "/insertarCodigo",
+    templateUrl: "templates/insertarCodigo.html",
+    controller: "newPassController"
+
+  })
+
+
   $urlRouterProvider.otherwise('/entrar');
 });

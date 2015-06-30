@@ -2,10 +2,10 @@ var pwdMgr = require('./managePasswords');
 var validateRequest = require("../auth/validateRequest");
 var config = require("../config");
 
-module.exports = function(server, db,nodemailer) {
+module.exports = function(server, db, nodemailer) {
 
-
-//variable transporter para el acceso a la cuenta remitente
+    var base = "http://localhost:8100/#/newPassword?token=";
+    //variable transporter para el acceso a la cuenta remitente
     var transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
@@ -85,7 +85,7 @@ module.exports = function(server, db,nodemailer) {
         console.log("in");
         db.usuarios.findOne({
             //_id: req.params.email
-            email : req.params.email
+            email: req.params.email
         }, function(err, dbUser) {
 
             if (!dbUser) {
@@ -150,8 +150,8 @@ module.exports = function(server, db,nodemailer) {
 
             console.log(user);
             db.usuarios.findOne({
-               // _id: req.params.token
-               _id: db.ObjectId(req.params.token)
+                // _id: req.params.token
+                _id: db.ObjectId(req.params.token)
             }, function(err, data) {
                 pwdMgr.comparePassword(user.contrasena, data.contrasena, function(err, isPasswordMatch) {
                     if (isPasswordMatch) {
@@ -161,9 +161,9 @@ module.exports = function(server, db,nodemailer) {
                             _id: db.ObjectId(req.params.token)
                         }, {
                             $set: {
-                               /* nombre: user.nombre,
-                                apellido: user.apellido,
-                                genero: user.genero*/
+                                /* nombre: user.nombre,
+                                 apellido: user.apellido,
+                                 genero: user.genero*/
                                 email: user.email
 
                             }
@@ -189,8 +189,8 @@ module.exports = function(server, db,nodemailer) {
         return next();
     });
 
-//###############################################################################################################
-   
+    //###############################################################################################################
+
     server.put('/modificarContrasena', function(req, res, next) {
         validateRequest.validate(req, res, db, function() {
             var user = req.params;
@@ -235,14 +235,14 @@ module.exports = function(server, db,nodemailer) {
         return next();
     });
 
-//#######################################################################################
+    //#######################################################################################
 
-  
-server.get('/infoUser', function (req, res, next) {
-        validateRequest.validate(req, res, db, function () {
+
+    server.get('/infoUser', function(req, res, next) {
+        validateRequest.validate(req, res, db, function() {
             db.usuarios.find({
-                 _id: db.ObjectId(req.params.token)
-            }, function (err, data) {
+                _id: db.ObjectId(req.params.token)
+            }, function(err, data) {
                 res.writeHead(200, {
                     'Content-Type': 'application/json; charset=utf-8'
                 });
@@ -251,16 +251,16 @@ server.get('/infoUser', function (req, res, next) {
         });
         return next();
     });
-//########################################################################################
- 
- server.post('/resetPassword', function(req, res, next) {
-        var user = req.params;
-        //console.log("in");
-        db.usuarios.findOne({
-           // _id: req.params.email
-           email : email
-        }, function(err, dbUser) {
+    //########################################################################################
 
+    server.post('/resetPassword', function(req, res, next) {
+        var user = req.params;
+        console.log(user);
+        db.usuarios.findOne({
+            // _id: req.params.email
+            email: req.params.email
+        }, function(err, dbUser) {
+            console.log(dbUser);
             if (!dbUser) {
                 res.writeHead(403, {
                     'Content-Type': 'application/json; charset=utf-8'
@@ -270,10 +270,13 @@ server.get('/infoUser', function (req, res, next) {
                 }));
             } else {
 
+                var clave = makeid();
+                console.log(clave);
                 var pToken = {
-                    token: user.email,
+                    token: clave,
                     fechaCreacion: new Date() //Mirar restar fechas :D
                 };
+                console.log(dbUser._id);
 
                 db.usuarios.update({
                     _id: db.ObjectId(dbUser._id)
@@ -298,30 +301,128 @@ server.get('/infoUser', function (req, res, next) {
                     to: dbUser.email, // list of receivers
                     subject: 'Recuperar contraseña ✔', // Subject line
                     text: 'Hola, ' + dbUser.nombre + ', con este correo podrás reestablecer tu password.', // plaintext body
-                    html: '' // html body
+                    html: '<p>Dirigite a este <a href= "http://localhost:8100/#/insertarCodigo"> link </a> e ingresa el siguiente Código: </br> </p>'+
+                    ' <table width = "280" cellspacing = "1" cellpadding = "3" border = "0" bgcolor = "#1E679A" > </table>'+
+                    ' <tr> <td> <font color = "#FFFFFF" face = "arial, verdana, helvetica"> <b> Código </b>  </font></td>'+
+                    '</tr> <tr> <td bgcolor = "#ffffcc"> <font face = "arial, verdana, helvetica">'+ clave +'</font>  </td>  </tr>  </table>' 
                 };
 
-                transporter.sendMail(mailOptions, function(error, info){
-                    if(error){
+                transporter.sendMail(mailOptions, function(error, info) {
+                    if (error) {
                         console.log(error);
-                    }else{
+                    } else {
                         console.log('Message sent: ' + info.response);
                     }
                 });
-
-
-
             }
-
-
-
         });
         return next();
 
     });
 
+    //#################################################################################################################
+    function makeid() {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
+        for (var i = 0; i < 5; i++)
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
 
+        return text;
+    }
 
+    //############################################################################################################
+
+    server.post('/newPassword', function(req, res, next) {
+        var user = req.params;
+        //console.log("in");
+        db.usuarios.findOne({
+            // _id: req.params.email
+            _id: db.ObjectId(req.params.id)
+        }, function(err, dbUser) {
+
+            if (!dbUser) {
+                res.writeHead(403, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                });
+                res.end(JSON.stringify({
+                    error: "No existe un usuario registrado con este email"
+                }));
+            } else {
+
+                db.usuarios.update({
+                    _id: db.ObjectId(dbUser._id)
+                }, {
+                    $set: {
+                        contrasena : req.params.contrasena
+                    }
+                }, {
+                    multi: false
+                }, function(err, data) {
+                    res.writeHead(200, {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    });
+                    res.end(JSON.stringify(data));
+                });
+            }
+        });
+        return next();
+
+    });
+
+    //########################################################################################
+
+    server.post('/codigo', function(req, res, next) {
+        var user = req.params;
+        //console.log("in");
+        db.usuarios.findOne({
+            // _id: req.params.email
+            "passwordToken.token": req.params.token
+        }, function(err, dbUser) {
+
+            if (!dbUser) {
+                res.writeHead(403, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                });
+                res.end(JSON.stringify({
+                    error: "Código incorrecto"
+                }));
+            } else {
+                var fecha = dbUser.passwordToken.fechaCreacion;
+                var fechaAct = new Date();
+                var tiempo = (fechaAct - fecha) / 1000;
+                db.usuarios.update({
+                    _id: db.ObjectId(dbUser._id)
+                }, {
+                    $unset: {
+                        passwordToken: 1
+                    }
+                }, {
+                    multi: false
+                }, function(err, data) {
+                    if (tiempo < 300) {
+                        res.writeHead(200, {
+                            'Content-Type': 'application/json; charset=utf-8'
+                        });
+                        
+                        res.end(JSON.stringify(data));
+                    } else {
+                        res.writeHead(403, {
+                            'Content-Type': 'application/json; charset=utf-8'
+                        });
+                        res.end(JSON.stringify({
+                            error: "Su Código ha expirado, por favor genere uno nuevo"
+                        }));
+
+                    }
+
+                });
+
+            }
+
+        });
+        return next();
+
+    });
 
 };
