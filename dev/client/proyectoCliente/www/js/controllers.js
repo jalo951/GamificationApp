@@ -64,7 +64,7 @@ angular.module('login.controllers', ['login.services'])
     }
 })
 
-.controller('newPassController', function($rootScope, API, $scope, $window,$ionicPopup) {
+.controller('newPassController', function($rootScope, API, $scope, $window, $ionicPopup) {
     $scope.user = {
         id: '',
         contrasenaRep: '',
@@ -100,56 +100,55 @@ angular.module('login.controllers', ['login.services'])
         }
     };
 
-     $scope.insertarCodigo = function() {
-                $scope.data = {}
-                var bandera = true;
-                // An elaborate, custom popup
-                var myPopup = $ionicPopup.show({
-                    template: '<input type="text" ng-model="data.id">',
-                    title: 'Confirmación',
-                    subTitle: 'Ingrese el código que le fue asignado',
-                    scope: $scope,
-                    buttons: [{
-                        text: 'Cancelar',
-                        onTap: function() {
-                            bandera = false;
-                            window.location.href = ('#/entrar');
-                        }
-                    }, {
-                        text: '<b>Aceptar</b>',
-                        type: 'button-positive',
-                        onTap: function(e) {
-                            if (!$scope.data.id) {
-                                alert("no se permiten campos vacíos");
-                                e.preventDefault();
-                            } else {
-                                return $scope.data.id;
-
-                            }
-                        }
-                    }]
-                });
-                myPopup.then(function(res) {
-                    console.log(bandera);
-                    if (bandera == true) {
-                        API.buscarCodigo({
-                            token: res
-                        }).success(function(data) {
-                            console.log('Successs');
-                            console.log(data);
-                            $scope.user.id = data._id;
-                        }).error(function(error) {
-                            $rootScope.show(error.error);
-                            $window.location.href = ('#/entrar');
-                        });
+    $scope.insertarCodigo = function() {
+        $scope.data = {}
+        var bandera = true;
+        // An elaborate, custom popup
+        var myPopup = $ionicPopup.show({
+            template: '<input type="text" ng-model="data.id">',
+            title: 'Confirmación',
+            subTitle: 'Ingrese el código que le fue asignado',
+            scope: $scope,
+            buttons: [{
+                text: 'Cancelar',
+                onTap: function() {
+                    bandera = false;
+                    window.location.href = ('#/entrar');
+                }
+            }, {
+                text: '<b>Aceptar</b>',
+                type: 'button-positive',
+                onTap: function(e) {
+                    if (!$scope.data.id) {
+                        alert("no se permiten campos vacíos");
+                        e.preventDefault();
+                    } else {
+                        return $scope.data.id;
 
                     }
+                }
+            }]
+        });
+        myPopup.then(function(res) {
+            console.log(bandera);
+            if (bandera == true) {
+                API.buscarCodigo({
+                    token: res
+                }).success(function(data) {
+                    console.log('Successs');
+                    console.log(data);
+                    $scope.user.id = data._id;
+                }).error(function(error) {
+                    $rootScope.show(error.error);
+                    $window.location.href = ('#/entrar');
                 });
+
             }
+        });
+    }
 
 
 })
-
 
 .controller('myListCtrl', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {
     $scope.newTask = function() {
@@ -163,6 +162,10 @@ angular.module('login.controllers', ['login.services'])
     $scope.irModificar = function() {
         $window.location.href = ('#/modificar');
     }
+})
+
+.controller('mapController', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {
+
 })
 
 .controller('RegistroController', function($rootScope, $scope, API, $window) {

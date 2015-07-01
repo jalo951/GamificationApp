@@ -35,6 +35,13 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services'])
 
     })
 
+    .state('primerNivel', {
+        url: "/primerNivel",
+        templateUrl: "templates/primerNivel.html",
+        controller: "mapController"
+
+    })
+
     .state('list', {
         url: "/list",
         templateUrl: "templates/logueado.html",
