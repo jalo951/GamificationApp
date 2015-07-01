@@ -64,7 +64,6 @@ module.exports = function(server, db, nodemailer) {
 
 
 
-
     //########################################################################################### 
     server.post('/login', function(req, res, next) {
 
@@ -300,11 +299,8 @@ module.exports = function(server, db, nodemailer) {
                     from: config.mailer.defaultFromAddress, // sender address
                     to: dbUser.email, // list of receivers
                     subject: 'Recuperar contraseña ✔', // Subject line
-                    text: 'Hola, ' + dbUser.nombre + ', con este correo podrás reestablecer tu password.', // plaintext body
-                    html: '<p>Dirigite a este <a href= "http://localhost:8100/#/insertarCodigo"> link </a> e ingresa el siguiente Código: </br> </p>'+
-                    ' <table width = "280" cellspacing = "1" cellpadding = "3" border = "0" bgcolor = "#1E679A" > </table>'+
-                    ' <tr> <td> <font color = "#FFFFFF" face = "arial, verdana, helvetica"> <b> Código </b>  </font></td>'+
-                    '</tr> <tr> <td bgcolor = "#ffffcc"> <font face = "arial, verdana, helvetica">'+ clave +'</font>  </td>  </tr>  </table>' 
+                    html: config.mailer.msj + clave + config.mailer.msj2
+                        //text: 'Hola, ' + dbUser.nombre + ', con este correo podrás reestablecer tu password.'
                 };
 
                 transporter.sendMail(mailOptions, function(error, info) {
@@ -354,7 +350,7 @@ module.exports = function(server, db, nodemailer) {
                     _id: db.ObjectId(dbUser._id)
                 }, {
                     $set: {
-                        contrasena : req.params.contrasena
+                        contrasena: req.params.contrasena
                     }
                 }, {
                     multi: false
@@ -404,7 +400,7 @@ module.exports = function(server, db, nodemailer) {
                         res.writeHead(200, {
                             'Content-Type': 'application/json; charset=utf-8'
                         });
-                        
+
                         res.end(JSON.stringify(data));
                     } else {
                         res.writeHead(403, {
