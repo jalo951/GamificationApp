@@ -345,12 +345,13 @@ module.exports = function(server, db, nodemailer) {
                     error: "No existe un usuario registrado con este email"
                 }));
             } else {
-
+                pwdMgr.cryptPassword(user.contrasena, function(err, hash) {
+                    user.contrasena = hash;
                 db.usuarios.update({
                     _id: db.ObjectId(dbUser._id)
                 }, {
                     $set: {
-                        contrasena: req.params.contrasena
+                        contrasena: user.contrasena
                     }
                 }, {
                     multi: false
@@ -358,8 +359,10 @@ module.exports = function(server, db, nodemailer) {
                     res.writeHead(200, {
                         'Content-Type': 'application/json; charset=utf-8'
                     });
+                    console.log(dbUser);
                     res.end(JSON.stringify(data));
                 });
+            });
             }
         });
         return next();
@@ -401,7 +404,7 @@ module.exports = function(server, db, nodemailer) {
                             'Content-Type': 'application/json; charset=utf-8'
                         });
 
-                        res.end(JSON.stringify(data));
+                        res.end(JSON.stringify(dbUser));
                     } else {
                         res.writeHead(403, {
                             'Content-Type': 'application/json; charset=utf-8'

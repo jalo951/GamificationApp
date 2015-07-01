@@ -64,78 +64,106 @@ angular.module('login.controllers', ['login.services'])
     }
 })
 
-.controller('newPassController', function($rootScope, API, $scope,$window) {
-        $scope.user = {
-            id:'',
-            contrasenaRep: '',
-            contrasenaNueva: '',
-            codigo: ''
-        };
+.controller('newPassController', function($rootScope, API, $scope, $window,$ionicPopup) {
+    $scope.user = {
+        id: '',
+        contrasenaRep: '',
+        contrasenaNueva: '',
+        codigo: ''
+    };
 
 
+    $scope.aceptar = function() {
 
+        var contrasena = this.user.contrasenaNueva;
+        var contrasenaRep = this.user.contrasenaRep;
+        var ident = this.user.id;
+        console.log(ident);
+        if (!contrasenaRep || !contrasena || !ident) {
 
-        $scope.aceptar = function() {
+            $rootScope.show("No se admiten espacios vacíos");
 
-            var contrasena = this.user.contrasenaNueva;
-            var contrasenaRep = this.user.contrasenaRep;
-            var ident = this.user.id;
-            console.log(ident);
-            if (!contrasenaRep || !contrasena || !ident) {
+        } else {
+            if (contrasena == contrasenaRep) {
 
-                $rootScope.show("No se admiten espacios vacíos");
-
-            } else {
-                if (contrasena == contrasenaRep) {
-
-                    API.newPassword({
-                        _id : id,
-                        contrasena: contrasena
-                    }).success(function(data) {
-                        console.log('Successs');
-                        $rootScope.show("contraseña actualizada");
-                        $window.location.href = ('#/entrar');
-                    }).error(function(error) {
-                        $rootScope.show(error.error);
-                    });
-                }
-            }
-        }
-
-        $scope.insertarCodigo = function() {
-            var codigo = this.user.codigo;
-            if (!codigo) {
-                $rootScope.show("No se admiten espacios vacíos");
-            } else {
-                API.buscarCodigo({
-                    token: codigo
+                API.newPassword({
+                    id: ident,
+                    contrasena: contrasena
                 }).success(function(data) {
                     console.log('Successs');
-                    console.log(data.electionId);
-                    $scope.id = data.electionId; // no funciona !!!
-                    $window.location.href = ('#/newPassword');
-                   
+                    $rootScope.show("contraseña actualizada");
+                    $window.location.href = ('#/entrar');
                 }).error(function(error) {
                     $rootScope.show(error.error);
                 });
             }
+        }
+    };
 
-        }
-    })
+     $scope.insertarCodigo = function() {
+                $scope.data = {}
+                var bandera = true;
+                // An elaborate, custom popup
+                var myPopup = $ionicPopup.show({
+                    template: '<input type="text" ng-model="data.id">',
+                    title: 'Confirmación',
+                    subTitle: 'Ingrese el código que le fue asignado',
+                    scope: $scope,
+                    buttons: [{
+                        text: 'Cancelar',
+                        onTap: function() {
+                            bandera = false;
+                            window.location.href = ('#/entrar');
+                        }
+                    }, {
+                        text: '<b>Aceptar</b>',
+                        type: 'button-positive',
+                        onTap: function(e) {
+                            if (!$scope.data.id) {
+                                alert("no se permiten campos vacíos");
+                                e.preventDefault();
+                            } else {
+                                return $scope.data.id;
 
-    .controller('myListCtrl', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {
-        $scope.newTask = function() {
-            API.getAll($rootScope.getToken()).success(function(data, status, headers, config) {
-                $rootScope.show("Please wait... Processing");
-                console.log(data);
-            }).error(function(data, status, headers, config) {
-                $rootScope.show("Oops something went wrong!! Please try again later");
-            });
-        }
-        $scope.irModificar = function() {
-            $window.location.href = ('#/modificar');
-        }
-    })
+                            }
+                        }
+                    }]
+                });
+                myPopup.then(function(res) {
+                    console.log(bandera);
+                    if (bandera == true) {
+                        API.buscarCodigo({
+                            token: res
+                        }).success(function(data) {
+                            console.log('Successs');
+                            console.log(data);
+                            $scope.user.id = data._id;
+                        }).error(function(error) {
+                            $rootScope.show(error.error);
+                            $window.location.href = ('#/entrar');
+                        });
+
+                    }
+                });
+            }
+
+
+})
+
+
+.controller('myListCtrl', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {
+    $scope.newTask = function() {
+        API.getAll($rootScope.getToken()).success(function(data, status, headers, config) {
+            $rootScope.show("Please wait... Processing");
+            console.log(data);
+        }).error(function(data, status, headers, config) {
+            $rootScope.show("Oops something went wrong!! Please try again later");
+        });
+    }
+    $scope.irModificar = function() {
+        $window.location.href = ('#/modificar');
+    }
+})
 
 .controller('RegistroController', function($rootScope, $scope, API, $window) {
 
