@@ -6,70 +6,70 @@
 angular.module('login', ['ionic', 'login.controllers', 'login.services'])
 
 .run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if (window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    }
-    if (window.StatusBar) {
-      StatusBar.styleDefault();
-    }
-  });
+    $ionicPlatform.ready(function() {
+        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+        // for form inputs)
+        if (window.cordova && window.cordova.plugins.Keyboard) {
+            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        }
+        if (window.StatusBar) {
+            StatusBar.styleDefault();
+        }
+    });
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
-  $stateProvider
+    $stateProvider
 
-  .state('entrar', {
-    url: "/entrar",
-    templateUrl: "templates/login.html",
-    controller: "loginController"
+        .state('entrar', {
+        url: "/entrar",
+        templateUrl: "templates/login.html",
+        controller: "loginController"
 
-  })
+    })
 
-   .state('resetPassword', {
-    url: "/resetPassword",
-    templateUrl: "templates/resetPassword.html",
-    controller: "resetController"
+    .state('resetPassword', {
+        url: "/resetPassword",
+        templateUrl: "templates/resetPassword.html",
+        controller: "resetController"
 
-  })
+    })
 
-.state('list', {
-    url: "/list",
-    templateUrl: "templates/logueado.html",
-    controller: "myListCtrl"
+    .state('list', {
+        url: "/list",
+        templateUrl: "templates/logueado.html",
+        controller: "myListCtrl"
 
-  })
- 
- .state('registrar', {
-    url: "/registrar",
-    templateUrl: "templates/registrar.html",
-    controller: "RegistroController"
+    })
 
-  })
+    .state('registrar', {
+        url: "/registrar",
+        templateUrl: "templates/registrar.html",
+        controller: "RegistroController"
 
- .state('modificar', {
-    url: "/modificar",
-    templateUrl: "templates/modificar.html",
-    controller: "modificarController"
+    })
 
-  })
+    .state('modificar', {
+        url: "/modificar",
+        templateUrl: "templates/modificar.html",
+        controller: "modificarController"
 
-.state('newPassword', {
-    url: "/newPassword",
-    templateUrl: "templates/newPassword.html",
-    controller: "newPassController"
+    })
 
-  })
+    .state('newPassword', {
+        url: "/newPassword",
+        templateUrl: "templates/newPassword.html",
+        controller: "newPassController"
 
-.state('insertarCodigo', {
-    url: "/insertarCodigo",
-    templateUrl: "templates/insertarCodigo.html",
-    controller: "newPassController"
+    })
 
-  })
+    .state('insertarCodigo', {
+        url: "/insertarCodigo",
+        templateUrl: "templates/insertarCodigo.html",
+        controller: "newPassController"
+
+    })
 
 
-  $urlRouterProvider.otherwise('/entrar');
+    $urlRouterProvider.otherwise('/entrar');
 });

@@ -1,31 +1,36 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html ng-app="login">
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title></title>
-
+    <title>Gamification App</title>
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
-
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
-
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
-
     <!-- your app's js -->
-   <script src="js/app.js"></script>
+    <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/services.js"></script>
-  </head>
-  <body ng-app="login">
-    <div ui-view>
-    </div>
-  </body>
-</html>
+</head>
 
+<body>
+    <ion-nav-bar class="bar-positive nav-title-slide-ios7" align-title="center">
+        <ion-nav-back-button class="button-icon ion-arrow-left-c" ng-click="myGoBack()">
+        </ion-nav-back-button>
+        <ion-nav-buttons side="right">
+            <button class="button icon ion-home" ng-click="goHome()">
+                Home
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view class="slide-left-right"></ion-nav-view>
+</body>
+
+</html>

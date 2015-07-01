@@ -1,5 +1,5 @@
 angular.module('login.services', [])
-    .factory('API', function($rootScope, $http, $ionicLoading, $window) {
+    .factory('API', function($rootScope, $http, $ionicLoading, $window, $ionicHistory) {
         var base = "http://localhost:9804";
 
         $rootScope.show = function(text) {
@@ -20,6 +20,16 @@ angular.module('login.services', [])
                 $rootScope.hide();
             }, 1999);
         };
+
+        $rootScope.myGoBack = function() {
+            $ionicHistory.goBack();
+        };
+
+        /*
+        $rootScope.goHome = function() {
+            $window.location.href = '#/list';
+        };
+        */
 
         $rootScope.logout = function() {
             $rootScope.setToken("");

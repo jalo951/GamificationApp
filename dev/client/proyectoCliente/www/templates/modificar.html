@@ -1,7 +1,4 @@
-<ion-view>
-    <ion-header-bar class="bar-assertive">
-        <h1 class="title">Modificar</h1>
-    </ion-header-bar>
+<ion-view title="Modificar datos">
     <ion-content onLoad= "mostrarDatos()" >
         <div style="text-align: center; margin-top: 20px;">
             <img src="img/ionic.png" />
@@ -13,10 +10,10 @@
             </label>
          
             <label class="item item-input item-stacked-label" style="text-align: center;">
-                <button class="button button-assertive" ng-click="showPopup()"> Modificar E-Mail</button>
+                <button class="button button-assertive" ng-click="showPopup()">Modificar E-Mail</button>
             </label>
         </div>
-        <hr size="1px" color="black" />
+        <div class="item item-divider"></div>
         <div class="list" style="margin-top: 20px;">
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Contraseña actual</span>
@@ -31,7 +28,7 @@
                 <input type="password" ng-model="userCont.contrasenaRep">
             </label>
             <label class="item item-input item-stacked-label" style="text-align: center;">
-                <button class="button button-assertive" ng-click="modificarContrasena()"> Cambiar Contraseña</button>
+                <button class="button button-assertive" ng-click="modificarContrasena()">Cambiar Contraseña</button>
             </label>
         </div>
     </ion-content>
