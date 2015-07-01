@@ -4,7 +4,7 @@ module.exports = {
 	mailer: {
 		auth: {
 			user: 'jcsudea@gmail.com',
-			pass: 'jcsudea123' //Ustedes saben cual es
+			pass: '****' //Ustedes saben cual es
 		},
 		defaultFromAddress: 'Gamification App ✔ <jcsudea@gmail.com>',
 		msj: '<body style="width:600px"><img src="http://irontec.github.io/slides-wpion/images/ionic.png">' +
