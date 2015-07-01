@@ -24,7 +24,7 @@ angular.module('login.services', [])
         $rootScope.myGoBack = function() {
             $ionicHistory.goBack();
         };
-
+        
         /*
         $rootScope.goHome = function() {
             $window.location.href = '#/list';

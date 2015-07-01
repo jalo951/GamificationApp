@@ -15,6 +15,12 @@
     top: 170px;
     left: 1305px;
 }
+
+.preguntaPos {
+    position: absolute;
+    top: 490px;
+    left: 485px;
+}
 /*.scroll-content {
   top: 0 !important;
 }*/

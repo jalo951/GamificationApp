@@ -42,6 +42,13 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services'])
 
     })
 
+    .state('preguntas', {
+        url: "/preguntas",
+        templateUrl: "templates/preguntas.html",
+        controller: "mapController"
+
+    })
+
     .state('list', {
         url: "/list",
         templateUrl: "templates/logueado.html",

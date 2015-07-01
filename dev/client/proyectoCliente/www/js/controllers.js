@@ -1,6 +1,6 @@
 angular.module('login.controllers', ['login.services'])
 
-.controller('loginController', function($rootScope, $scope, API, $window) {
+.controller('loginController', function($rootScope, $scope, API, $window,$state) {
 
     $scope.user = {
         email: '',
@@ -23,11 +23,18 @@ angular.module('login.controllers', ['login.services'])
                 console.log(data);
                 $rootScope.setToken(data._id); // create a session kind of thing on the client side
                 $rootScope.show("Cargando...");
-                $window.location.href = ('#/list');
+                $window.location.href = ('#/primerNivel');
             }).error(function(error) {
                 $rootScope.show(error.error);
             });
         }
+    }
+
+    $scope.logueado = function() {
+        var token = $rootScope.getToken();
+        if (token != '') {
+          $window.location.href = ('#/list');
+       }
     }
 
     $scope.irRegistro = function() {
@@ -153,10 +160,10 @@ angular.module('login.controllers', ['login.services'])
 .controller('myListCtrl', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {
     $scope.newTask = function() {
         API.getAll($rootScope.getToken()).success(function(data, status, headers, config) {
-            $rootScope.show("Please wait... Processing");
+            $rootScope.show("Cargando");
             console.log(data);
         }).error(function(data, status, headers, config) {
-            $rootScope.show("Oops something went wrong!! Please try again later");
+            $rootScope.show("Oops Error, por favor inténtelo más tarde");
         });
     }
     $scope.irModificar = function() {
@@ -165,7 +172,9 @@ angular.module('login.controllers', ['login.services'])
 })
 
 .controller('mapController', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {
-
+    $scope.preguntas = function(){
+        $window.location.href = ('#/preguntas');
+    }
 })
 
 .controller('RegistroController', function($rootScope, $scope, API, $window) {
