@@ -94,8 +94,9 @@ module.exports = function(server, db) {
         return next();
     });
     //####################################################################################################
-    server.get("/unirseProblema", function(req, res, next) {
+    server.post("/unirseProblema", function(req, res, next) {
         validateRequest.validate(req, res, db, function() {
+            console.log(req.params);
             db.preguntas.findOne({
                 _id: db.ObjectId(req.params._id)
             }, function(err, problema) {
@@ -105,7 +106,7 @@ module.exports = function(server, db) {
                         db.preguntas.update({
                             _id: db.ObjectId(req.params._id)
                         }, {
-                            $set: {
+                            $addToSet: {
                                 miembros_id: db.ObjectId(req.params.token)
 
                             }
@@ -117,6 +118,14 @@ module.exports = function(server, db) {
                             });
                             res.end(JSON.stringify(data));
                         });
+                    }else{
+                         res.writeHead(400, {
+                            'Content-Type': 'application/json; charset=utf-8'
+                        });
+                        res.end(JSON.stringify({
+                            error: "El problema ya tiene 2 usuarios unidos"
+                        }));
+
                     }
                 }
             });

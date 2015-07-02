@@ -74,7 +74,7 @@ angular.module('login.services', [])
             },
 
             verificarPregunta: function(token){
-                console.log("entré a service");
+                
                 return $http.get(base + '/verificarPregunta', {
                     method: 'GET',
                     params: {
@@ -133,6 +133,7 @@ angular.module('login.services', [])
                 });
             },
             unirseProblema: function(form,token){
+                console.log("entré a service");
                 return $http.post(base + '/unirseProblema', form, {
                     method: 'POST',
                     params: {

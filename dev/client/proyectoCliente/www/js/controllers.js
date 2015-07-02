@@ -219,7 +219,7 @@ angular.module('login.controllers', ['login.services'])
 
 
     $scope.question = function(pregunta) {
-            
+
         $scope.elemento.titulo = pregunta.titulo;
         $scope.elemento.descripcion = pregunta.descripcion;
         $scope.elemento.fecha = new Date(pregunta.fechaLimite);
@@ -250,13 +250,13 @@ angular.module('login.controllers', ['login.services'])
 
     }
 
-    $scope.unirse = function(problema){
+    $scope.unirse = function() {
         API.verificarPregunta($rootScope.getToken()).success(function(data, status, headers, config) {
             console.log("verificó pregunta");
             API.unirseProblema({
                 _id: $scope.elemento.id
             }, $rootScope.getToken()).success(function(data, status, headers, config) {
-                $rootScope.show("Se ha unido a la pregunta",problema.titulo);
+                $rootScope.show("Se ha unido a la pregunta "+ $scope.elemento.titulo+ "");
                 $scope.modal.hide();
                 $scope.refrescar();
             }).error(function(data, status, headers, config) {
@@ -265,7 +265,7 @@ angular.module('login.controllers', ['login.services'])
         }).error(function(data, status, headers, config) {
             $rootScope.show(data.error);
         });
-        
+
     }
 
     $scope.refrescar = function() {
