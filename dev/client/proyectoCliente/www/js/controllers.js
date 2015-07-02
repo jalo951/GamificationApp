@@ -222,7 +222,7 @@ angular.module('login.controllers', ['login.services'])
             
         $scope.elemento.titulo = pregunta.titulo;
         $scope.elemento.descripcion = pregunta.descripcion;
-        $scope.elemento.fecha = pregunta.fechaLimite;
+        $scope.elemento.fecha = new Date(pregunta.fechaLimite);
         $scope.elemento.id = pregunta._id;
         $scope.modal.show();
     }
