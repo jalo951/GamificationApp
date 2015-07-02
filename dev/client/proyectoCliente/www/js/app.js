@@ -45,7 +45,7 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services'])
     .state('preguntas', {
         url: "/preguntas",
         templateUrl: "templates/preguntas.html",
-        controller: "mapController"
+        controller: "preguntasController"
 
     })
 

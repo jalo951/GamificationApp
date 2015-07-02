@@ -57,13 +57,20 @@ angular.module('login.services', [])
                 return $http.post(base + '/login', form);
             },
             getAll: function(id) {
-                alert(id);
+                /*alert(id);
                 return $http.get(base + '/list', {
                     method: 'GET',
                     params: {
                         token: id
                     }
+                });*/
+                return $http.get(base + '/preguntas', {
+                    method: 'GET',
+                    params: {
+                        token: id
+                    }
                 });
+                
             },
             resetPassword: function(form) {
                 return $http.post(base + '/resetPassword', form);

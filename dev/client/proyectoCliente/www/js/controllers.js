@@ -1,6 +1,6 @@
 angular.module('login.controllers', ['login.services'])
 
-.controller('loginController', function($rootScope, $scope, API, $window,$state) {
+.controller('loginController', function($rootScope, $scope, API, $window, $state) {
 
     $scope.user = {
         email: '',
@@ -33,8 +33,8 @@ angular.module('login.controllers', ['login.services'])
     $scope.logueado = function() {
         var token = $rootScope.getToken();
         if (token != '') {
-          $window.location.href = ('#/list');
-       }
+            $window.location.href = ('#/list');
+        }
     }
 
     $scope.irRegistro = function() {
@@ -172,9 +172,72 @@ angular.module('login.controllers', ['login.services'])
 })
 
 .controller('mapController', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {
-    $scope.preguntas = function(){
+    $scope.irPreguntas = function() {
         $window.location.href = ('#/preguntas');
     }
+})
+
+/*.controller('modalController', function($scope) {
+
+})*/
+
+.controller('preguntasController', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {
+
+    $scope.elemento = {
+        titulo: '',
+        descripcion: '',
+        fecha: ''
+    };
+
+    $ionicModal.fromTemplateUrl('modal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.modal = modal;
+    });
+
+    $ionicModal.fromTemplateUrl('newQuestion.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.newQuestion = modal;
+    });
+
+    $scope.question = function(pregunta) {
+
+        $scope.elemento.titulo = pregunta.titulo;
+        $scope.elemento.descripcion = pregunta.descripcion;
+        $scope.elemento.fecha = pregunta.fechaLimite;
+
+        $scope.modal.show();
+    }
+
+    $scope.createQuestion = function() {
+
+        
+    }
+
+    $scope.refrescar = function() {
+
+        API.getAll($rootScope.getToken()).success(function(data, status, headers, config) {
+
+            $scope.items = [];
+            for (var i = 0; i < data.length; i++) {
+
+                $scope.items.push(data[i]);
+
+            };
+            if ($scope.items.length == 0) {
+                $scope.noData = true;
+            } else {
+                $scope.noData = false;
+            }
+
+        }).error(function(data, status, headers, config) {
+            $rootScope.show("Hay un errorcito, qué pena");
+        });
+    };
+
 })
 
 .controller('RegistroController', function($rootScope, $scope, API, $window) {
