@@ -25,33 +25,38 @@ module.exports = function(server, db) {
                     }]
                 },
                 function(err, datos) {
-
+                    console.log(datos.length);
                     if (datos.length == 0) {
                         bandera = true;
+
                     } else {
                         bandera = true;
+
                         for (var i = 0; i < datos.length; i++) {
                             if (datos[i].finalizado == false) {
                                 bandera = false;
                                 break;
                             }
                         }
-                        if (bandera) {
-                            res.writeHead(200, {
-                                'Content-Type': 'application/json; charset=utf-8'
-                            });
-                            res.end(JSON.stringify({
-                                message: "El usuario puede publicar una pregunta"
-                            }));
 
-                        } else {
-                            res.writeHead(403, {
-                                'Content-Type': 'application/json; charset=utf-8'
-                            });
-                            res.end(JSON.stringify({
-                                error: "El usuario tiene investigaciones en curso"
-                            }));
-                        }
+                    }
+                    if (bandera) {
+                        console.log("puede publicar");
+                        res.writeHead(200, {
+                            'Content-Type': 'application/json; charset=utf-8'
+                        });
+                        res.end(JSON.stringify({
+                            message: "El usuario puede publicar una pregunta"
+                        }));
+
+                    } else {
+                        console.log("puede publicar");
+                        res.writeHead(403, {
+                            'Content-Type': 'application/json; charset=utf-8'
+                        });
+                        res.end(JSON.stringify({
+                            error: "El usuario tiene investigaciones en curso"
+                        }));
                     }
 
                 });
@@ -118,8 +123,8 @@ module.exports = function(server, db) {
                             });
                             res.end(JSON.stringify(data));
                         });
-                    }else{
-                         res.writeHead(400, {
+                    } else {
+                        res.writeHead(400, {
                             'Content-Type': 'application/json; charset=utf-8'
                         });
                         res.end(JSON.stringify({
