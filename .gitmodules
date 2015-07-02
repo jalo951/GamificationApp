@@ -1,0 +1,6 @@
+[submodule "prod/client"]
+	path = prod/client
+	url = https://git.heroku.com/gamificationclient.git
+[submodule "prod/server"]
+	path = prod/server
+	url = https://git.heroku.com/gamificationapp.git
