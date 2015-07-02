@@ -1,16 +1,15 @@
 var isEmailValid = function(db, id, callback) {
-	console.log(id);
+
     db.usuarios.findOne({
         _id: db.ObjectId(id)
     }, function(err, user) {
-    	console.log(user);
-        callback(user);
+          callback(user);
     });
 };
 
 module.exports.validate = function(req, res, db, callback) {
     // if the request dosent have a header with email, reject the request
-    console.log("entró a validar");
+
     if (!req.params.token) {
         res.writeHead(403, {
             'Content-Type': 'application/json; charset=utf-8'

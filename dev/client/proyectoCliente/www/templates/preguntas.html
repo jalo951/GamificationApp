@@ -2,7 +2,7 @@
     <ion-header-bar class="bar-positive">
         <h1 class="title">Panel de Preguntas</h1>
         <div class="buttons">
-            <button class="button button-icon ion-compose" ng-click="newQuestion.show()">
+            <button class="button button-icon ion-compose" ng-click="limpiar()">
                 Agregar pregunta
             </button>
         </div>
@@ -25,17 +25,17 @@
             <ion-content class="padding">
                 <div class="list">
                     <div class="item item-divider">Descripción</div>
-                    <label class="item">
-                        <span class="input-label">{{elemento.descripcion}}</span>
+                    <label class="item item-text-wrap">
+                        {{elemento.descripcion}}
                     </label>
                     <div class="item item-divider">Fecha límite para unirse</div>
                     <label class="item">
-                        <span class="input-label">{{elemento.fecha}}</span>
+                        <span class="input-label" type= "Date">{{elemento.fecha | date:'yyyy-MM-dd HH:mm:ss Z'}}</span>
                     </label>
                 </div>
                 <div class="button-bar">
                     <a class="button button-stable icon ion-backspace-outline" ng-click="modal.hide()">  Cancelar</a>
-                    <a class="button button-positive icon ion-ios-people">  Unirse</a>
+                    <a class="button button-positive icon ion-ios-people" ng-click="unirse()">  Unirse</a>
                 </div>
             </ion-content>
         </ion-modal-view>
@@ -48,20 +48,18 @@
             </ion-header-bar>
             <ion-content class="padding">
                 <div class="list">
+                    <div class="item item-divider">Título</div>
                     <label class="item item-input">
-                        <span class="input-label">Título</span>
                         <input ng-model="elemento.titulo" type="text">
                     </label>
+                    <div class="item item-divider">Descripción</div>
                     <label class="item item-input">
-                        <span class="input-label">Descripción</span>
-                        <textarea ng-model="item.description" ></textarea>
-                        
+                        <textarea ng-model="elemento.descripcion" rows="5"></textarea>
                     </label>
+                    <div class="item item-divider">Fecha límite para unirse</div>
                     <label class="item item-input">
-                        <span class="input-label">Fecha límite para unirse</span>
                         <input ng-model="elemento.fecha" type="Date">
                     </label>
-                    
                 </div>
                 <div class="button-bar">
                     <a class="button button-stable icon ion-backspace-outline" ng-click="newQuestion.hide()">  Cancelar</a>

@@ -72,6 +72,16 @@ angular.module('login.services', [])
                 });
                 
             },
+
+            verificarPregunta: function(token){
+                console.log("entré a service");
+                return $http.get(base + '/verificarPregunta', {
+                    method: 'GET',
+                    params: {
+                        token: token
+                    }
+                });
+            },
             resetPassword: function(form) {
                 return $http.post(base + '/resetPassword', form);
             },
@@ -112,6 +122,23 @@ angular.module('login.services', [])
 
             buscarCodigo: function(form) {
                 return $http.post(base + '/codigo', form);
+            },
+
+            anadirPregunta: function(form,token){
+                return $http.post(base + '/anadirPregunta', form, {
+                    method: 'POST',
+                    params: {
+                        token: token
+                    }
+                });
+            },
+            unirseProblema: function(form,token){
+                return $http.post(base + '/unirseProblema', form, {
+                    method: 'POST',
+                    params: {
+                        token: token
+                    }
+                });
             }
         }
     });

@@ -184,6 +184,7 @@ angular.module('login.controllers', ['login.services'])
 .controller('preguntasController', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {
 
     $scope.elemento = {
+        id: '',
         titulo: '',
         descripcion: '',
         fecha: ''
@@ -203,17 +204,67 @@ angular.module('login.controllers', ['login.services'])
         $scope.newQuestion = modal;
     });
 
-    $scope.question = function(pregunta) {
+    $scope.limpiar = function() {
+        $scope.elemento.titulo = '';
+        $scope.elemento.descripcion = '';
+        $scope.elemento.fecha = '';
+        API.verificarPregunta($rootScope.getToken()).success(function(data, status, headers, config) {
+            $rootScope.show("Cargando");
+            $scope.newQuestion.show();
+        }).error(function(data, status, headers, config) {
+            $rootScope.show(data.error);
+        });
 
+    }
+
+
+    $scope.question = function(pregunta) {
+            
         $scope.elemento.titulo = pregunta.titulo;
         $scope.elemento.descripcion = pregunta.descripcion;
         $scope.elemento.fecha = pregunta.fechaLimite;
-
+        $scope.elemento.id = pregunta._id;
         $scope.modal.show();
     }
 
     $scope.createQuestion = function() {
+        var titulo = $scope.elemento.titulo
+        var descripcion = $scope.elemento.descripcion;
+        var fecha = $scope.elemento.fecha;
 
+        if (!titulo || !descripcion || !fecha) {
+            $rootScope.show("No se admiten campos vacíos");
+        } else {
+            API.anadirPregunta({
+                titulo: titulo,
+                descripcion: descripcion,
+                fechaLimite: fecha
+            }, $rootScope.getToken()).success(function(data, status, headers, config) {
+                $rootScope.show("Su pregunta ha sido enviada");
+                $scope.newQuestion.hide();
+                $scope.refrescar();
+            }).error(function(data, status, headers, config) {
+                $rootScope.show(data.error);
+            });
+        }
+
+    }
+
+    $scope.unirse = function(problema){
+        API.verificarPregunta($rootScope.getToken()).success(function(data, status, headers, config) {
+            console.log("verificó pregunta");
+            API.unirseProblema({
+                _id: $scope.elemento.id
+            }, $rootScope.getToken()).success(function(data, status, headers, config) {
+                $rootScope.show("Se ha unido a la pregunta",problema.titulo);
+                $scope.modal.hide();
+                $scope.refrescar();
+            }).error(function(data, status, headers, config) {
+                $rootScope.show(data.error);
+            });
+        }).error(function(data, status, headers, config) {
+            $rootScope.show(data.error);
+        });
         
     }
 
