@@ -74,6 +74,7 @@ module.exports = function(server, db) {
                     descripcion: pregunta.descripcion,
                     fechaLimite: pregunta.fechaLimite,
                     autor_id: db.ObjectId(pregunta.token),
+                    miembros_id : [],
                     finalizado: false
                 },
                 function(err, dbPregunta) {
