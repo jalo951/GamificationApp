@@ -78,44 +78,44 @@ angular.module('login.controllers', ['login.services'])
 })
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
-  
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-  
-  // Form data for the login modal
-  $scope.loginData = {};
 
-  // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
+    // With the new view caching in Ionic, Controllers are only called
+    // when they are recreated or on app start, instead of every page change.
+    // To listen for when this page is active (for example, to refresh data),
+    // listen for the $ionicView.enter event:
+    //$scope.$on('$ionicView.enter', function(e) {
+    //});
 
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  };
+    // Form data for the login modal
+    $scope.loginData = {};
 
-  // Open the login modal
-  $scope.login = function() {
-    $scope.modal.show();
-  };
+    // Create the login modal that we will use later
+    $ionicModal.fromTemplateUrl('templates/login.html', {
+        scope: $scope
+    }).then(function(modal) {
+        $scope.modal = modal;
+    });
 
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
+    // Triggered in the login modal to close it
+    $scope.closeLogin = function() {
+        $scope.modal.hide();
+    };
 
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
-  };
+    // Open the login modal
+    $scope.login = function() {
+        $scope.modal.show();
+    };
+
+    // Perform the login action when the user submits the login form
+    $scope.doLogin = function() {
+        console.log('Doing login', $scope.loginData);
+
+        // Simulate a login delay. Remove this and replace with your login
+        // code if using a login system
+        $timeout(function() {
+            $scope.closeLogin();
+        }, 1000);
+    };
 })
 
 .controller('newPassController', function($rootScope, API, $scope, $window, $ionicPopup) {
@@ -232,8 +232,8 @@ angular.module('login.controllers', ['login.services'])
         });
     }
 
-    $scope.irObjetivos = function(){
-         $window.location.href = ('#/objetivos');
+    $scope.irObjetivos = function() {
+        $window.location.href = ('#/objetivos');
     }
 
 })
@@ -569,6 +569,42 @@ angular.module('login.controllers', ['login.services'])
 })
 
 .controller('objetivosController', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {
+
+    $scope.objetivo ={
+        _id: '',
+        votos: 0,
+        descripcion :'', 
+        votosAcumulados: 0
+    };
+
+    $ionicModal.fromTemplateUrl('votarModal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.votarModal = modal;
+    });
+
+    $scope.objective = function(object){
+        $scope.objetivo._id = object._id;
+        //$scope.objetivo.votos = object.votos;
+        $scope.objetivo.votosAcumulados = object.votos;
+        $scope.objetivo.descripcion = object.descripcion;
+        $scope.votarModal.show();
+    }
+
+    $scope.votar = function(voto) {
+
+        API.votarObjetivo($rootScope.getToken(), {
+            _id: $scope.objetivo._id,
+            votos: parseInt(voto)
+        }).success(function(data) {
+            $rootScope.show("el objetivo ha recibido "+voto+" votos");
+            $scope.votarModal.hide();
+
+        }).error(function(data, status, headers, config) {
+            $rootScope.show(error);
+        });
+    }
     $scope.visualizarObjetivos = function() {
         console.log("visualizar")
         API.verObjetivos($rootScope.getToken()).success(function(data) {
@@ -589,14 +625,7 @@ angular.module('login.controllers', ['login.services'])
             $rootScope.show(error);
         });
     }
+    
 
-    $scope.nuevoObjetivo = function(){
-        API.verificarObjetivo($rootScope.getToken()).success(function(data){
-           
-        }).error(function(data){
-            $rootScope.show(data);
-        });
-    }
+
 })
-
-
