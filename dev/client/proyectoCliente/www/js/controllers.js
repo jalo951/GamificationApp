@@ -193,7 +193,11 @@ angular.module('login.controllers', ['login.services'])
         });
     }
 
-  })
+    $scope.irObjetivos = function(){
+         $window.location.href = ('#/objetivos');
+    }
+
+})
 
 
 /*.controller('modalController', function($scope) {
@@ -501,3 +505,59 @@ angular.module('login.controllers', ['login.services'])
     }
 
 })
+
+.controller('rankingController', function($rootScope, $scope, API, $window) {
+
+    $scope.visualizarRanking = function() {
+        API.verRanking($rootScope.getToken()).success(function(data) {
+
+            $scope.items = [];
+            for (var i = 0; i < data.length; i++) {
+
+                $scope.items.push(data[i]);
+
+            };
+            if ($scope.items.length == 0) {
+                $scope.noData = true;
+            } else {
+                $scope.noData = false;
+            }
+
+        }).error(function(data, status, headers, config) {
+            $rootScope.show("Hay un errorcito, qué pena");
+        });
+    }
+})
+
+.controller('objetivosController', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {
+    $scope.visualizarObjetivos = function() {
+        console.log("visualizar")
+        API.verObjetivos($rootScope.getToken()).success(function(data) {
+
+            $scope.items = [];
+            for (var i = 0; i < data.length; i++) {
+
+                $scope.items.push(data[i]);
+
+            };
+            if ($scope.items.length == 0) {
+                $scope.noData = true;
+            } else {
+                $scope.noData = false;
+            }
+
+        }).error(function(data, status, headers, config) {
+            $rootScope.show(error);
+        });
+    }
+
+    $scope.nuevoObjetivo = function(){
+        API.verificarObjetivo($rootScope.getToken()).success(function(data){
+           
+        }).error(function(data){
+            $rootScope.show(data);
+        });
+    }
+})
+
+

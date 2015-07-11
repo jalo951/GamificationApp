@@ -99,6 +99,15 @@ angular.module('login.services', [])
                     }
                 });
             },
+
+            verRanking : function(id){
+                 return $http.get(base + '/verRanking', {
+                    method: 'GET',
+                    params: {
+                        token: id
+                    }
+                });
+            },
             resetPassword: function(form) {
                 return $http.post(base + '/resetPassword', form);
             },
@@ -153,6 +162,15 @@ angular.module('login.services', [])
                 console.log("entré a service");
                 return $http.post(base + '/unirseProblema', form, {
                     method: 'POST',
+                    params: {
+                        token: token
+                    }
+                });
+            },
+
+            verObjetivos: function(token){
+                 return $http.get(base + '/verObjetivos', {
+                    method: 'GET',
                     params: {
                         token: token
                     }
