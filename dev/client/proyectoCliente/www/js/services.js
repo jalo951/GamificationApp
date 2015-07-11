@@ -1,5 +1,5 @@
 angular.module('login.services', [])
-    .factory('API', function($rootScope, $http, $ionicLoading, $window, $ionicHistory) {
+    .factory('API', function($rootScope, $http, $ionicLoading, $window, $ionicHistory,$state, $ionicSideMenuDelegate) {
         var base = "http://localhost:9804";
 
         $rootScope.show = function(text) {
@@ -24,7 +24,15 @@ angular.module('login.services', [])
         $rootScope.myGoBack = function() {
             $ionicHistory.goBack();
         };
-        
+
+        $rootScope.toggleLeft = function() {
+            $ionicSideMenuDelegate.toggleLeft();
+        };
+
+        $rootScope.goTo = function(estado) {
+            $state.go(estado);
+        };
+
         /*
         $rootScope.goHome = function() {
             $window.location.href = '#/list';
@@ -70,11 +78,20 @@ angular.module('login.services', [])
                         token: id
                     }
                 });
-                
+
             },
 
-            verificarPregunta: function(token){
-                
+            nuevoReto: function(id) {
+                return $http.get(base + '/nuevoReto', {
+                    method: 'GET',
+                    params: {
+                        token: id
+                    }
+                });
+            },
+
+            verificarPregunta: function(token) {
+
                 return $http.get(base + '/verificarPregunta', {
                     method: 'GET',
                     params: {
@@ -124,7 +141,7 @@ angular.module('login.services', [])
                 return $http.post(base + '/codigo', form);
             },
 
-            anadirPregunta: function(form,token){
+            anadirPregunta: function(form, token) {
                 return $http.post(base + '/anadirPregunta', form, {
                     method: 'POST',
                     params: {
@@ -132,7 +149,7 @@ angular.module('login.services', [])
                     }
                 });
             },
-            unirseProblema: function(form,token){
+            unirseProblema: function(form, token) {
                 console.log("entré a service");
                 return $http.post(base + '/unirseProblema', form, {
                     method: 'POST',

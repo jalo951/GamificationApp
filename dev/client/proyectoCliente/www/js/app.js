@@ -85,5 +85,6 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services'])
     })
 
 
+
     $urlRouterProvider.otherwise('/entrar');
 });
