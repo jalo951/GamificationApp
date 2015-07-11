@@ -77,7 +77,6 @@ angular.module('login.controllers', ['login.services'])
     }
 })
 
-<<<<<<< HEAD
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
   
   // With the new view caching in Ionic, Controllers are only called
@@ -118,9 +117,6 @@ angular.module('login.controllers', ['login.services'])
     }, 1000);
   };
 })
-=======
-
->>>>>>> ba6716d20472bf2b4b5a413075de52d0c05c3184
 
 .controller('newPassController', function($rootScope, API, $scope, $window, $ionicPopup) {
     $scope.user = {
@@ -222,11 +218,7 @@ angular.module('login.controllers', ['login.services'])
     }
 })
 
-<<<<<<< HEAD
 .controller('mapController', function($rootScope, $scope, API, $window, $state) {
-=======
-.controller('mapController', function($rootScope, $scope, API, $timeout, $ionicModal, $window, $ionicSideMenuDelegate) {
->>>>>>> ba6716d20472bf2b4b5a413075de52d0c05c3184
     $scope.irPreguntas = function() {
         $state.go('app.preguntas');
     }
