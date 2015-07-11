@@ -175,6 +175,17 @@ angular.module('login.services', [])
                         token: token
                     }
                 });
+            }, 
+
+            votarObjetivo: function(token,form){
+                return $http.post(base + '/votarObjetivo', form, {
+                    method: 'POST',
+                    params: {
+                        token: token
+                    }
+                });
             }
+
+
         }
     });

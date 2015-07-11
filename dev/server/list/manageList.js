@@ -226,4 +226,30 @@ module.exports = function(server, db) {
         });
         return next();
     });
+    //###############################################################################################
+
+    server.post("/votarObjetivo", function(req, res, next) {
+        validateRequest.validate(req, res, db, function() {
+            console.log(req.params);
+            db.objetivos.findOne({
+                _id: db.ObjectId(req.params._id)
+            }, function(err, objetivo) {
+                db.objetivos.update({
+                    _id: db.ObjectId(req.params._id)
+                }, {
+                    $inc: {
+                        votos: req.params.votos
+                    }
+                }, function(err, data) {
+                    console.log(data);
+                    res.writeHead(200, {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    });
+                    res.end(JSON.stringify(data));
+                });
+
+            });
+        });
+        return next();
+    });
 }
