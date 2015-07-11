@@ -25,7 +25,6 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services'])
     url: "/app",
     abstract: true,
     templateUrl: "templates/menu.html",
-    controller: 'AppCtrl'
     })
 
     .state('entrar', {
@@ -63,13 +62,7 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services'])
 
     })
 
-    .state('list', {
-        url: "/list",
-        templateUrl: "templates/logueado.html",
-        controller: "myListCtrl"
-
-    })
-
+    
     .state('registrar', {
         url: "/registrar",
         templateUrl: "templates/registrar.html",
