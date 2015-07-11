@@ -21,11 +21,17 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services'])
 .config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
 
-        .state('entrar', {
+    .state('app', {
+    url: "/app",
+    abstract: true,
+    templateUrl: "templates/menu.html",
+    controller: 'AppCtrl'
+    })
+
+    .state('entrar', {
         url: "/entrar",
         templateUrl: "templates/login.html",
         controller: "loginController"
-
     })
 
     .state('resetPassword', {
@@ -35,17 +41,25 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services'])
 
     })
 
-    .state('primerNivel', {
+    .state('app.primerNivel', {
         url: "/primerNivel",
-        templateUrl: "templates/primerNivel.html",
-        controller: "mapController"
+        views: {
+            'menuContent': {
+                templateUrl: "templates/primerNivel.html",
+                controller: "mapController"
+            }
+        }
 
     })
 
-    .state('preguntas', {
+    .state('app.preguntas', {
         url: "/preguntas",
-        templateUrl: "templates/preguntas.html",
-        controller: "preguntasController"
+        views: {
+            'menuContent': {
+                templateUrl: "templates/preguntas.html",
+                controller: "preguntasController"
+            }
+        }
 
     })
 
@@ -63,10 +77,14 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services'])
 
     })
 
-    .state('modificar', {
+    .state('app.modificar', {
         url: "/modificar",
-        templateUrl: "templates/modificar.html",
-        controller: "modificarController"
+        views: {
+            "menuContent": {
+                templateUrl: "templates/modificar.html",
+                controller: "modificarController"
+            }
+        }
 
     })
 
