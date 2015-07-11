@@ -102,6 +102,24 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services'])
 
     })
 
+    .state('ranking',{
+        url: "/ranking",
+        templateUrl: "templates/ranking.html",
+        controller: "rankingController"
+    })
+
+    .state('segundoNivel',{
+        url: "/segundoNivel",
+        templateUrl: "templates/segundoNivel.html",
+        controller: "mapController"
+    })
+
+ .state('objetivos',{
+        url: "/objetivos",
+        templateUrl: "templates/objetivos.html",
+        controller: "objetivosController"
+    })
+
 
     $urlRouterProvider.otherwise('/entrar');
 });

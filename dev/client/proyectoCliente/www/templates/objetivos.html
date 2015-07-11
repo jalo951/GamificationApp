@@ -1,0 +1,18 @@
+<ion-view hide-nav-bar="true">
+    <ion-header-bar class="bar-positive">
+        <h1 class="title">Panel de Preguntas</h1>
+        <div class="buttons">
+            <button class="button button-icon ion-compose" ng-click="limpiar()">
+                Agregar pregunta
+            </button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <div class="list" ng-init="visualizarObjetivos()">
+            <ion-list show-reorder="data.showReorder">
+                <ion-item ng-repeat="item in items" item="item" ng-click="question(item)">
+                    {{ item.descripcion}}
+                </ion-item>
+            </ion-list>
+        </div>
+    </ion-content>

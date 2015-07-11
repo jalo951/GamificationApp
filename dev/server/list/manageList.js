@@ -74,7 +74,7 @@ module.exports = function(server, db) {
                     descripcion: pregunta.descripcion,
                     fechaLimite: pregunta.fechaLimite,
                     autor_id: db.ObjectId(pregunta.token),
-                    miembros_id : [],
+                    miembros_id: [],
                     finalizado: false
                 },
                 function(err, dbPregunta) {
@@ -89,11 +89,20 @@ module.exports = function(server, db) {
                         }));
 
                     } else {
-                        res.writeHead(200, {
-                            'Content-Type': 'application/json; charset=utf-8'
+
+                        db.usuarios.update({
+                            _id: db.ObjectId(req.params.token)
+                        }, {
+                            $inc: {
+                                puntos: 15
+                            }
+                        }, function(err, data) {
+                            res.writeHead(200, {
+                                'Content-Type': 'application/json; charset=utf-8'
+                            });
+                            res.end(JSON.stringify(data));
                         });
 
-                        res.end(JSON.stringify(dbPregunta));
                     }
                 });
         });
@@ -119,10 +128,18 @@ module.exports = function(server, db) {
                         }, {
                             multi: false
                         }, function(err, data) {
-                            res.writeHead(200, {
-                                'Content-Type': 'application/json; charset=utf-8'
+                            db.usuarios.update({
+                                _id: db.ObjectId(req.params.token)
+                            }, {
+                                $inc: {
+                                    puntos: 10
+                                }
+                            }, function(err, data) {
+                                res.writeHead(200, {
+                                    'Content-Type': 'application/json; charset=utf-8'
+                                });
+                                res.end(JSON.stringify(data));
                             });
-                            res.end(JSON.stringify(data));
                         });
                     } else {
                         res.writeHead(400, {
@@ -140,4 +157,73 @@ module.exports = function(server, db) {
     });
 
     //####################################################################################################    
+
+    server.get("/nuevoReto", function(req, res, next) {
+        validateRequest.validate(req, res, db, function() {
+            db.usuarios.update({
+                _id: db.ObjectId(req.params.token)
+            }, {
+                $inc: {
+                    puntos: 5
+                }
+            }, function(err, data) {
+                res.writeHead(200, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                });
+                res.end(JSON.stringify(data));
+            });
+        });
+        return next();
+    });
+
+    //#######################################################################################################
+
+
+    server.get("/verObjetivos", function(req, res, next) {
+        var bandera = false;
+        validateRequest.validate(req, res, db, function() {
+            db.preguntas.find({
+                    $or: [{
+                        miembros_id: db.ObjectId(req.params.token)
+                    }, {
+                        autor_id: db.ObjectId(req.params.token)
+                    }]
+                },
+                function(err, datos) {
+                    console.log(datos.length);
+                    if (datos.length == 0) {
+                        res.writeHead(400, {
+                            'Content-Type': 'application/json; charset=utf-8'
+                        });
+                        res.end(JSON.stringify({
+                            error: "El usuario no tiene un problema asociado"
+                        }));
+                    } else {
+                        for (var i = 0; i < datos.length; i++) {
+                            if (datos[i].finalizado == false) {
+                                bandera = true;
+                                break;
+                            }
+                        }
+
+                        if (bandera) {
+                            console.log(i);
+                            db.objetivos.find({
+                                problema_id: db.ObjectId(datos[i]._id)
+                            }, function(err, list) {
+                                res.writeHead(200, {
+                                    'Content-Type': 'application/json; charset=utf-8'
+                                });
+                                console.log(list);
+                                res.end(JSON.stringify(list));
+                            });
+                        }
+
+                    }
+
+
+                });
+        });
+        return next();
+    });
 }

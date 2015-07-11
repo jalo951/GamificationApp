@@ -7,7 +7,10 @@ angular.module('login.controllers', ['login.services'])
         contrasena: ''
     };
 
+
+
     $scope.ingresar = function() { // Duda con ingresar
+
         var email = this.user.email;
         var contrasena = this.user.contrasena;
         if (!email || !contrasena) {
@@ -44,6 +47,9 @@ angular.module('login.controllers', ['login.services'])
     $scope.irPassword = function() {
         $window.location.href = ('#/resetPassword');
     }
+
+    $scope.logueado();
+
 })
 
 .controller('resetController', function($rootScope, API, $scope) {
@@ -71,6 +77,7 @@ angular.module('login.controllers', ['login.services'])
     }
 })
 
+<<<<<<< HEAD
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
   
   // With the new view caching in Ionic, Controllers are only called
@@ -111,6 +118,9 @@ angular.module('login.controllers', ['login.services'])
     }, 1000);
   };
 })
+=======
+
+>>>>>>> ba6716d20472bf2b4b5a413075de52d0c05c3184
 
 .controller('newPassController', function($rootScope, API, $scope, $window, $ionicPopup) {
     $scope.user = {
@@ -212,11 +222,30 @@ angular.module('login.controllers', ['login.services'])
     }
 })
 
+<<<<<<< HEAD
 .controller('mapController', function($rootScope, $scope, API, $window, $state) {
+=======
+.controller('mapController', function($rootScope, $scope, API, $timeout, $ionicModal, $window, $ionicSideMenuDelegate) {
+>>>>>>> ba6716d20472bf2b4b5a413075de52d0c05c3184
     $scope.irPreguntas = function() {
         $state.go('app.preguntas');
     }
+
+    $scope.reto = function() {
+        API.nuevoReto($rootScope.getToken()).success(function(data, status, headers, config) {
+            $rootScope.show("Conseguiste 5 puntos");
+            console.log(data);
+        }).error(function(data, status, headers, config) {
+            $rootScope.show("Oops Error, por favor inténtelo más tarde");
+        });
+    }
+
+    $scope.irObjetivos = function(){
+         $window.location.href = ('#/objetivos');
+    }
+
 })
+
 
 /*.controller('modalController', function($scope) {
 
@@ -281,7 +310,7 @@ angular.module('login.controllers', ['login.services'])
                 descripcion: descripcion,
                 fechaLimite: fecha
             }, $rootScope.getToken()).success(function(data, status, headers, config) {
-                $rootScope.show("Su pregunta ha sido enviada");
+                $rootScope.show("Su pregunta ha sido enviada, Conseguiste 15 puntos");
                 $scope.newQuestion.hide();
                 $scope.refrescar();
             }).error(function(data, status, headers, config) {
@@ -297,7 +326,7 @@ angular.module('login.controllers', ['login.services'])
             API.unirseProblema({
                 _id: $scope.elemento.id
             }, $rootScope.getToken()).success(function(data, status, headers, config) {
-                $rootScope.show("Se ha unido a la pregunta "+ $scope.elemento.titulo+ "");
+                $rootScope.show("Se ha unido a la pregunta " + $scope.elemento.titulo + ", Conseguiste 10 puntos");
                 $scope.modal.hide();
                 $scope.refrescar();
             }).error(function(data, status, headers, config) {
@@ -523,3 +552,59 @@ angular.module('login.controllers', ['login.services'])
     }
 
 })
+
+.controller('rankingController', function($rootScope, $scope, API, $window) {
+
+    $scope.visualizarRanking = function() {
+        API.verRanking($rootScope.getToken()).success(function(data) {
+
+            $scope.items = [];
+            for (var i = 0; i < data.length; i++) {
+
+                $scope.items.push(data[i]);
+
+            };
+            if ($scope.items.length == 0) {
+                $scope.noData = true;
+            } else {
+                $scope.noData = false;
+            }
+
+        }).error(function(data, status, headers, config) {
+            $rootScope.show("Hay un errorcito, qué pena");
+        });
+    }
+})
+
+.controller('objetivosController', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {
+    $scope.visualizarObjetivos = function() {
+        console.log("visualizar")
+        API.verObjetivos($rootScope.getToken()).success(function(data) {
+
+            $scope.items = [];
+            for (var i = 0; i < data.length; i++) {
+
+                $scope.items.push(data[i]);
+
+            };
+            if ($scope.items.length == 0) {
+                $scope.noData = true;
+            } else {
+                $scope.noData = false;
+            }
+
+        }).error(function(data, status, headers, config) {
+            $rootScope.show(error);
+        });
+    }
+
+    $scope.nuevoObjetivo = function(){
+        API.verificarObjetivo($rootScope.getToken()).success(function(data){
+           
+        }).error(function(data){
+            $rootScope.show(data);
+        });
+    }
+})
+
+

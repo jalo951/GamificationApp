@@ -26,3 +26,4 @@ server.listen(process.env.PORT || 9804, function () {
 
 var manageUsers = require('./auth/manageUser')(server, db, nodemailer);
 var manageLists = require('./list/manageList')(server, db);
+var manageRanking = require('./ranking/manageRanking')(server,db);
