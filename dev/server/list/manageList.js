@@ -25,7 +25,7 @@ module.exports = function(server, db) {
                     }]
                 },
                 function(err, datos) {
-                    console.log(datos.length);
+
                     if (datos.length == 0) {
                         bandera = true;
 
@@ -41,7 +41,7 @@ module.exports = function(server, db) {
 
                     }
                     if (bandera) {
-                        console.log("puede publicar");
+
                         res.writeHead(200, {
                             'Content-Type': 'application/json; charset=utf-8'
                         });
@@ -50,7 +50,7 @@ module.exports = function(server, db) {
                         }));
 
                     } else {
-                        console.log("puede publicar");
+
                         res.writeHead(403, {
                             'Content-Type': 'application/json; charset=utf-8'
                         });
@@ -68,11 +68,11 @@ module.exports = function(server, db) {
     server.post("/anadirPregunta", function(req, res, next) {
         validateRequest.validate(req, res, db, function() {
             var pregunta = req.params;
-            console.log(pregunta);
+
             db.preguntas.insert({
                     titulo: pregunta.titulo,
                     descripcion: pregunta.descripcion,
-                    fechaLimite: pregunta.fechaLimite,
+                    fechaLimite: new Date(pregunta.fechaLimite),
                     autor_id: db.ObjectId(pregunta.token),
                     miembros_id: [],
                     finalizado: false
@@ -111,11 +111,11 @@ module.exports = function(server, db) {
     //####################################################################################################
     server.post("/unirseProblema", function(req, res, next) {
         validateRequest.validate(req, res, db, function() {
-            console.log(req.params);
+
             db.preguntas.findOne({
                 _id: db.ObjectId(req.params._id)
             }, function(err, problema) {
-                console.log(problema);
+
                 if (problema) {
                     if (problema.miembros_id.length < 2) {
                         db.preguntas.update({
@@ -239,6 +239,9 @@ module.exports = function(server, db) {
                 }, {
                     $inc: {
                         votos: req.params.votos
+                    },
+                    $addToSet: {
+                        votantes : db.ObjectId(req.params.token)
                     }
                 }, function(err, data) {
                     console.log(data);
@@ -249,6 +252,88 @@ module.exports = function(server, db) {
                 });
 
             });
+        });
+        return next();
+    });
+
+    //###################################################################################################
+
+    server.get("/eliminarPreguntas", function(req, res, next) {
+
+        var fecha = new Date();
+        console.log(fecha.getTime());
+        db.preguntas.remove({
+            fechaLimite: {
+                $lte: new Date()
+            }
+        }, function(err, list) {
+
+            res.writeHead(200, {
+                'Content-Type': 'application/json; charset=utf-8'
+            });
+            console.log(list);
+            res.end(JSON.stringify(list));
+        });
+
+        return next();
+    });
+
+    //##################################################################################################
+    server.post("/nuevoObjetivo", function(req, res, next) {
+        validateRequest.validate(req, res, db, function() {
+            db.objetivos.insert({
+                descripcion: req.params.descripcion,
+                autor_id: db.ObjectId(req.params.token),
+                problema_id: db.ObjectId(req.params.problema_id),
+                votos: 0,
+                votantes: []
+            }, function(err, data) {
+                res.writeHead(200, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                });
+                res.end(JSON.stringify(data));
+            });
+
+            db.usuarios.update({
+                _id: db.ObjectId(req.params.token)
+            }, {
+                $inc: {
+                    puntos: 2
+                }
+            }, function(err, usuario) {
+                res.writeHead(200, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                });
+                res.end(JSON.stringify(usuario));
+            });
+        });
+        return next();
+    });
+    //######################################################################################################
+    server.get("/verificarVotacion", function(req, res, next) {
+        validateRequest.validate(req, res, db, function() {
+            db.objetivos.findOne({
+                _id: db.ObjectId(req.params._id)
+            }, function(err, data) {
+                if ((data.autor_id == req.params.token)|| (data.votantes[0] ==req.params.token) || (data.votantes[1] == req.params.token)){
+                    res.writeHead(403, {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    });
+                    res.end(JSON.stringify({
+                        error: "No puedes votar nuevamente por este objetivo"
+                    }));
+                } else {
+                    console.log("entró a else");
+                    res.writeHead(200, {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    });
+                    res.end(JSON.stringify({
+                        message: "El usuario puede votar "
+                    }));
+                }
+            });
+
+
         });
         return next();
     });

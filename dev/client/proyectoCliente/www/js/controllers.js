@@ -50,6 +50,8 @@ angular.module('login.controllers', ['login.services'])
 
     $scope.logueado();
 
+
+
 })
 
 .controller('resetController', function($rootScope, API, $scope) {
@@ -260,6 +262,7 @@ angular.module('login.controllers', ['login.services'])
             }, $rootScope.getToken()).success(function(data, status, headers, config) {
                 $rootScope.show("Se ha unido a la pregunta " + $scope.elemento.titulo + ", Conseguiste 10 puntos");
                 $scope.modal.hide();
+                API.cambiarNivel($scope.elemento.id);
                 $scope.refrescar();
             }).error(function(data, status, headers, config) {
                 $rootScope.show(data.error);
@@ -272,13 +275,15 @@ angular.module('login.controllers', ['login.services'])
 
     $scope.refrescar = function() {
 
+        API.eliminarPreguntas();
+
         API.getAll($rootScope.getToken()).success(function(data, status, headers, config) {
 
             $scope.items = [];
             for (var i = 0; i < data.length; i++) {
-
-                $scope.items.push(data[i]);
-
+                if (data[i].finalizado == false) {
+                    $scope.items.push(data[i]);
+                }
             };
             if ($scope.items.length == 0) {
                 $scope.noData = true;
@@ -334,7 +339,7 @@ angular.module('login.controllers', ['login.services'])
                     colorCara: "#ffe4c4",
                     colorCamisa: "#228b22",
                     puntos: 10,
-                    nivel: "1",
+                    nivel: 1,
                     trofeos: [],
                     accesorios_id: []
                 }).success(function(data) {
@@ -476,8 +481,6 @@ angular.module('login.controllers', ['login.services'])
             $scope.user.email = data[0].email;
             $scope.user.nombre = data[0].nombre;
             $scope.user.apellido = data[0].apellido;
-            console.log("mostrar");
-            console.log($scope.userDatos.nombre);
         }).error(function(error) {
             $rootScope.show(error.error);
         });
@@ -510,11 +513,12 @@ angular.module('login.controllers', ['login.services'])
 
 .controller('objetivosController', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {
 
-    $scope.objetivo ={
+    $scope.objetivo = {
         _id: '',
         votos: 0,
-        descripcion :'', 
-        votosAcumulados: 0
+        descripcion: '',
+        votosAcumulados: 0,
+        problema_id: ''
     };
 
     $ionicModal.fromTemplateUrl('votarModal.html', {
@@ -524,7 +528,7 @@ angular.module('login.controllers', ['login.services'])
         $scope.votarModal = modal;
     });
 
-    $scope.objective = function(object){
+    $scope.objective = function(object) {
         $scope.objetivo._id = object._id;
         //$scope.objetivo.votos = object.votos;
         $scope.objetivo.votosAcumulados = object.votos;
@@ -533,17 +537,24 @@ angular.module('login.controllers', ['login.services'])
     }
 
     $scope.votar = function(voto) {
+        API.verificarVotacion($rootScope.getToken(), $scope.objetivo._id).success(function(data) {
+            API.votarObjetivo($rootScope.getToken(), {
+                _id: $scope.objetivo._id,
+                votos: parseInt(voto)
+            }).success(function(data) {
+                $scope.visualizarObjetivos();
+                $rootScope.show("el objetivo ha recibido " + voto + " votos");
+                $scope.votarModal.hide();
 
-        API.votarObjetivo($rootScope.getToken(), {
-            _id: $scope.objetivo._id,
-            votos: parseInt(voto)
-        }).success(function(data) {
-            $rootScope.show("el objetivo ha recibido "+voto+" votos");
+            }).error(function(data, status, headers, config) {
+                $rootScope.show(data.error);
+            });
+        }).error(function(data) {
             $scope.votarModal.hide();
-
-        }).error(function(data, status, headers, config) {
-            $rootScope.show(error);
+            $scope.visualizarObjetivos();
+            $rootScope.show(data.error);
         });
+
     }
     $scope.visualizarObjetivos = function() {
         console.log("visualizar")
@@ -560,12 +571,69 @@ angular.module('login.controllers', ['login.services'])
             } else {
                 $scope.noData = false;
             }
-
+            $scope.objetivo.problema_id = data[0].problema_id;
         }).error(function(data, status, headers, config) {
             $rootScope.show(error);
         });
     }
-    
 
+    $scope.anadirObjetivo = function() {
+        var descripcion = $scope.objetivo.descripcion;
+        var problema = $scope.objetivo.problema_id;
+        if (!descripcion) {
+            $rootScope.show("No se admiten campos vacíos");
+        } else {
+            API.nuevoObjetivo({
+                descripcion: descripcion,
+                problema_id: problema
 
+            }, $rootScope.getToken()).success(function(data) {
+                $rootScope.show("Agregaste un objetivo nuevo, ganaste 2 puntos");
+                $scope.newObjective.hide();
+                $scope.visualizarObjetivos();
+            }).error(function(error) {
+                $rootScope.show("No se agregó el objetivo");
+            });
+        }
+    }
+
+    $scope.limpiarObjetivo = function() {
+        $scope.objetivo._id = '';
+        $scope.objetivo.votos = 0,
+            $scope.objetivo.descripcion = '';
+        $scope.objetivo.votosAcumulados = 0;
+        $scope.newObjective.show();
+    }
+
+    $ionicModal.fromTemplateUrl('newObjective.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.newObjective = modal;
+    });
+
+})
+
+.controller('homeController', function($rootScope, $scope, API, $window) {
+
+    $scope.nivel = function() {
+        API.mostrarInfo($rootScope.getToken()).success(function(data) {
+            if (data[0].nivel == 1) {
+                $window.location.href = ('#/app/primerNivel');
+            } else {
+                if (data[0].nivel == 2) {
+                    $window.location.href = ('#/segundoNivel');
+                } else {
+                    if (data[0].nivel == 3) {
+                        $window.location.href = ('#/tercerNivel');
+                    } else {
+                        $window.location.href = ('#/mundoMuertos');
+                    }
+                }
+
+            }
+        }).error(function(data) {
+
+        });
+    }
 })

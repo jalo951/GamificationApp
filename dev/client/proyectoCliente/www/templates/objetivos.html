@@ -2,8 +2,8 @@
     <ion-header-bar class="bar-positive">
         <h1 class="title">Panel de Preguntas</h1>
         <div class="buttons">
-            <button class="button button-icon ion-compose" ng-click="limpiar()">
-                Agregar pregunta
+            <button class="button button-icon ion-compose" ng-click="limpiarObjetivo()">
+                Agregar Objetivo
             </button>
         </div>
     </ion-header-bar>
@@ -15,34 +15,55 @@
                 </ion-item>
             </ion-list>
         </div>
-    </ion-content>
-    <script id="votarModal.html" type="text/ng-template">
-        <ion-modal-view>
-            <ion-header-bar class="bar bar-header bar-positive">
-                <h1 class="title"></h1>
-                <button class="button button-clear button-primary" ng-click="votarModal.hide()">Cancelar</button>
-            </ion-header-bar>
-            <ion-content class="padding">
-                <div class="list">
-                    <div class="item item-divider">Descripción</div>
-                    <label class="item item-text-wrap">
-                        {{objetivo.descripcion}}
-                    </label>
-                    <div class="item item-divider">Votos acumulados</div>
-                    <label class="item">
-                        <span class="input-label" type="text">{{objetivo.votosAcumulados}}</span>
-                    </label>
-                    <div class="range">
-                        <i class="icon ion-volume-low"></i>
-                        <input type="range" name="volume" ng-model="objetivo.votos" min="1" max="5" value="3">
-                        <i class="icon ion-volume-high"></i>
-                        <span class="input-label" type="text">{{objetivo.votos}}</span>
+        <script id="votarModal.html" type="text/ng-template">
+            <ion-modal-view>
+                <ion-header-bar class="bar bar-header bar-positive">
+                    <h1 class="title"></h1>
+                    <button class="button button-clear button-primary" ng-click="votarModal.hide()">Cancelar</button>
+                </ion-header-bar>
+                <ion-content class="padding">
+                    <div class="list">
+                        <div class="item item-divider">Descripción</div>
+                        <label class="item item-text-wrap">
+                            {{objetivo.descripcion}}
+                        </label>
+                        <div class="item item-divider">Votos acumulados</div>
+                        <label class="item">
+                            <span class="input-label" type="text">{{objetivo.votosAcumulados}}</span>
+                        </label>
+                        <div class="range">
+                            <i class="icon ion-volume-low"></i>
+                            <input type="range" name="volume" ng-model="objetivo.votos" min="1" max="5" value="3">
+                            <i class="icon ion-volume-high"></i>
+                            <span class="input-label" type="text">{{objetivo.votos}}</span>
+                        </div>
                     </div>
-                </div>
-                <div class="button-bar">
-                    <a class="button button-stable icon ion-backspace-outline" ng-click="votarModal.hide()">  Cancelar</a>
-                    <a class="button button-positive icon ion-ios-people" ng-click="votar(objetivo.votos)">  Votar</a>
-                </div>
-            </ion-content>
-        </ion-modal-view>
-    </script>
+                    <div class="button-bar">
+                        <a class="button button-stable icon ion-backspace-outline" ng-click="votarModal.hide()">  Cancelar</a>
+                        <a class="button button-positive icon ion-ios-people" ng-click="votar(objetivo.votos)">  Votar</a>
+                    </div>
+                </ion-content>
+            </ion-modal-view>
+        </script>
+        <script id="newObjective.html" type="text/ng-template">
+            <ion-modal-view>
+                <ion-header-bar class="bar bar-header bar-positive">
+                    <h1 class="title">Nuevo Objetivo</h1>
+                    <button class="button button-clear button-primary" ng-click="newObjective.hide()">Cancelar</button>
+                </ion-header-bar>
+                <ion-content class="padding">
+                    <div class="list">
+                        {{objetivo.problema_id}}
+                        <div class="item item-divider">Enunciado</div>
+                        <label class="item item-input">
+                            <input ng-model="objetivo.descripcion" type="text">
+                        </label>
+                    </div>
+                    <div class="button-bar">
+                        <a class="button button-stable icon ion-backspace-outline" ng-click="newObjective.hide()">  Cancelar</a>
+                        <a class="button button-positive icon ion-ios-compose-outline" ng-click="anadirObjetivo()">  Crear</a>
+                    </div>
+                </ion-content>
+            </ion-modal-view>
+        </script>
+    </ion-content>

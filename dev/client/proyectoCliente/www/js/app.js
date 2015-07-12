@@ -113,6 +113,11 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services'])
         controller: "objetivosController"
     })
 
+.state('home',{
+        url: "/home",
+        templateUrl: "templates/home.html",
+        controller: "homeController"
+})
 
     $urlRouterProvider.otherwise('/entrar');
 });

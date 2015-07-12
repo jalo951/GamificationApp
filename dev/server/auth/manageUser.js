@@ -347,22 +347,22 @@ module.exports = function(server, db, nodemailer) {
             } else {
                 pwdMgr.cryptPassword(user.contrasena, function(err, hash) {
                     user.contrasena = hash;
-                db.usuarios.update({
-                    _id: db.ObjectId(dbUser._id)
-                }, {
-                    $set: {
-                        contrasena: user.contrasena
-                    }
-                }, {
-                    multi: false
-                }, function(err, data) {
-                    res.writeHead(200, {
-                        'Content-Type': 'application/json; charset=utf-8'
+                    db.usuarios.update({
+                        _id: db.ObjectId(dbUser._id)
+                    }, {
+                        $set: {
+                            contrasena: user.contrasena
+                        }
+                    }, {
+                        multi: false
+                    }, function(err, data) {
+                        res.writeHead(200, {
+                            'Content-Type': 'application/json; charset=utf-8'
+                        });
+                        console.log(dbUser);
+                        res.end(JSON.stringify(data));
                     });
-                    console.log(dbUser);
-                    res.end(JSON.stringify(data));
                 });
-            });
             }
         });
         return next();
@@ -422,6 +422,77 @@ module.exports = function(server, db, nodemailer) {
         });
         return next();
 
+    });
+
+    //########################################################################################
+
+    server.get('/cambiarNivel', function(req, res, next) {
+        console.log(req.params);
+        db.preguntas.findOne({
+            _id: db.ObjectId(req.params._id)
+        }, function(err, data) {
+            console.log("recuperó :");
+            console.log(data);
+            if (data.miembros_id.length == 2) {
+                console.log("dos miembros");
+                db.usuarios.update({
+                    _id: db.ObjectId(data.autor_id)
+                }, {
+                    $inc: {
+                        nivel: 1
+                    }
+                }, {
+                    multi: false
+                }, function(err, autor) {
+                    res.writeHead(200, {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    });
+                    res.end(JSON.stringify(autor));
+                });
+
+                 db.usuarios.update({
+                    _id: db.ObjectId(data.miembros_id[0])
+                }, {
+                    $inc: {
+                        nivel: 1
+                    }
+                }, {
+                    multi: false
+                }, function(err, miembro) {
+                    
+
+                    res.writeHead(200, {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    });
+                    res.end(JSON.stringify(miembro));
+                });
+
+                 
+                  db.usuarios.update({
+                    _id: db.ObjectId(data.miembros_id[1])
+                }, {
+                    $inc: {
+                        nivel: 1
+                    }
+                }, {
+                    multi: false
+                }, function(err, miembro2) {
+                    
+
+                    res.writeHead(200, {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    });
+                    res.end(JSON.stringify(miembro2));
+                });
+            }
+
+            res.writeHead(200, {
+                'Content-Type': 'application/json; charset=utf-8'
+            });
+            res.end(JSON.stringify(data));
+        });
+
+        return next();
     });
 
 };

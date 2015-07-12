@@ -20,7 +20,7 @@ module.exports.validate = function(req, res, db, callback) {
         }));
     };
 
-    console.log(req.params.token);
+  
     isEmailValid(db, req.params.token, function(user) {
         if (!user) {
             res.writeHead(403, {

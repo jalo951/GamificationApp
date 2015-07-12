@@ -1,5 +1,5 @@
 angular.module('login.services', [])
-    .factory('API', function($rootScope, $http, $ionicLoading, $window, $ionicHistory,$state, $ionicSideMenuDelegate) {
+    .factory('API', function($rootScope, $http, $ionicLoading, $window, $ionicHistory, $state, $ionicSideMenuDelegate) {
         var base = "http://localhost:9804";
 
         $rootScope.show = function(text) {
@@ -100,8 +100,8 @@ angular.module('login.services', [])
                 });
             },
 
-            verRanking : function(id){
-                 return $http.get(base + '/verRanking', {
+            verRanking: function(id) {
+                return $http.get(base + '/verRanking', {
                     method: 'GET',
                     params: {
                         token: id
@@ -168,23 +168,58 @@ angular.module('login.services', [])
                 });
             },
 
-            verObjetivos: function(token){
-                 return $http.get(base + '/verObjetivos', {
+            verObjetivos: function(token) {
+                return $http.get(base + '/verObjetivos', {
                     method: 'GET',
                     params: {
                         token: token
                     }
                 });
-            }, 
+            },
 
-            votarObjetivo: function(token,form){
+            votarObjetivo: function(token, form) {
                 return $http.post(base + '/votarObjetivo', form, {
                     method: 'POST',
                     params: {
                         token: token
                     }
                 });
+            },
+
+
+            eliminarPreguntas: function() {
+                return $http.get(base + '/eliminarPreguntas');
+            },
+
+            cambiarNivel: function(idPregunta){
+                return $http.get(base + '/cambiarNivel', {
+                    method: 'GET',
+                    params: {
+                        _id: idPregunta
+                    }
+                });
+            },
+
+            nuevoObjetivo: function(form,token){
+                return $http.post(base + '/nuevoObjetivo',form,{
+                    method: 'POST',
+                    params: {
+                        token: token
+                    }
+                });
+            }, 
+
+            verificarVotacion: function(token, objetivo_id){
+                return $http.get(base + '/verificarVotacion', {
+                    method: 'GET',
+                    params: {
+                        token: token,
+                        _id : objetivo_id
+                    }
+                });
             }
+
+
 
 
         }
