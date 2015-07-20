@@ -25,6 +25,10 @@
                     <label class="item item-text-wrap">
                         {{elemento.descripcion}}
                     </label>
+                    <div class="item item-divider">Autor</div>
+                    <label class="item item-text-wrap">
+                        {{elemento.nombreAutor}} {{elemento.apellidoAutor}}
+                    </label>
                     <div class="item item-divider">Fecha límite para unirse</div>
                     <label class="item">
                         <span class="input-label" type= "Date">{{elemento.fecha | date:'yyyy-MM-dd'}}</span>
@@ -55,7 +59,7 @@
                     </label>
                     <div class="item item-divider">Fecha límite para unirse</div>
                     <label class="item item-input">
-                        <input ng-model="elemento.fecha" type="Date">
+                        <input value="2015-09-07" ng-model="elemento.fecha" type="Date">
                     </label>
                 </div>
                 <div class="button-bar">
