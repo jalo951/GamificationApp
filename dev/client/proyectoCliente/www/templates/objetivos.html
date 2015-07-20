@@ -1,12 +1,9 @@
-<ion-view hide-nav-bar="true">
-    <ion-header-bar class="bar-positive">
-        <h1 class="title">Panel de Preguntas</h1>
-        <div class="buttons">
-            <button class="button button-icon ion-compose" ng-click="limpiarObjetivo()">
-                Agregar Objetivo
-            </button>
-        </div>
-    </ion-header-bar>
+<ion-view view-title="Lista de objetivos">
+    <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear ion-compose" ng-click="limpiarObjetivo()">
+            Agregar objetivo
+        </button>
+    </ion-nav-buttons>
     <ion-content>
         <div class="list" ng-init="visualizarObjetivos()">
             <ion-list show-reorder="data.showReorder">

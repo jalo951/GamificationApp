@@ -116,10 +116,15 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
         controller: "mapController"
     })
 
-    .state('objetivos', {
+    .state('app.objetivos', {
         url: "/objetivos",
-        templateUrl: "templates/objetivos.html",
-        controller: "objetivosController"
+        views: {
+            "menuContent": {
+                templateUrl: "templates/objetivos.html",
+                controller: "objetivosController"
+            }
+        }
+
     })
 
     .state('home', {

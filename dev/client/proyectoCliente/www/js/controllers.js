@@ -1,6 +1,6 @@
 angular.module('login.controllers', ['login.services'])
 
-.controller('loginController', function($rootScope, $scope, API, $window, $state,$ionicHistory) {
+.controller('loginController', function($rootScope, $scope, API, $window, $state, $ionicHistory) {
 
     $scope.user = {
         email: '',
@@ -31,16 +31,27 @@ angular.module('login.controllers', ['login.services'])
         }
     }
 
-    $scope.logueado = function() {
+    /*$scope.logueado = function() {
         var token = $rootScope.getToken();
         if (token != '') {
             $ionicHistory.clearHistory();
             $ionicHistory.clearCache();
             $window.location.href = ('#/home');
         }
+    }*/
+
+    $scope.logueado = function() {
+        var token = $rootScope.getToken();
+        var sesionActiva = $rootScope.isSessionActive();
+        console.log(token);
+        if (sesionActiva) {
+            $ionicHistory.clearHistory();
+            $ionicHistory.clearCache();
+            $window.location.href = ('#/home');
+        }
     }
 
-  $scope.logueado();
+    $scope.logueado();
 
     $scope.irRegistro = function() {
         $state.go('registrar');
@@ -191,7 +202,7 @@ angular.module('login.controllers', ['login.services'])
     }
 
     $scope.irObjetivos = function() {
-        $window.location.href = ('#/objetivos');
+        $state.go('app.objetivos');
     }
 
 })
@@ -227,7 +238,7 @@ angular.module('login.controllers', ['login.services'])
             $rootScope.show("Cargando");
             $scope.newQuestion.show();
         }).error(function(data, status, headers, config) {
-            $rootScope.show(data.error);
+            $rootScope.showAlert('Error', data.error);
         });
 
     }
@@ -267,7 +278,6 @@ angular.module('login.controllers', ['login.services'])
 
     $scope.unirse = function() {
         API.verificarPregunta($rootScope.getToken()).success(function(data, status, headers, config) {
-            console.log("verificó pregunta");
             API.unirseProblema({
                 _id: $scope.elemento.id
             }, $rootScope.getToken()).success(function(data, status, headers, config) {
@@ -276,10 +286,10 @@ angular.module('login.controllers', ['login.services'])
                 API.cambiarNivel($scope.elemento.id);
                 $scope.refrescar();
             }).error(function(data, status, headers, config) {
-                $rootScope.show(data.error);
+                $rootScope.showAlert('Error', data.error);
             });
         }).error(function(data, status, headers, config) {
-            $rootScope.show(data.error);
+            $rootScope.showAlert('Error', data.error);
         });
 
     }
@@ -482,11 +492,11 @@ angular.module('login.controllers', ['login.services'])
     };
 
     $scope.mostrarDatos = function() {
-            console.log("entro mostrarDatos");
-            $scope.user.email = '';
-            $scope.user.nombre = '';
-            $scope.user.contrasena= '';
-            $scope.user.apellido = '';
+        console.log("entro mostrarDatos");
+        $scope.user.email = '';
+        $scope.user.nombre = '';
+        $scope.user.contrasena = '';
+        $scope.user.apellido = '';
 
         API.mostrarInfo($rootScope.getToken()).success(function(data) {
             $scope.user.email = data[0].email;
@@ -649,7 +659,7 @@ angular.module('login.controllers', ['login.services'])
         });
     }
 
-    $scope.irModificar = function(){
+    $scope.irModificar = function() {
         $window.location.reload();
         $window.location.href = ('#/app/modificar');
     }
