@@ -579,24 +579,34 @@ angular.module('login.controllers', ['login.services'])
 
     }
     $scope.visualizarObjetivos = function() {
-        console.log("visualizar")
-        API.verObjetivos($rootScope.getToken()).success(function(data) {
-
-            $scope.items = [];
-            for (var i = 0; i < data.length; i++) {
-
-                $scope.items.push(data[i]);
-
-            };
-            if ($scope.items.length == 0) {
-                $scope.noData = true;
-            } else {
-                $scope.noData = false;
+        API.preguntasUsuario($rootScope.getToken()).success(function(problemas) {
+            var i;
+            for (i = 0; i < problemas.length; i++) {
+                if (problemas[i].finalizado == false) {
+                    break;
+                }
             }
-            $scope.objetivo.problema_id = data[0].problema_id;
-        }).error(function(data, status, headers, config) {
-            $rootScope.show(error);
+            $scope.objetivo.problema_id = problemas[i]._id;
+            API.verObjetivos(problemas[i]._id).success(function(data) {
+
+                $scope.items = [];
+                for (var i = 0; i < data.length; i++) {
+
+                    $scope.items.push(data[i]);
+
+                };
+                if ($scope.items.length == 0) {
+                    $scope.noData = true;
+                } else {
+                    $scope.noData = false;
+                }
+                
+            }).error(function(data, status, headers, config) {
+                $rootScope.show(error);
+            });
+
         });
+
     }
 
     $scope.anadirObjetivo = function() {
@@ -696,8 +706,8 @@ angular.module('login.controllers', ['login.services'])
                         $scope.datosUsuario.nombrePreguntaActual = preguntas[i].titulo;
                     }
                 }
-            })
+            });
 
-        })
+        });
     }
 })

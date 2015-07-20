@@ -179,49 +179,16 @@ module.exports = function(server, db) {
     //#######################################################################################################
 
     server.get("/verObjetivos", function(req, res, next) {
-        var bandera = false;
-        validateRequest.validate(req, res, db, function() {
-            db.preguntas.find({
-                    $or: [{
-                        miembros_id: db.ObjectId(req.params.token)
-                    }, {
-                        autor_id: db.ObjectId(req.params.token)
-                    }]
-                },
-                function(err, datos) {
-                    console.log(datos.length);
-                    if (datos.length == 0) {
-                        res.writeHead(400, {
-                            'Content-Type': 'application/json; charset=utf-8'
-                        });
-                        res.end(JSON.stringify({
-                            error: "El usuario no tiene un problema asociado"
-                        }));
-                    } else {
-                        for (var i = 0; i < datos.length; i++) {
-                            if (datos[i].finalizado == false) {
-                                bandera = true;
-                                break;
-                            }
-                        }
-                        if (bandera) {
-                            console.log(i);
-                            db.objetivos.find({
-                                problema_id: db.ObjectId(datos[i]._id)
-                            }, function(err, list) {
-                                res.writeHead(200, {
-                                    'Content-Type': 'application/json; charset=utf-8'
-                                });
-                                console.log(list);
-                                res.end(JSON.stringify(list));
-                            });
-                        }
-
-                    }
-
-
+            db.objetivos.find({
+                problema_id: db.ObjectId(req.params._idProblema)
+            }, function(err, list) {
+                res.writeHead(200, {
+                    'Content-Type': 'application/json; charset=utf-8'
                 });
-        });
+                console.log(list);
+                res.end(JSON.stringify(list));
+            });
+        
         return next();
     });
     //###############################################################################################

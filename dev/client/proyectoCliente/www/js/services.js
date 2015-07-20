@@ -190,11 +190,11 @@ angular.module('login.services', [])
                 });
             },
 
-            verObjetivos: function(token) {
+            verObjetivos: function(idProblema) {
                 return $http.get(base + '/verObjetivos', {
                     method: 'GET',
                     params: {
-                        token: token
+                        _idProblema : idProblema
                     }
                 });
             },
@@ -240,7 +240,7 @@ angular.module('login.services', [])
                     }
                 });
             },
-            
+
             preguntasUsuario : function(token){
                 return $http.get(base + '/listarPreguntasUsuario',{
                     method:'GET',
