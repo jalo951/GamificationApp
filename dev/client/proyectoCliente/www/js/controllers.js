@@ -213,7 +213,9 @@ angular.module('login.controllers', ['login.services'])
         id: '',
         titulo: '',
         descripcion: '',
-        fecha: ''
+        fecha: '',
+        nombreAutor: '',
+        apellidoAutor: ''
     };
 
     $ionicModal.fromTemplateUrl('modal.html', {
@@ -250,7 +252,12 @@ angular.module('login.controllers', ['login.services'])
         $scope.elemento.descripcion = pregunta.descripcion;
         $scope.elemento.fecha = new Date(pregunta.fechaLimite);
         $scope.elemento.id = pregunta._id;
-        $scope.modal.show();
+        API.mostrarInfo(pregunta.autor_id).success(function(data){
+            $scope.elemento.nombreAutor = data[0].nombre;
+            $scope.elemento.apellidoAutor = data[0].apellido;
+             $scope.modal.show();
+        });
+       
     }
 
     $scope.createQuestion = function() {
@@ -540,7 +547,9 @@ angular.module('login.controllers', ['login.services'])
         votos: 0,
         descripcion: '',
         votosAcumulados: 0,
-        problema_id: ''
+        problema_id: '',
+        autorNombre: '',
+        autorApellido: ''
     };
 
     $ionicModal.fromTemplateUrl('votarModal.html', {
@@ -551,11 +560,17 @@ angular.module('login.controllers', ['login.services'])
     });
 
     $scope.objective = function(object) {
+        console.log(object);
         $scope.objetivo._id = object._id;
         //$scope.objetivo.votos = object.votos;
         $scope.objetivo.votosAcumulados = object.votos;
         $scope.objetivo.descripcion = object.descripcion;
-        $scope.votarModal.show();
+        API.mostrarInfo(object.autor_id).success(function(data) {
+            $scope.objetivo.autorNombre = data[0].nombre;
+            $scope.objetivo.autorApellido = data[0].apellido;
+            $scope.votarModal.show();
+        });
+
     }
 
     $scope.votar = function(voto) {
@@ -600,7 +615,7 @@ angular.module('login.controllers', ['login.services'])
                 } else {
                     $scope.noData = false;
                 }
-                
+
             }).error(function(data, status, headers, config) {
                 $rootScope.show(error);
             });
@@ -673,6 +688,11 @@ angular.module('login.controllers', ['login.services'])
         $window.location.reload();
         $window.location.href = ('#/app/modificar');
     }
+
+    $scope.irPerfil = function(){
+        $window.location.reload();
+        $window.location.href = ('#/app/perfil');
+    }
 })
 
 .controller('perfilController', function($rootScope, $scope, API, $window) {
@@ -710,4 +730,6 @@ angular.module('login.controllers', ['login.services'])
 
         });
     }
+
+    $scope.verPerfil();
 })
