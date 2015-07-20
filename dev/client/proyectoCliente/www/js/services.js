@@ -1,6 +1,6 @@
 angular.module('login.services', [])
     .factory('API', function($rootScope, $http, $ionicLoading, $window, $ionicHistory, $state, $ionicSideMenuDelegate) {
-        var base = "http://localhost:9804";
+        var base = "https://gamificationapp.herokuapp.com/";
 
         $rootScope.show = function(text) {
             $rootScope.loading = $ionicLoading.show({
@@ -41,6 +41,7 @@ angular.module('login.services', [])
 
         $rootScope.logout = function() {
             $rootScope.setToken("");
+            $window.location.reload();
             $window.location.href = '#/entrar';
         };
 

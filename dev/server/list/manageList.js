@@ -205,7 +205,6 @@ module.exports = function(server, db) {
                                 break;
                             }
                         }
-
                         if (bandera) {
                             console.log(i);
                             db.objetivos.find({

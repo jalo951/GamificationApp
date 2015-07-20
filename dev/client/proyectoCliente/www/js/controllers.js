@@ -1,13 +1,11 @@
 angular.module('login.controllers', ['login.services'])
 
-.controller('loginController', function($rootScope, $scope, API, $window, $state) {
+.controller('loginController', function($rootScope, $scope, API, $window, $state,$ionicHistory) {
 
     $scope.user = {
         email: '',
         contrasena: ''
     };
-
-
 
     $scope.ingresar = function() { // Duda con ingresar
 
@@ -23,10 +21,10 @@ angular.module('login.controllers', ['login.services'])
                 email: email,
                 contrasena: contrasena
             }).success(function(data) {
-                console.log(data);
                 $rootScope.setToken(data._id); // create a session kind of thing on the client side
                 $rootScope.show("Cargando...");
-                $window.location.href = ('#/app/primerNivel');
+                $window.location.reload();
+                $window.location.href = ('#/home');
             }).error(function(error) {
                 $rootScope.show(error.error);
             });
@@ -36,9 +34,13 @@ angular.module('login.controllers', ['login.services'])
     $scope.logueado = function() {
         var token = $rootScope.getToken();
         if (token != '') {
-            $window.location.href = ('#/list');
+            $ionicHistory.clearHistory();
+            $ionicHistory.clearCache();
+            $window.location.href = ('#/home');
         }
     }
+
+  $scope.logueado();
 
     $scope.irRegistro = function() {
         $window.location.href = ('#/registrar');
@@ -51,11 +53,6 @@ angular.module('login.controllers', ['login.services'])
     $scope.irSubir = function() {
         $window.location.href = ('#/subir');
     }
-
-    $scope.logueado();
-
-
-
 })
 
 .controller('resetController', function($rootScope, API, $scope) {
@@ -83,10 +80,9 @@ angular.module('login.controllers', ['login.services'])
     }
 })
 
-.controller('uploadController', function($scope, $rootScope, API){
+.controller('uploadController', function($scope, $rootScope, API) {
 
-    $rootScope.$on('event:file:selected',function(event,data){
-        console.log(data.image);
+    $rootScope.$on('event:file:selected', function(event, data) {
         API.anadirImagen({
             data: data.image
         }, $rootScope.getToken()).success(function(data, status, headers, config) {
@@ -112,11 +108,8 @@ angular.module('login.controllers', ['login.services'])
         var contrasena = this.user.contrasenaNueva;
         var contrasenaRep = this.user.contrasenaRep;
         var ident = this.user.id;
-        console.log(ident);
         if (!contrasenaRep || !contrasena || !ident) {
-
             $rootScope.show("No se admiten espacios vacíos");
-
         } else {
             if (contrasena == contrasenaRep) {
 
@@ -124,7 +117,6 @@ angular.module('login.controllers', ['login.services'])
                     id: ident,
                     contrasena: contrasena
                 }).success(function(data) {
-                    console.log('Successs');
                     $rootScope.show("contraseña actualizada");
                     $window.location.href = ('#/entrar');
                 }).error(function(error) {
@@ -169,8 +161,6 @@ angular.module('login.controllers', ['login.services'])
                 API.buscarCodigo({
                     token: res
                 }).success(function(data) {
-                    console.log('Successs');
-                    console.log(data);
                     $scope.user.id = data._id;
                 }).error(function(error) {
                     $rootScope.show(error.error);
@@ -180,7 +170,6 @@ angular.module('login.controllers', ['login.services'])
             }
         });
     }
-
 
 })
 
@@ -192,7 +181,6 @@ angular.module('login.controllers', ['login.services'])
     $scope.reto = function() {
         API.nuevoReto($rootScope.getToken()).success(function(data, status, headers, config) {
             $rootScope.show("Conseguiste 5 puntos");
-            console.log(data);
         }).error(function(data, status, headers, config) {
             $rootScope.show("Oops Error, por favor inténtelo más tarde");
         });
@@ -396,6 +384,7 @@ angular.module('login.controllers', ['login.services'])
         apellido: ''
     };
 
+
     $scope.modificarDatos = function(contrasena) {
 
         var contrasena = contrasena;
@@ -412,9 +401,8 @@ angular.module('login.controllers', ['login.services'])
                 contrasena: contrasena,
                 email: email
             }, $rootScope.getToken()).success(function(data) {
-                console.log('Successs');
                 $rootScope.show("Cargando...");
-                $window.location.href = ('#/list');
+                $window.location.href = ('#/home');
             }).error(function(error) {
                 $rootScope.show(error.error);
             });
@@ -455,9 +443,6 @@ angular.module('login.controllers', ['login.services'])
                 $scope.modificarDatos(res);
             }
         });
-        /* $timeout(function() {
-             myPopup.close(); //close the popup after 3 seconds for some reason
-         }, 100000);*/
 
     };
 
@@ -474,27 +459,26 @@ angular.module('login.controllers', ['login.services'])
             if (contrasenaNueva != contrasenaRep) {
                 $rootScope.show('Las contraseñas ingresadas como nuevas no coinciden ');
             } else {
-                console.log("contraseñas coinciden");
+
                 API.modificarContrasena({
                     contrasena: contrasenaAct,
                     contrasenaNueva: contrasenaNueva
-
-
                 }, $rootScope.getToken()).success(function(data) {
-                    console.log('Successs');
                     $rootScope.show("Cargando...");
-                    $window.location.href = ('#/list');
+                    $window.location.href = ('#/home');
                 }).error(function(error) {
                     $rootScope.show(error.error);
                 });
             }
         }
-
-
     };
 
     $scope.mostrarDatos = function() {
-
+            console.log("entro mostrarDatos");
+            $scope.user.email = '';
+            $scope.user.nombre = '';
+            $scope.user.contrasena= '';
+            $scope.user.apellido = '';
 
         API.mostrarInfo($rootScope.getToken()).success(function(data) {
             $scope.user.email = data[0].email;
@@ -505,6 +489,7 @@ angular.module('login.controllers', ['login.services'])
         });
     }
 
+    $scope.mostrarDatos();
 })
 
 .controller('rankingController', function($rootScope, $scope, API, $window) {
@@ -654,5 +639,10 @@ angular.module('login.controllers', ['login.services'])
         }).error(function(data) {
 
         });
+    }
+
+    $scope.irModificar = function(){
+        $window.location.reload();
+        $window.location.href = ('#/app/modificar');
     }
 })
