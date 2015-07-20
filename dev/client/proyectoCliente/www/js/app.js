@@ -127,6 +127,16 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
 
     })
 
+    .state('app.perfil', {
+        url: "/perfil",
+        views: {
+            "menuContent": {
+                templateUrl: "templates/perfil.html",
+                controller: "perfilController"
+            }
+        }
+    })
+    
     .state('home', {
         url: "/home",
         templateUrl: "templates/home.html",

@@ -178,7 +178,6 @@ module.exports = function(server, db) {
 
     //#######################################################################################################
 
-
     server.get("/verObjetivos", function(req, res, next) {
         var bandera = false;
         validateRequest.validate(req, res, db, function() {
@@ -240,7 +239,7 @@ module.exports = function(server, db) {
                         votos: req.params.votos
                     },
                     $addToSet: {
-                        votantes : db.ObjectId(req.params.token)
+                        votantes: db.ObjectId(req.params.token)
                     }
                 }, function(err, data) {
                     console.log(data);
@@ -314,7 +313,7 @@ module.exports = function(server, db) {
             db.objetivos.findOne({
                 _id: db.ObjectId(req.params._id)
             }, function(err, data) {
-                if ((data.autor_id == req.params.token)|| (data.votantes[0] ==req.params.token) || (data.votantes[1] == req.params.token)){
+                if ((data.autor_id == req.params.token) || (data.votantes[0] == req.params.token) || (data.votantes[1] == req.params.token)) {
                     res.writeHead(403, {
                         'Content-Type': 'application/json; charset=utf-8'
                     });
@@ -336,4 +335,27 @@ module.exports = function(server, db) {
         });
         return next();
     });
+
+    //###########################################################################################################
+    server.get("/listarPreguntasUsuario", function(req, res, next) {
+        validateRequest.validate(req, res, db, function() {
+            db.preguntas.find({
+                    $or: [{
+                        miembros_id: db.ObjectId(req.params.token)
+                    }, {
+                        autor_id: db.ObjectId(req.params.token)
+                    }]
+                },
+                function(err, datos) {
+
+                    res.writeHead(200, {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    });
+                    console.log(datos);
+                    res.end(JSON.stringify(datos));
+                });
+        });
+        return next();
+    });
+
 }

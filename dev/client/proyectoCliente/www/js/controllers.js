@@ -664,3 +664,40 @@ angular.module('login.controllers', ['login.services'])
         $window.location.href = ('#/app/modificar');
     }
 })
+
+.controller('perfilController', function($rootScope, $scope, API, $window) {
+    $scope.datosUsuario = {
+        _id: '',
+        nombre: '',
+        apellido: '',
+        genero: '',
+        nivel: '',
+        puntos: '',
+        email: '',
+        nombrePreguntaActual: ''
+    };
+
+    $scope.verPerfil = function() {
+        API.mostrarInfo($rootScope.getToken()).success(function(data) {
+            $scope.datosUsuario._id = data[0]._id;
+            $scope.datosUsuario.nombre = data[0].nombre;
+            $scope.datosUsuario.apellido = data[0].apellido;
+            $scope.datosUsuario.genero = data[0].genero;
+            $scope.datosUsuario.nivel = data[0].nivel;
+            $scope.datosUsuario.puntos = data[0].puntos;
+            $scope.datosUsuario.email = data[0].email;
+            API.preguntasUsuario($rootScope.getToken()).success(function(preguntas) {
+                var i;
+                $scope.items = [];
+                for (i = 0; i < preguntas.length; i++) {
+                    if (preguntas[i].finalizado) {
+                        $scope.items.push(preguntas[i]);
+                    } else {
+                        $scope.datosUsuario.nombrePreguntaActual = preguntas[i].titulo;
+                    }
+                }
+            })
+
+        })
+    }
+})

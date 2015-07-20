@@ -1,0 +1,60 @@
+<ion-view title="Perfil">
+    <ion-content >
+        <div style="text-align: center; margin-top: 20px;">
+            <img src="img/ionic.png" />
+        </div>
+
+        <div class="list" style="margin-top: 20px;" ng-init= "verPerfil()">
+            <div class="item item-divider icon ion-email">
+                E-Mail
+            </div>
+            <label class="item-stacked-label">
+                {{datosUsuario.email}}
+            </label>
+        </div>
+        <div class="list">
+            <div class="item item-divider icon ion-key">
+                Nombre
+            </div>
+            <label class="item-stacked-label">
+               {{datosUsuario.nombre}}
+            </label>
+            <div class="item item-divider icon ion-key">
+                Apellido
+            </div>
+            <label class="item-stacked-label">
+                {{datosUsuario.apellido}}
+            </label>
+            <div class="item item-divider icon ion-key">
+                Puntos
+            </div>
+            <label class="item-stacked-label">
+                {{datosUsuario.puntos}}
+            </label>
+            <div class="item item-divider icon ion-key">
+                Nivel Actual
+            </div>
+            <label class="item-stacked-label">
+                {{datosUsuario.nivel}}
+            </label>
+             <div class="item item-divider icon ion-key">
+                Investigación en curso
+            </div>
+            <label class=" item-stacked-label">
+                {{datosUsuario.nombrePreguntaActual}}
+            </label>
+            <div class="item item-divider icon ion-key">
+                Investigaciones Realizadas
+            </div>
+            <ion-list show-reorder="data.showReorder">
+                <ion-item ng-repeat="item in items" item="item">
+                    <a class="item item-avatar item-checkbox">
+                        <label class="rank" style="margin-left: 30px;">
+                            <h2> {{ item.titulo}}</h2>
+                        </label>
+                    </a>
+                </ion-item>
+            </ion-list>
+        </div>
+    </ion-content>
+</ion-view>

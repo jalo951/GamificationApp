@@ -239,9 +239,16 @@ angular.module('login.services', [])
                         _id : objetivo_id
                     }
                 });
+            },
+            
+            preguntasUsuario : function(token){
+                return $http.get(base + '/listarPreguntasUsuario',{
+                    method:'GET',
+                    params:{
+                        token: token
+                    }
+                });
             }
-
-
 
 
         }
