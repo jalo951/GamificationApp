@@ -434,9 +434,15 @@ module.exports = function(server, db, nodemailer, cloudinary) {
         console.log(imagen.data)
         console.log('--------------- End ----------------')
 
-        cloudinary.uploader.upload(imagen.data, function(result) { 
-            console.log(result) 
+        cloudinary.uploader.upload(imagen.data, function(result) {
+            console.log(result);
+            res.writeHead(200, {
+                'Content-Type': 'application/json; charset=utf-8'
+            });
+            res.end(JSON.stringify(result));
         });
+
+
 
         return next();
     });
@@ -467,7 +473,7 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                     res.end(JSON.stringify(autor));
                 });
 
-                 db.usuarios.update({
+                db.usuarios.update({
                     _id: db.ObjectId(data.miembros_id[0])
                 }, {
                     $inc: {
@@ -476,7 +482,7 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                 }, {
                     multi: false
                 }, function(err, miembro) {
-                    
+
 
                     res.writeHead(200, {
                         'Content-Type': 'application/json; charset=utf-8'
@@ -484,8 +490,8 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                     res.end(JSON.stringify(miembro));
                 });
 
-                 
-                  db.usuarios.update({
+
+                db.usuarios.update({
                     _id: db.ObjectId(data.miembros_id[1])
                 }, {
                     $inc: {
@@ -494,7 +500,7 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                 }, {
                     multi: false
                 }, function(err, miembro2) {
-                    
+
 
                     res.writeHead(200, {
                         'Content-Type': 'application/json; charset=utf-8'
