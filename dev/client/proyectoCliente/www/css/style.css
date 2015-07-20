@@ -24,3 +24,7 @@
 /*.scroll-content {
   top: 0 !important;
 }*/
+input[type=file]{
+    height:0;
+    overflow:auto;
+}

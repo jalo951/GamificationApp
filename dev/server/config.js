@@ -15,5 +15,11 @@ module.exports = {
 			' <tr> <td> <font size=4 color = "#FFFFFF" face = "arial, verdana, helvetica"> <b> Código </b></font></td></tr><tr> <td bgcolor = "#ffffcc"> ' +
 			'<font face = "arial, verdana, helvetica" size=6><b>',
 		msj2: '</b></font></td></tr></table></div></blockquote>'
-	}
+	},
+
+	cloud: {
+	  cloud_name: 'udea',
+	  api_key: '779482121266519',
+	  api_secret: 'NSZE5di07bmJsLqXXtAMLaBNQDg'
+  	}
 };

@@ -48,6 +48,10 @@ angular.module('login.controllers', ['login.services'])
         $window.location.href = ('#/resetPassword');
     }
 
+    $scope.irSubir = function() {
+        $window.location.href = ('#/subir');
+    }
+
     $scope.logueado();
 
 
@@ -77,6 +81,21 @@ angular.module('login.controllers', ['login.services'])
             });
         }
     }
+})
+
+.controller('uploadController', function($scope, $rootScope, API){
+
+    $rootScope.$on('event:file:selected',function(event,data){
+        console.log(data.image);
+        API.anadirImagen({
+            data: data.image
+        }, $rootScope.getToken()).success(function(data, status, headers, config) {
+            $rootScope.show("Su Imagen ha sido enviada, Conseguiste 14567 puntos");
+        }).error(function(data, status, headers, config) {
+            $rootScope.show(data.error);
+        })
+    });
+
 })
 
 .controller('newPassController', function($rootScope, API, $scope, $window, $ionicPopup) {

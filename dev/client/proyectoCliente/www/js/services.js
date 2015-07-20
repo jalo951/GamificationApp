@@ -158,6 +158,16 @@ angular.module('login.services', [])
                     }
                 });
             },
+
+            anadirImagen: function(data, token) {
+                return $http.post(base + '/anadirImagen', data, {
+                    method: 'POST',
+                    params: {
+                        token: token
+                    }
+                });
+            },
+
             unirseProblema: function(form, token) {
                 console.log("entré a service");
                 return $http.post(base + '/unirseProblema', form, {

@@ -2,7 +2,7 @@ var pwdMgr = require('./managePasswords');
 var validateRequest = require("../auth/validateRequest");
 var config = require("../config");
 
-module.exports = function(server, db, nodemailer) {
+module.exports = function(server, db, nodemailer, cloudinary) {
 
     var base = "http://localhost:8100/#/newPassword?token=";
     //variable transporter para el acceso a la cuenta remitente
@@ -425,6 +425,23 @@ module.exports = function(server, db, nodemailer) {
     });
 
     //########################################################################################
+
+    //##########################################################################################
+    server.post("/anadirImagen", function(req, res, next) {
+        var imagen = req.params;
+
+        console.log('--------------- Data ----------------')
+        console.log(imagen.data)
+        console.log('--------------- End ----------------')
+
+        cloudinary.uploader.upload(imagen.data, function(result) { 
+            console.log(result) 
+        });
+
+        return next();
+    });
+    //####################################################################################################
+
 
     server.get('/cambiarNivel', function(req, res, next) {
         console.log(req.params);
