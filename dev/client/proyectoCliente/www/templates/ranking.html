@@ -1,19 +1,18 @@
-<ion-view hide-nav-bar="true">
-    <ion-header-bar class="bar-positive">
-        <h1 class="title">Ranking</h1>
-        <div class="buttons">
-            <button class="button button-icon ion-compose" ng-click="limpiar()">
-                Agregar pregunta
-            </button>
-        </div>
-    </ion-header-bar>
+<ion-view view-title="Ranking">
     <ion-content>
         <div class="list" ng-init="visualizarRanking()">
             <ion-list show-reorder="data.showReorder">
-                <ion-item ng-repeat="item in items" item="item" >
-                    {{$index + 1}}
-                    {{ item.nombre}}
-                    {{item.puntos}}
+                <ion-item ng-repeat="item in items" item="item">
+                    <a class="item item-avatar item-checkbox">
+                        <img src="img/ionic.png" style=" margin-left: 25px;">
+                        <label class="checkbox">
+                            <h1>{{$index + 1}}</h1>
+                        </label>
+                        <label class="rank" style="margin-left: 30px;">
+                            <h2> {{ item.nombre}}</h2>
+                            <p>{{item.puntos}} Puntos</p>
+                        </label>
+                    </a>
                 </ion-item>
             </ion-list>
         </div>

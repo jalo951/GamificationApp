@@ -1,35 +1,41 @@
-<ion-view title="Modificar datos">
-    <ion-content onLoad= "mostrarDatos()" >
+<ion-view title="Modificar perfil">
+    <ion-content onLoad="mostrarDatos()">
         <div style="text-align: center; margin-top: 20px;">
             <img src="img/ionic.png" />
         </div>
+<<<<<<< HEAD
         <div class="list" style="margin-top: 20px;" >
+=======
+        <div class="list" style="margin-top: 20px;" ng-init="mostrarDatos()">
+            <div class="item item-divider icon ion-email">
+                E-Mail
+            </div>
+>>>>>>> 23778e28c6da668d8eb922a4b22793b237aa6ecf
             <label class="item item-input item-stacked-label">
-                <span >E-mail</span>
                 <input type="text" ng-model="user.email">
             </label>
-         
-            <label class="item item-input item-stacked-label" style="text-align: center;">
-                <button class="button button-assertive" ng-click="showPopup()">Modificar E-Mail</button>
-            </label>
+            <button class="button button-outline button-block button-dark icon ion-gear-a" ng-click="showPopup()">  Modificar E-Mail</button>
         </div>
-        <div class="item item-divider"></div>
-        <div class="list" style="margin-top: 20px;">
+        <div class="list">
+            <div class="item item-divider icon ion-key">
+                Password actual
+            </div>
             <label class="item item-input item-stacked-label">
-                <span class="input-label">Contraseña actual</span>
                 <input type="password" ng-model="userCont.contrasenaAct">
             </label>
+            <div class="item item-divider icon ion-key">
+                Nuevo password
+            </div>
             <label class="item item-input item-stacked-label">
-                <span class="input-label">Nueva contraseña</span>
                 <input type="password" ng-model="userCont.contrasenaNueva">
             </label>
+            <div class="item item-divider icon ion-key">
+                Repita el nuevo password
+            </div>
             <label class="item item-input item-stacked-label">
-                <span class="input-label">Repita su nueva contraseña</span>
                 <input type="password" ng-model="userCont.contrasenaRep">
             </label>
-            <label class="item item-input item-stacked-label" style="text-align: center;">
-                <button class="button button-assertive" ng-click="modificarContrasena()">Cambiar Contraseña</button>
-            </label>
+                <button class="button button-outline button-block button-dark icon ion-gear-a" ng-click="modificarContrasena()">  Modificar Contraseña</button>
         </div>
     </ion-content>
 </ion-view>
