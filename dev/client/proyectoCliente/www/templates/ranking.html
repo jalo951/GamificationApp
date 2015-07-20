@@ -4,13 +4,11 @@
             <ion-list show-reorder="data.showReorder">
                 <ion-item ng-repeat="item in items" item="item">
                     <a class="item item-avatar item-checkbox">
-                        <img src="img/ionic.png" style=" margin-left: 25px;">
-                        <label class="checkbox">
-                            <h1>{{$index + 1}}</h1>
-                        </label>
-                        <label class="rank" style="margin-left: 30px;">
-                            <h2> {{ item.nombre}}</h2>
-                            <p>{{item.puntos}} Puntos</p>
+                        <n>{{$index + 1}}</n>
+                        <img src="img/ionic.png" width="60" height="60" style="margin-left: 0px;">
+                        <label class="rank" style="margin-top:-70px; margin-left:80px;">
+                        <h1>{{item.nombre}}</h1>
+                        <h2>{{item.puntos}} Puntos</h2>
                         </label>
                     </a>
                 </ion-item>

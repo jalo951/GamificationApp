@@ -26,7 +26,31 @@
     display: block;
 }
 
-input[type=file]{
-    height:0;
-    overflow:auto;
+.item-avatar i:first-child, 
+.item-avatar .item-img {
+    position: absolute;
+    top: 25px;
+    left: 15px;
+    font-size: 50px;
+    max-width: 40px;
+    max-height: 40px;
+    width: 100%;
+    border-radius: 4px;
+}
+
+.item-avatar n:first-child,
+.item-avatar .item-img {
+    position: absolute;
+    top: 40px;
+    left: 10px;
+    font-size: 40px;
+    max-width: 40px;
+    max-height: 40px;
+    width: 100%;
+    border-radius: 4px;
+}
+
+input[type=file] {
+    height: 0;
+    overflow: auto;
 }
