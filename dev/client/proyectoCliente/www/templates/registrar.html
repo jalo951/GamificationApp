@@ -1,7 +1,11 @@
-<ion-view>
-    <ion-header-bar class="bar-assertive">
-        <h1 class="title">Registrar</h1>
-    </ion-header-bar>
+<ion-view view-title="Crear cuenta">
+    <ion-nav-bar class="bar-positive">
+        <ion-nav-buttons side="primary">
+            <button class="button button-clear icon ion-arrow-left-c" ng-click="goBack()">
+                Volver
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
     <ion-content>
         <div style="text-align: center; margin-top: 20px;">
             <img src="img/ionic.png" />
@@ -11,37 +15,38 @@
                 E-Mail
             </div>
             <label class="item item-input item-stacked-label">
-                <!--<span class="input-label">E-mail</span>-->
-                <input type="text" ng-model="user.email">
+                <input type="email" ng-model="user.email">
             </label>
+            <div class="item item-divider icon ion-person">
+                Nombre
+            </div>
             <label class="item item-input item-stacked-label">
-                <span class="input-label">Nombre</span>
                 <input type="text" ng-model="user.nombre">
             </label>
+            <div class="item item-divider icon ion-person">
+                Apellido
+            </div>
             <label class="item item-input item-stacked-label">
-                <span class="input-label">Apellido</span>
                 <input type="text" ng-model="user.apellido">
             </label>
             <div class="item item-divider icon ion-person-stalker">
                 Género
             </div>
-            <ion-radio ng-value="'femenino'" ng-model="user.genero" class="icon ion-female">Femenino</ion-radio>
-            <ion-radio ng-value="'masculino'" ng-model="user.genero"> Masculino </ion-radio>
-
+            <ion-radio icon="ion-woman" ng-value="'femenino'" ng-model="user.genero">Femenino</ion-radio>
+            <ion-radio icon="ion-man" ng-value="'masculino'" ng-model="user.genero">Masculino</ion-radio>
             <div class="item item-divider icon ion-key">
-                Clave
+                Password
             </div>
             <label class="item item-input item-stacked-label">
-                <span class="input-label">Clave</span>
                 <input type="password" ng-model="user.contrasena">
             </label>
+            <div class="item item-divider icon ion-key">
+                Confirmar password
+            </div>
             <label class="item item-input item-stacked-label">
-                <span class="input-label">Confirmar Clave</span>
                 <input type="password" ng-model="user.contrasenaRep">
             </label>
-            <label class="item item-input item-stacked-label" style="text-align: center;">
-                <button class="button button-assertive" ng-click="registrar()"> Registrar</button>
-            </label>
+            <button class="button button-block button-positive" ng-click="registrar()"> Registrar</button>
         </div>
     </ion-content>
 </ion-view>

@@ -21,10 +21,10 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
 .config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
 
-    .state('app', {
-    url: "/app",
-    abstract: true,
-    templateUrl: "templates/menu.html",
+        .state('app', {
+        url: "/app",
+        abstract: true,
+        templateUrl: "templates/menu.html",
     })
 
     .state('entrar', {
@@ -68,12 +68,11 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
 
     })
 
-    
+
     .state('registrar', {
         url: "/registrar",
         templateUrl: "templates/registrar.html",
         controller: "RegistroController"
-
     })
 
     .state('app.modificar', {
@@ -101,29 +100,33 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
 
     })
 
-    .state('ranking',{
+    .state('app.ranking', {
         url: "/ranking",
-        templateUrl: "templates/ranking.html",
-        controller: "rankingController"
+        views: {
+            "menuContent": {
+                templateUrl: "templates/ranking.html",
+                controller: "rankingController"
+            }
+        }
     })
 
-    .state('segundoNivel',{
+    .state('segundoNivel', {
         url: "/segundoNivel",
         templateUrl: "templates/segundoNivel.html",
         controller: "mapController"
     })
 
- .state('objetivos',{
+    .state('objetivos', {
         url: "/objetivos",
         templateUrl: "templates/objetivos.html",
         controller: "objetivosController"
     })
 
-.state('home',{
+    .state('home', {
         url: "/home",
         templateUrl: "templates/home.html",
         controller: "homeController"
-})
+    })
 
     $urlRouterProvider.otherwise('/entrar');
 });

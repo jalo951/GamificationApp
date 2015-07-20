@@ -41,7 +41,7 @@ angular.module('login.controllers', ['login.services'])
     }
 
     $scope.irRegistro = function() {
-        $window.location.href = ('#/registrar');
+        $state.go('registrar');
     }
 
     $scope.irPassword = function() {
@@ -58,10 +58,14 @@ angular.module('login.controllers', ['login.services'])
 
 })
 
-.controller('resetController', function($rootScope, API, $scope) {
+.controller('resetController', function($rootScope, API, $scope, $state) {
     $scope.user = {
         email: ''
     };
+
+    $scope.goBack = function() {
+        $state.go('entrar');
+    }
 
     $scope.enviar = function() {
         var email = this.user.email;
@@ -75,7 +79,7 @@ angular.module('login.controllers', ['login.services'])
                 email: email
             }).success(function(data) {
                 console.log('Successs');
-                $rootScope.show("Revise su bandeja de entrada");
+                $rootScope.showAlert('Recuperación de password', 'Revisa tu bandeja de entrada');
             }).error(function(error) {
                 $rootScope.show(error.error);
             });
@@ -317,7 +321,7 @@ angular.module('login.controllers', ['login.services'])
 
 })
 
-.controller('RegistroController', function($rootScope, $scope, API, $window) {
+.controller('RegistroController', function($rootScope, $scope, API, $window, $state) {
 
     $scope.user = {
         email: '',
@@ -327,6 +331,10 @@ angular.module('login.controllers', ['login.services'])
         contrasenaRep: '',
         contrasena: ''
     };
+
+    $scope.goBack = function() {
+        $state.go('entrar');
+    }
 
     $scope.registrar = function() {
         var email = this.user.email;
@@ -455,9 +463,6 @@ angular.module('login.controllers', ['login.services'])
                 $scope.modificarDatos(res);
             }
         });
-        /* $timeout(function() {
-             myPopup.close(); //close the popup after 3 seconds for some reason
-         }, 100000);*/
 
     };
 

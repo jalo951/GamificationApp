@@ -1,5 +1,5 @@
 angular.module('login.services', [])
-    .factory('API', function($rootScope, $http, $ionicLoading, $window, $ionicHistory, $state, $ionicSideMenuDelegate) {
+    .factory('API', function($rootScope, $ionicPopup, $http, $ionicLoading, $window, $ionicHistory, $state, $ionicSideMenuDelegate) {
         var base = "http://localhost:9804";
 
         $rootScope.show = function(text) {
@@ -9,6 +9,15 @@ angular.module('login.services', [])
             });
         };
 
+        $rootScope.showAlert = function(titulo, cuerpo) {
+           var alertPopup = $ionicPopup.alert({
+             title: titulo,
+             template: cuerpo
+           });
+           alertPopup.then(function(res) {
+             console.log('');
+           });
+         };
 
         $rootScope.hide = function() {
             $ionicLoading.hide();

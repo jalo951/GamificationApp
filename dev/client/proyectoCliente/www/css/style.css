@@ -21,9 +21,11 @@
     top: 490px;
     left: 485px;
 }
-/*.scroll-content {
-  top: 0 !important;
-}*/
+
+.rank {
+    display: block;
+}
+
 input[type=file]{
     height:0;
     overflow:auto;
