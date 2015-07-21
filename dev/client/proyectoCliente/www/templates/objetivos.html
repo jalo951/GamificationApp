@@ -28,6 +28,10 @@
                         <label class="item">
                             <span class="input-label" type="text">{{objetivo.votosAcumulados}}</span>
                         </label>
+                        <div class="item item-divider">Autor</div>
+                        <label class="item">
+                            <span class="input-label" type="text">{{objetivo.autorNombre}} {{objetivo.autorApellido}}</span>
+                        </label>
                         <div class="range">
                             <i class="icon ion-volume-low"></i>
                             <input type="range" name="volume" ng-model="objetivo.votos" min="1" max="5" value="3">

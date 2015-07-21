@@ -179,16 +179,16 @@ module.exports = function(server, db) {
     //#######################################################################################################
 
     server.get("/verObjetivos", function(req, res, next) {
-            db.objetivos.find({
-                problema_id: db.ObjectId(req.params._idProblema)
-            }, function(err, list) {
-                res.writeHead(200, {
-                    'Content-Type': 'application/json; charset=utf-8'
-                });
-                console.log(list);
-                res.end(JSON.stringify(list));
+        db.objetivos.find({
+            problema_id: db.ObjectId(req.params._idProblema)
+        }, function(err, list) {
+            res.writeHead(200, {
+                'Content-Type': 'application/json; charset=utf-8'
             });
-        
+
+            res.end(JSON.stringify(list));
+        });
+
         return next();
     });
     //###############################################################################################
@@ -209,11 +209,25 @@ module.exports = function(server, db) {
                         votantes: db.ObjectId(req.params.token)
                     }
                 }, function(err, data) {
-                    console.log(data);
+
                     res.writeHead(200, {
                         'Content-Type': 'application/json; charset=utf-8'
                     });
                     res.end(JSON.stringify(data));
+                });
+
+                db.usuarios.update({
+                    _id: db.ObjectId(req.params.token)
+                }, {
+
+                    $set: {
+                        voto: true
+                    }
+                }, function(err, usuario) {
+                    res.writeHead(200, {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    });
+                    res.end(JSON.stringify(usuario));
                 });
 
             });
@@ -264,6 +278,9 @@ module.exports = function(server, db) {
             }, {
                 $inc: {
                     puntos: 2
+                },
+                $set: {
+                    creacionObjetivo: true
                 }
             }, function(err, usuario) {
                 res.writeHead(200, {
@@ -288,7 +305,7 @@ module.exports = function(server, db) {
                         error: "No puedes votar nuevamente por este objetivo"
                     }));
                 } else {
-                    console.log("entró a else");
+
                     res.writeHead(200, {
                         'Content-Type': 'application/json; charset=utf-8'
                     });
@@ -318,11 +335,15 @@ module.exports = function(server, db) {
                     res.writeHead(200, {
                         'Content-Type': 'application/json; charset=utf-8'
                     });
-                    console.log(datos);
+
                     res.end(JSON.stringify(datos));
                 });
         });
         return next();
     });
+
+    //#######################################################################################################
+
+
 
 }

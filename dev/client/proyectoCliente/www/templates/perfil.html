@@ -1,5 +1,6 @@
-<ion-view title="Perfil">
-    <ion-content >
+
+<ion-view title="{{datosUsuario.nombre}} {{datosUsuario.apellido}}">
+    <ion-content>
 
         <div style="text-align: center; margin-top: 20px;", ng-bind-html="datosUsuario.foto">
             
@@ -7,59 +8,37 @@
 
         <browse-file></browse-file> <!--Directive 1-->
 
-
-        
-        <div class="list" style="margin-top: 20px;" ng-init= "verPerfil()">
-            <div class="item item-divider icon ion-email">
-                E-Mail
-            </div>
-            <label class="item-stacked-label">
-                {{datosUsuario.email}}
-            </label>
-        </div>
-        <div class="list">
-            <div class="item item-divider icon ion-key">
-                Nombre
-            </div>
-            <label class="item-stacked-label">
-               {{datosUsuario.nombre}}
-            </label>
-            <div class="item item-divider icon ion-key">
-                Apellido
-            </div>
-            <label class="item-stacked-label">
-                {{datosUsuario.apellido}}
-            </label>
-            <div class="item item-divider icon ion-key">
-                Puntos
-            </div>
-            <label class="item-stacked-label">
-                {{datosUsuario.puntos}}
-            </label>
-            <div class="item item-divider icon ion-key">
-                Nivel Actual
-            </div>
-            <label class="item-stacked-label">
-                {{datosUsuario.nivel}}
-            </label>
-             <div class="item item-divider icon ion-key">
-                Investigación en curso
-            </div>
-            <label class=" item-stacked-label">
-                {{datosUsuario.nombrePreguntaActual}}
-            </label>
-            <div class="item item-divider icon ion-key">
-                Investigaciones Realizadas
-            </div>
-            <ion-list show-reorder="data.showReorder">
-                <ion-item ng-repeat="item in items" item="item">
-                    <a class="item item-avatar item-checkbox">
-                        <label class="rank" style="margin-left: 30px;">
-                            <h2> {{ item.titulo}}</h2>
-                        </label>
-                    </a>
-                </ion-item>
-            </ion-list>
+        <a class="item item-thumbnail-right" href="#">
+            <img src="img/bat.jpg">
+            <h1>{{datosUsuario.nombre}}  {{datosUsuario.apellido}}</h1>
+            <p> {{datosUsuario.email}}</p>
+        </a>
+        <div class="item item-divider"> Información general</div>
+        <div class="list" >
+            <a class="item item-avatar" href="#">
+                <i class="icon ion-flag"></i>
+                <h2>Puntos: </h2> <h1>{{datosUsuario.puntos}}</h1>
+                </a>
+                <a class="item item-avatar" href="#">
+                <i class="icon ion-ribbon-b"></i>
+                <h2>Nivel: </h2> <h1>{{datosUsuario.nivel}}</h1>
+                </a>
+                <a class="item item-avatar" href="#">
+                <i class="icon ion-document"></i>
+                <h2>Investigación en curso: </h2> <h1>{{datosUsuario.nombrePreguntaActual}}</h1>
+                </a>
+                <div class="item item-divider">
+                    Investigaciones Realizadas
+                </div>
+                <ion-list show-reorder="data.showReorder">
+                    <ion-item ng-repeat="item in items" item="item">
+                        <a class="item item-avatar item-checkbox">
+                            <label class="rank" style="margin-left: 30px;">
+                                <h2> {{ item.titulo}}</h2>
+                            </label>
+                        </a>
+                    </ion-item>
+                </ion-list>
         </div>
     </ion-content>
 </ion-view>
