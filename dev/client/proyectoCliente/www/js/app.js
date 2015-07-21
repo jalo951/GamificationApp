@@ -120,6 +120,16 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
         }
     })
 
+     .state('app.tercerNivel', {
+        url: "/tercerNivel",
+        views: {
+            "menuContent": {
+                templateUrl: "templates/tercerNivel.html",
+                controller: "mapController"
+            }
+        }
+    })
+
     .state('app.objetivos', {
         url: "/objetivos",
         views: {

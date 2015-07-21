@@ -10,6 +10,12 @@
     height: 28px;
 }
 
+.reto3 {
+    position: absolute;
+    top: 170px;
+    left: 1080px;
+}
+
 .posicion {
     position: absolute;
     top: 170px;
