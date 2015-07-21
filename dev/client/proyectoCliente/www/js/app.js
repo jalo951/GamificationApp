@@ -110,10 +110,14 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
         }
     })
 
-    .state('segundoNivel', {
+    .state('app.segundoNivel', {
         url: "/segundoNivel",
-        templateUrl: "templates/segundoNivel.html",
-        controller: "mapController"
+        views: {
+            "menuContent": {
+                templateUrl: "templates/segundoNivel.html",
+                controller: "mapController"
+            }
+        }
     })
 
     .state('app.objetivos', {
@@ -136,7 +140,7 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
             }
         }
     })
-    
+
     .state('home', {
         url: "/home",
         templateUrl: "templates/home.html",

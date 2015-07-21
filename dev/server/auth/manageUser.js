@@ -518,4 +518,106 @@ module.exports = function(server, db, nodemailer, cloudinary) {
         return next();
     });
 
+    //###########################################################################
+
+    server.get("/irTercerNivel", function(req, res, next) {
+        var banderaAutor = false;
+        var banderaM1 = false;
+        var banderaM2 = false;
+        
+
+        db.preguntas.findOne({
+            _id: db.ObjectId(req.params.problema_id)
+        }, function(err, dato) {
+            if (dato) {
+                db.objetivos.find({
+                    problema_id: db.ObjectId(req.params.problema_id)
+                }, function(err, objetivos) {
+
+                    if (objetivos) {
+                        db.usuarios.findOne({
+                            _id: db.ObjectId(dato.autor_id)
+                        }, function(err, autor) {
+
+                            if (autor.creacionObjetivo && autor.voto) {
+                                banderaAutor = true;
+                            }
+                            db.usuarios.findOne({
+                                _id: db.ObjectId(dato.miembros_id[0])
+                            }, function(err, autor1) {
+                                if (autor1.creacionObjetivo && autor1.voto) {
+                                    console.log("entro1");
+                                    banderaM1 = true;
+                                    console.log(banderaM1);
+                                }
+                                db.usuarios.findOne({
+                                    _id: db.ObjectId(dato.miembros_id[1])
+                                }, function(err, autor2) {
+                                    if (autor2.creacionObjetivo && autor2.voto) {
+                                        console.log("entro2");
+                                        banderaM2 = true;
+                                        console.log(banderaM2);
+                                    }
+                                    console.log("funciona bandera");
+                                    console.log(banderaM1);
+                                    if (banderaM1 && banderaAutor && banderaM2) {
+                                        console.log("pasan al tercer nivel");
+                                        db.usuarios.update({
+                                            _id: db.ObjectId(dato.autor_id)
+                                        }, {
+                                            $inc: {
+                                                nivel: 1
+                                            }
+                                        }, function(err, usuario) {
+                                            res.writeHead(200, {
+                                                'Content-Type': 'application/json; charset=utf-8'
+                                            });
+                                            res.end(JSON.stringify(usuario));
+                                        });
+                                        db.usuarios.update({
+                                            _id: db.ObjectId(dato.miembros_id[0])
+                                        }, {
+                                            $inc: {
+                                                nivel: 1
+                                            }
+                                        }, function(err, usuario1) {
+                                            res.writeHead(200, {
+                                                'Content-Type': 'application/json; charset=utf-8'
+                                            });
+                                            res.end(JSON.stringify(usuario));
+                                        });
+                                        db.usuarios.update({
+                                            _id: db.ObjectId(dato.miembros_id[1])
+                                        }, {
+                                            $inc: {
+                                                nivel: 1
+                                            }
+                                        }, function(err, usuario2) {
+                                            res.writeHead(200, {
+                                                'Content-Type': 'application/json; charset=utf-8'
+                                            });
+                                            res.end(JSON.stringify(usuario));
+                                        });
+                                    } else {
+                                        res.writeHead(403, {
+                                            'Content-Type': 'application/json; charset=utf-8'
+                                        });
+                                        res.end(JSON.stringify({
+                                            error: "error"
+                                        }));
+                                    }
+                                });
+
+                            });
+
+                        });
+                    }
+
+                });
+            }
+        });
+
+        return next();
+    });
+
 };

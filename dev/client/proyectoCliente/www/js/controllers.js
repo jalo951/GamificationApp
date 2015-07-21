@@ -582,7 +582,7 @@ angular.module('login.controllers', ['login.services'])
                 $scope.visualizarObjetivos();
                 $rootScope.show("el objetivo ha recibido " + voto + " votos");
                 $scope.votarModal.hide();
-
+                API.verificarPasoNivel($scope.objetivo.problema_id);
             }).error(function(data, status, headers, config) {
                 $rootScope.show(data.error);
             });
@@ -636,6 +636,7 @@ angular.module('login.controllers', ['login.services'])
 
             }, $rootScope.getToken()).success(function(data) {
                 $rootScope.show("Agregaste un objetivo nuevo, ganaste 2 puntos");
+                API.verificarPasoNivel($scope.objetivo.problema_id);
                 $scope.newObjective.hide();
                 $scope.visualizarObjetivos();
             }).error(function(error) {
@@ -669,7 +670,7 @@ angular.module('login.controllers', ['login.services'])
                 $window.location.href = ('#/app/primerNivel');
             } else {
                 if (data[0].nivel == 2) {
-                    $window.location.href = ('#/segundoNivel');
+                    $window.location.href = ('#/app/segundoNivel');
                 } else {
                     if (data[0].nivel == 3) {
                         $window.location.href = ('#/tercerNivel');
