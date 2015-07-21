@@ -454,7 +454,11 @@ module.exports = function(server, db, nodemailer, cloudinary) {
             })
         },
         {
-            public_id: req.params.token
+            public_id: req.params.token,
+            width: 200, 
+            height: 200, 
+            crop: 'scale',
+            radius: 'max' 
         });
 
         

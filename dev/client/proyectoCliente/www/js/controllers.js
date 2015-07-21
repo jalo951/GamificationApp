@@ -521,14 +521,14 @@ angular.module('login.controllers', ['login.services'])
 
     $scope.visualizarRanking = function() {
         API.verRanking($rootScope.getToken()).success(function(data) {
-
-            $scope.items = [];
-            for (var i = 0; i < data.length; i++) {
-
-                $scope.items.push(data[i]);
+            $scope.users = [];
+            var i;
+            for (i = 0; i < data.length; i++) {
+                //console.log("Estoy en ", i);
+                $scope.users.push(data[i]);
 
             };
-            if ($scope.items.length == 0) {
+            if ($scope.users.length == 0) {
                 $scope.noData = true;
             } else {
                 $scope.noData = false;
@@ -710,6 +710,7 @@ angular.module('login.controllers', ['login.services'])
     };
 
     $scope.verPerfil = function() {
+
         API.mostrarInfo($rootScope.getToken()).success(function(data) {
             $scope.datosUsuario._id = data[0]._id;
             $scope.datosUsuario.nombre = data[0].nombre;
