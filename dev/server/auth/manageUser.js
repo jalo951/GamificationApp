@@ -430,22 +430,92 @@ module.exports = function(server, db, nodemailer, cloudinary) {
     server.post("/anadirImagen", function(req, res, next) {
         var imagen = req.params;
 
-        console.log('--------------- Data ----------------')
-        console.log(imagen.data)
-        console.log('--------------- End ----------------')
+        cloudinary.uploader.destroy(req.params.token, function(result) {
+            console.log('Se elimino la siguiente imagen:::::::::::')
+            console.log(result);
+        });
 
-        cloudinary.uploader.upload(imagen.data, function(result) {
+
+        cloudinary.uploader.upload(imagen.data, function(result) 
+        {
+            console.log('Ahora se subirá una nueva imagen')
             console.log(result);
             res.writeHead(200, {
                 'Content-Type': 'application/json; charset=utf-8'
             });
             res.end(JSON.stringify(result));
+        },
+        {
+            public_id: req.params.token
         });
+
+        
+/**
+        cloudinary.uploader.upload(imagen.data, function(result) 
+            {
+                console.log(result);
+                res.writeHead(200, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                });
+                res.end(JSON.stringify(result));
+            },
+            {
+                public_id: req.params.token,
+                crop: 'limit',
+                width: 2000,
+                height: 2000,
+                eager: [
+                  { width: 200, height: 200, crop: 'thumb', gravity: 'face',
+                    radius: 20, effect: 'sepia' },
+                  { width: 100, height: 150, crop: 'fit', format: 'png' }
+                ],                                     
+                tags: ['special', 'for_homepage']
+            }      
+        );
+
+**/
 
 
 
         return next();
     });
+
+
+    //##########################################################################################
+
+    server.get('/cargarImagen', function(req, res, next) {
+
+        data = cloudinary.image(req.params.token, {alt: "Sample Image" });
+
+        console.log('--------------- Data a cargar ----------------');
+        console.log(data);
+        console.log('--------------- End ----------------');
+
+        res.writeHead(200, {
+            'Content-Type': 'application/json; charset=utf-8'
+        });
+        res.end(JSON.stringify(data));
+
+        return next();
+    });
+
+    //####################################################################################################
+
+    server.get('/eliminarImagen', function(req, res, next) {
+
+        cloudinary.uploader.destroy(req.params.token, function(result) { 
+            console.log(result);
+            res.writeHead(200, {
+                'Content-Type': 'application/json; charset=utf-8'
+            });
+            res.end(JSON.stringify(data));
+        });
+
+        return next();
+    });
+
+
+
     //####################################################################################################
 
 

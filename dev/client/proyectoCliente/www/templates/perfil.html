@@ -1,9 +1,14 @@
 <ion-view title="Perfil">
     <ion-content >
-        <div style="text-align: center; margin-top: 20px;">
-            <img src="img/ionic.png" />
+
+        <div style="text-align: center; margin-top: 20px;", ng-bind-html="datosUsuario.foto">
+            
         </div>
 
+        <browse-file></browse-file> <!--Directive 1-->
+
+
+        
         <div class="list" style="margin-top: 20px;" ng-init= "verPerfil()">
             <div class="item item-divider icon ion-email">
                 E-Mail

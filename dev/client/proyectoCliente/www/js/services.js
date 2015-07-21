@@ -102,6 +102,24 @@ angular.module('login.services', [])
                 });
             },
 
+            cargarImagen: function(id) {
+                return $http.get(base + '/cargarImagen', {
+                    method: 'GET',
+                    params: {
+                        token: id
+                    }
+                });
+            },
+
+            eliminarImagen: function(id) {
+                return $http.get(base + '/eliminarImagen', {
+                    method: 'GET',
+                    params: {
+                        token: id
+                    }
+                });
+            },
+
             verificarPregunta: function(token) {
 
                 return $http.get(base + '/verificarPregunta', {

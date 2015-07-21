@@ -684,7 +684,8 @@ angular.module('login.controllers', ['login.services'])
         nivel: '',
         puntos: '',
         email: '',
-        nombrePreguntaActual: ''
+        nombrePreguntaActual: '',
+        foto: ''
     };
 
     $scope.verPerfil = function() {
@@ -696,6 +697,15 @@ angular.module('login.controllers', ['login.services'])
             $scope.datosUsuario.nivel = data[0].nivel;
             $scope.datosUsuario.puntos = data[0].puntos;
             $scope.datosUsuario.email = data[0].email;
+            $scope.datosUsuario.foto = '';
+
+
+            API.cargarImagen($rootScope.getToken()).success(function(image) {
+                console.log('Intenta cargar la imagen pueees!');
+                $scope.datosUsuario.foto = image;
+                console.log(image);
+            });
+
             API.preguntasUsuario($rootScope.getToken()).success(function(preguntas) {
                 var i;
                 $scope.items = [];
@@ -710,4 +720,20 @@ angular.module('login.controllers', ['login.services'])
 
         });
     }
+
+    $rootScope.$on('event:file:selected', function(event, data) {
+        console.log(data);
+
+
+        API.anadirImagen({
+            data: data.image,
+            id_imagen: $scope.datosUsuario._id
+        }, $rootScope.getToken()).success(function(data, status, headers, config) {
+            $rootScope.show('Su foto de perfil ha sido cambiada con éxito');
+
+        }).error(function(data, status, headers, config) {
+            $rootScope.show(data.error);
+        })
+    });
+
 })
