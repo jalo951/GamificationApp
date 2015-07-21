@@ -2,17 +2,17 @@
 <ion-view title="{{datosUsuario.nombre}} {{datosUsuario.apellido}}">
     <ion-content>
 
-        <div style="text-align: center; margin-top: 20px;", ng-bind-html="datosUsuario.foto">
-            
+        <div style="text-align: center; margin-top: 20px;">
+            <img src="{{datosUsuario.foto}}">
         </div>
 
         <browse-file></browse-file> <!--Directive 1-->
-
+<div style="text-align: center; margin-top: 20px;">
         <a class="item item-thumbnail-right" href="#">
-            <img src="img/bat.jpg">
             <h1>{{datosUsuario.nombre}}  {{datosUsuario.apellido}}</h1>
             <p> {{datosUsuario.email}}</p>
         </a>
+    </div>
         <div class="item item-divider"> Información general</div>
         <div class="list" >
             <a class="item item-avatar" href="#">

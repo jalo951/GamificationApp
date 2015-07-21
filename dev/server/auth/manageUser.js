@@ -430,20 +430,28 @@ module.exports = function(server, db, nodemailer, cloudinary) {
     server.post("/anadirImagen", function(req, res, next) {
         var imagen = req.params;
 
+/**
         cloudinary.uploader.destroy(req.params.token, function(result) {
             console.log('Se elimino la siguiente imagen:::::::::::')
             console.log(result);
         });
 
-
+**/
         cloudinary.uploader.upload(imagen.data, function(result) 
         {
-            console.log('Ahora se subirá una nueva imagen')
-            console.log(result);
-            res.writeHead(200, {
-                'Content-Type': 'application/json; charset=utf-8'
-            });
-            res.end(JSON.stringify(result));
+            console.log('Ahora se subirá una nueva imagen');
+            db.usuarios.update({
+                _id: db.ObjectId(req.params.token)
+            }, 
+            {
+                $set: {foto: result.url}
+            }, {multi: false}, function(err, data) {
+                console.log(result);
+                res.writeHead(200, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                });
+                res.end(JSON.stringify(result));
+            })
         },
         {
             public_id: req.params.token

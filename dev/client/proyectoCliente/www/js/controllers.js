@@ -51,7 +51,7 @@ angular.module('login.controllers', ['login.services'])
         }
     }
 
-    $scope.logueado();
+    //$scope.logueado();
 
     $scope.irRegistro = function() {
         $state.go('registrar');
@@ -718,14 +718,14 @@ angular.module('login.controllers', ['login.services'])
             $scope.datosUsuario.nivel = data[0].nivel;
             $scope.datosUsuario.puntos = data[0].puntos;
             $scope.datosUsuario.email = data[0].email;
-            $scope.datosUsuario.foto = '';
+            $scope.datosUsuario.foto = data[0].foto;
 
 
-            API.cargarImagen($rootScope.getToken()).success(function(image) {
+            /*API.cargarImagen($rootScope.getToken()).success(function(image) {
                 console.log('Intenta cargar la imagen pueees!');
-                $scope.datosUsuario.foto = image;
+                //$scope.datosUsuario.foto = image;
                 console.log(image);
-            });
+            });*/
 
             API.preguntasUsuario($rootScope.getToken()).success(function(preguntas) {
                 var i;
