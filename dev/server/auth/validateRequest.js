@@ -31,7 +31,6 @@ module.exports.validate = function(req, res, db, callback) {
                 message: "Invalid User Email"
             }));
         } else {
-            console.log("valida el token");
             callback();
         }
     });

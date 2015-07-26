@@ -7,7 +7,6 @@ module.exports = function(server, db) {
                 res.writeHead(200, {
                     'Content-Type': 'application/json; charset=utf-8'
                 });
-                console.log(list);
                 res.end(JSON.stringify(list));
             });
         });
@@ -195,7 +194,6 @@ module.exports = function(server, db) {
 
     server.post("/votarObjetivo", function(req, res, next) {
         validateRequest.validate(req, res, db, function() {
-            console.log(req.params);
             db.objetivos.findOne({
                 _id: db.ObjectId(req.params._id)
             }, function(err, objetivo) {
@@ -240,7 +238,6 @@ module.exports = function(server, db) {
     server.get("/eliminarPreguntas", function(req, res, next) {
 
         var fecha = new Date();
-        console.log(fecha.getTime());
         db.preguntas.remove({
             fechaLimite: {
                 $lte: new Date()

@@ -23,7 +23,6 @@ module.exports = function(server, db, nodemailer, cloudinary) {
             //_id: req.params._id
             email: req.params.email
         }, function(err, dbUser) {
-            console.log(dbUser);
             if (dbUser) {
 
                 res.writeHead(403, {
@@ -35,7 +34,6 @@ module.exports = function(server, db, nodemailer, cloudinary) {
             } else {
                 pwdMgr.cryptPassword(user.contrasena, function(err, hash) {
                     user.contrasena = hash;
-                    console.log("n", hash);
                     db.usuarios.insert(user,
                         function(err, dbUser) {
 
@@ -67,11 +65,6 @@ module.exports = function(server, db, nodemailer, cloudinary) {
     //########################################################################################### 
     server.post('/login', function(req, res, next) {
 
-        console.log('Server login')
-        console.log(req.params.email)
-        console.log(req.params.contrasena)
-
-
         var user = req.params;
         if (user.email.trim().length == 0 || user.contrasena.trim().length == 0) {
             res.writeHead(403, {
@@ -81,7 +74,6 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                 error: "Credenciales inválidas"
             }));
         }
-        console.log("in");
         db.usuarios.findOne({
             //_id: req.params.email
             email: req.params.email
@@ -254,12 +246,10 @@ module.exports = function(server, db, nodemailer, cloudinary) {
 
     server.post('/resetPassword', function(req, res, next) {
         var user = req.params;
-        console.log(user);
         db.usuarios.findOne({
             // _id: req.params.email
             email: req.params.email
         }, function(err, dbUser) {
-            console.log(dbUser);
             if (!dbUser) {
                 res.writeHead(403, {
                     'Content-Type': 'application/json; charset=utf-8'
@@ -270,13 +260,10 @@ module.exports = function(server, db, nodemailer, cloudinary) {
             } else {
 
                 var clave = makeid();
-                console.log(clave);
                 var pToken = {
                     token: clave,
                     fechaCreacion: new Date() //Mirar restar fechas :D
                 };
-                console.log(dbUser._id);
-
                 db.usuarios.update({
                     _id: db.ObjectId(dbUser._id)
                 }, {
@@ -293,7 +280,6 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                 });
 
                 //Enviar correo
-
 
                 var mailOptions = {
                     from: config.mailer.defaultFromAddress, // sender address
@@ -359,7 +345,6 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                         res.writeHead(200, {
                             'Content-Type': 'application/json; charset=utf-8'
                         });
-                        console.log(dbUser);
                         res.end(JSON.stringify(data));
                     });
                 });
@@ -403,7 +388,6 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                         res.writeHead(200, {
                             'Content-Type': 'application/json; charset=utf-8'
                         });
-
                         res.end(JSON.stringify(dbUser));
                     } else {
                         res.writeHead(403, {
@@ -439,7 +423,6 @@ module.exports = function(server, db, nodemailer, cloudinary) {
 **/
         cloudinary.uploader.upload(imagen.data, function(result) 
         {
-            console.log('Ahora se subirá una nueva imagen');
             db.usuarios.update({
                 _id: db.ObjectId(req.params.token)
             }, 
@@ -486,9 +469,6 @@ module.exports = function(server, db, nodemailer, cloudinary) {
         );
 
 **/
-
-
-
         return next();
     });
 
@@ -498,10 +478,6 @@ module.exports = function(server, db, nodemailer, cloudinary) {
     server.get('/cargarImagen', function(req, res, next) {
 
         data = cloudinary.image(req.params.token, {alt: "Sample Image" });
-
-        console.log('--------------- Data a cargar ----------------');
-        console.log(data);
-        console.log('--------------- End ----------------');
 
         res.writeHead(200, {
             'Content-Type': 'application/json; charset=utf-8'
@@ -516,7 +492,6 @@ module.exports = function(server, db, nodemailer, cloudinary) {
     server.get('/eliminarImagen', function(req, res, next) {
 
         cloudinary.uploader.destroy(req.params.token, function(result) { 
-            console.log(result);
             res.writeHead(200, {
                 'Content-Type': 'application/json; charset=utf-8'
             });
@@ -532,14 +507,10 @@ module.exports = function(server, db, nodemailer, cloudinary) {
 
 
     server.get('/cambiarNivel', function(req, res, next) {
-        console.log(req.params);
         db.preguntas.findOne({
             _id: db.ObjectId(req.params._id)
         }, function(err, data) {
-            console.log("recuperó :");
-            console.log(data);
             if (data.miembros_id.length == 2) {
-                console.log("dos miembros");
                 db.usuarios.update({
                     _id: db.ObjectId(data.autor_id)
                 }, {
@@ -628,22 +599,17 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                                 _id: db.ObjectId(dato.miembros_id[0])
                             }, function(err, autor1) {
                                 if (autor1.creacionObjetivo && autor1.voto) {
-                                    console.log("entro1");
                                     banderaM1 = true;
-                                    console.log(banderaM1);
                                 }
                                 db.usuarios.findOne({
                                     _id: db.ObjectId(dato.miembros_id[1])
                                 }, function(err, autor2) {
                                     if (autor2.creacionObjetivo && autor2.voto) {
-                                        console.log("entro2");
                                         banderaM2 = true;
-                                        console.log(banderaM2);
                                     }
                                     console.log("funciona bandera");
                                     console.log(banderaM1);
                                     if (banderaM1 && banderaAutor && banderaM2) {
-                                        console.log("pasan al tercer nivel");
                                         db.usuarios.update({
                                             _id: db.ObjectId(dato.autor_id)
                                         }, {
