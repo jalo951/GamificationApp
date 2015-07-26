@@ -49,7 +49,7 @@ angular.module('login.controllers', ['login.services'])
         }
     }
 
-    $scope.logueado();
+    //$scope.logueado();
 
     $scope.irRegistro = function() {
         $state.go('registrar');
@@ -671,12 +671,12 @@ angular.module('login.controllers', ['login.services'])
     }
 
     $scope.irModificar = function() {
-        //$window.location.reload();
+        $window.location.reload();
         $window.location.href = ('#/app/modificar');
     }
 
     $scope.irPerfil = function(){
-        //$window.location.reload();
+        $window.location.reload();
         $window.location.href = ('#/app/perfil');
     }
 })
