@@ -23,21 +23,13 @@ angular.module('login.controllers', ['login.services'])
             }).success(function(data) {
                 $rootScope.setToken(data._id); // create a session kind of thing on the client side
                 $rootScope.show("Cargando...");
+                $window.location.reload();
                 $window.location.href = ('#/home');
             }).error(function(error) {
                 $rootScope.show(error.error);
             });
         }
     }
-
-    /*$scope.logueado = function() {
-        var token = $rootScope.getToken();
-        if (token != '') {
-            $ionicHistory.clearHistory();
-            $ionicHistory.clearCache();
-            $window.location.href = ('#/home');
-        }
-    }*/
 
     $scope.logueado = function() {
         var token = $rootScope.getToken();
@@ -49,7 +41,7 @@ angular.module('login.controllers', ['login.services'])
         }
     }
 
-    //$scope.logueado();
+    $scope.logueado();
 
     $scope.irRegistro = function() {
         $state.go('registrar');
@@ -671,12 +663,12 @@ angular.module('login.controllers', ['login.services'])
     }
 
     $scope.irModificar = function() {
-        $window.location.reload();
+      //  $window.location.reload();
         $window.location.href = ('#/app/modificar');
     }
 
     $scope.irPerfil = function(){
-        $window.location.reload();
+       // $window.location.reload();
         $window.location.href = ('#/app/perfil');
     }
 })
