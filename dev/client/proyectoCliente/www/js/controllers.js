@@ -201,6 +201,10 @@ angular.module('login.controllers', ['login.services'])
         $state.go('app.objetivos');
     }
 
+        $scope.irTrabajoFinal = function() {
+        $state.go('app.trabajoFinal');
+    }
+
 })
 
 .controller('preguntasController', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {
@@ -658,7 +662,7 @@ angular.module('login.controllers', ['login.services'])
                     $window.location.href = ('#/app/segundoNivel');
                 } else {
                     if (data[0].nivel == 3) {
-                        $window.location.href = ('#/tercerNivel');
+                        $window.location.href = ('#/app/tercerNivel');
                     } else {
                         $window.location.href = ('#/mundoMuertos');
                     }
@@ -743,4 +747,22 @@ angular.module('login.controllers', ['login.services'])
     });
 
     $scope.verPerfil();
+})
+
+
+.controller('trabajoFinalController', function($rootScope, $scope, API, $window) {
+
+
+
+    $rootScope.$on('event:file:selected', function(event, data) {
+        API.subirTrabajo({
+            data: data.trabajo
+        }, $rootScope.getToken()).success(function(data, status, headers, config) {
+            $rootScope.show('Su archivo ha sido subido con éxito. La próxima vez que recargue la página podrá visualizarlo');
+
+        }).error(function(data, status, headers, config) {
+            $rootScope.show(data.error);
+        })
+    });
+
 })

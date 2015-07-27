@@ -68,6 +68,17 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
 
     })
 
+    .state('app.trabajoFinal', {
+        url: "/trabajoFinal",
+        views: {
+            'menuContent': {
+                templateUrl: "templates/trabajoFinal.html",
+                controller: "trabajoFinalController"
+            }
+        }
+
+    })
+
 
     .state('registrar', {
         url: "/registrar",

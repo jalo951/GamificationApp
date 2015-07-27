@@ -410,17 +410,65 @@ module.exports = function(server, db, nodemailer, cloudinary) {
 
     //########################################################################################
 
+    server.post("/subirTrabajo", function(req, res, next) {
+        var trabajo = req.params;
+
+/*
+        cloudinary.uploader.upload("my_file_name.docx",
+            function(result) { console.log(result); },
+            {
+                public_id: "sample_document.docx",
+                resource_type: "auto",
+                raw_convert: "aspose"
+            });
+*/
+
+        validateRequest.validate(req, res, db, function() {
+
+
+            cloudinary.uploader.upload(trabajo.data, function(result) 
+            {
+                
+                db.preguntas.find({
+                        $or: [{
+                            miembros_id: db.ObjectId(req.params.token)
+                        }, {
+                            autor_id: db.ObjectId(req.params.token)
+                        }]
+                }, function(err, problema) {
+
+                    console.log('-----------------------------------');
+                    console.log(problema[0]._id);
+                    db.preguntas.update({
+                        _id: db.ObjectId(problema[0]._id)
+                    }, 
+                    {
+                        $set: {trabajo: result.url}
+                    }, {multi: false}, function(err, data) {
+                        console.log(result);
+                        res.writeHead(200, {
+                            'Content-Type': 'application/json; charset=utf-8'
+                        });
+                        res.end(JSON.stringify(result));
+                    })
+                });
+
+            },
+            {
+                resource_type: "auto",
+                raw_convert: "aspose"
+            });
+        });
+
+
+        return next();
+    });
+
+
     //##########################################################################################
     server.post("/anadirImagen", function(req, res, next) {
         var imagen = req.params;
 
-/**
-        cloudinary.uploader.destroy(req.params.token, function(result) {
-            console.log('Se elimino la siguiente imagen:::::::::::')
-            console.log(result);
-        });
-
-**/
         cloudinary.uploader.upload(imagen.data, function(result) 
         {
             db.usuarios.update({
@@ -443,32 +491,6 @@ module.exports = function(server, db, nodemailer, cloudinary) {
             crop: 'scale',
             radius: 'max' 
         });
-
-        
-/**
-        cloudinary.uploader.upload(imagen.data, function(result) 
-            {
-                console.log(result);
-                res.writeHead(200, {
-                    'Content-Type': 'application/json; charset=utf-8'
-                });
-                res.end(JSON.stringify(result));
-            },
-            {
-                public_id: req.params.token,
-                crop: 'limit',
-                width: 2000,
-                height: 2000,
-                eager: [
-                  { width: 200, height: 200, crop: 'thumb', gravity: 'face',
-                    radius: 20, effect: 'sepia' },
-                  { width: 100, height: 150, crop: 'fit', format: 'png' }
-                ],                                     
-                tags: ['special', 'for_homepage']
-            }      
-        );
-
-**/
         return next();
     });
 
