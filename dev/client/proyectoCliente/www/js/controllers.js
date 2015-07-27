@@ -677,7 +677,7 @@ angular.module('login.controllers', ['login.services'])
     }
 })
 
-.controller('perfilController', function($rootScope, $scope, API, $window) {
+.controller('perfilController', function($rootScope, $state, $scope, API, $window) {
     $scope.datosUsuario = {
         _id: '',
         nombre: '',
@@ -732,6 +732,7 @@ angular.module('login.controllers', ['login.services'])
             id_imagen: $scope.datosUsuario._id
         }, $rootScope.getToken()).success(function(data, status, headers, config) {
             $rootScope.show('Su foto de perfil ha sido cambiada con éxito');
+			$window.location.reload();
 
         }).error(function(data, status, headers, config) {
             $rootScope.show(data.error);

@@ -1,68 +1,70 @@
 /**
  * Created by Sandeep on 29/08/14.
  */
-angular.module('login.directives',[]).directive('browseFile',['$rootScope',function($rootScope){
-    return {
-        scope:{
+angular.module('login.directives',[])
 
-        },
-        replace:true,
-        restrict:'AE',
-        link:function(scope,elem,attrs){
+	.directive('browseFile',['$rootScope',function($rootScope){
+	    return {
+		scope:{
 
-            scope.browseFile=function(){
-                document.getElementById('browseBtn').click();
-            }
+		},
+		replace:true,
+		restrict:'AE',
+		link:function(scope,elem,attrs){
 
-            angular.element(document.getElementById('browseBtn')).on('change',function(e){
+		    scope.browseFile=function(){
+		        document.getElementById('browseBtn').click();
+		    }
 
-               var file=e.target.files[0];
+		    angular.element(document.getElementById('browseBtn')).on('change',function(e){
 
-               angular.element(document.getElementById('browseBtn')).val('');
+		       var file=e.target.files[0];
 
-               var fileReader=new FileReader();
+		       angular.element(document.getElementById('browseBtn')).val('');
 
-               fileReader.onload=function(event){
-                   $rootScope.$broadcast('event:file:selected',{image:event.target.result});
-               }
+		       var fileReader=new FileReader();
 
-               fileReader.readAsDataURL(file);
-            });
+		       fileReader.onload=function(event){
+		           $rootScope.$broadcast('event:file:selected',{image:event.target.result});
+		       }
 
-        },
-        templateUrl:'templates/browse-file.html'
-    }
-}]);
+		       fileReader.readAsDataURL(file);
+		    });
 
-angular.module('login.directives',[]).directive('browseWork',['$rootScope',function($rootScope){
-    return {
-        scope:{
+		},
+		templateUrl:'templates/browse-file.html'
+	    }
+	}])
 
-        },
-        replace:true,
-        restrict:'AE',
-        link:function(scope,elem,attrs){
+	.directive('browseWork',['$rootScope',function($rootScope){
+	    return {
+		scope:{
 
-            scope.browseFile=function(){
-                document.getElementById('browseBtn').click();
-            }
+		},
+		replace:true,
+		restrict:'AE',
+		link:function(scope,elem,attrs){
 
-            angular.element(document.getElementById('browseBtn')).on('change',function(e){
+		    scope.browseFile=function(){
+		        document.getElementById('browseBtn1').click();
+		    }
 
-               var file=e.target.files[0];
+		    angular.element(document.getElementById('browseBtn1')).on('change',function(e){
 
-               angular.element(document.getElementById('browseBtn')).val('');
+		       var file=e.target.files[0];
 
-               var fileReader=new FileReader();
+		       angular.element(document.getElementById('browseBtn1')).val('');
 
-               fileReader.onload=function(event){
-                   $rootScope.$broadcast('event:file:selected',{trabajo:event.target.result});
-               }
+		       var fileReader=new FileReader();
 
-               fileReader.readAsDataURL(file);
-            });
+		       fileReader.onload=function(event){
+		           $rootScope.$broadcast('event:file:selected',{trabajo:event.target.result});
+		       }
 
-        },
-        templateUrl:'templates/browse-work.html'
-    }
-}]);
+		       fileReader.readAsDataURL(file);
+		    });
+
+		},
+		templateUrl:'templates/browse-work.html'
+	    }
+	}]);
