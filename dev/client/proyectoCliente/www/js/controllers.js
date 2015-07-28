@@ -46,8 +46,7 @@ angular.module('login.controllers', ['login.services'])
                 contrasena: contrasena
             }).success(function(data) {
                 $rootScope.setToken(data._id); // create a session kind of thing on the client side
-                $rootScope.show("Cargando...");
-                $window.location.reload();
+                $rootScope.refresh("Cargando...");
                 $window.location.href = ('#/home');
             }).error(function(error) {
                 $rootScope.show(error.error);
@@ -59,8 +58,6 @@ angular.module('login.controllers', ['login.services'])
         var token = $rootScope.getToken();
         var sesionActiva = $rootScope.isSessionActive();
         if (sesionActiva) {
-            $ionicHistory.clearHistory();
-            $ionicHistory.clearCache();
             $window.location.href = ('#/home');
         }
     }
