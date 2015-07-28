@@ -1,13 +1,34 @@
-<ion-view >
+<ion-view>
     <ionContent header-shrink scroll-event-interval="5">
         <div style="height: 45px;"></div>
         <ion-scroll zooming="true" direction="xy" style="height: 100%; width: 100%;" has-bouncing="false">
             <div style="width: 1280px; height: 720px; background: url('http://orig00.deviantart.net/0f8b/f/2012/132/6/3/super_mario_world_3d_by_webcat-d4zgou3.jpg')"></div>
             <!--<img ng-lick="show('Soy un reto!')" src="img/reto.png" class="posicion"></img>-->
-            <button class="reto3 button button-icon" ng-click="reto()"><img src="img/reto.png"></img>
+            <button class="reto3 button button-icon" ng-click="mostrarObjetivosSelec()"><img src="img/reto.png"></img>
             </button>
             <button class="preguntaPos button button-icon" ng-click="irTrabajoFinal()"><img src="img/pregunta.png"></img>
             </button>
         </ion-scroll>
         <ionContent>
-</ion-view> 
+            <script id="objetivosSelec.html" type="text/ng-template">
+                <ion-modal-view>
+                    <ion-header-bar class="bar bar-header bar-positive">
+                        <h1 class="title">Objetivos</h1>
+                        <button class="button button-clear button-primary" ng-click="objetivosSelec.hide()">Cancelar</button>
+                    </ion-header-bar>
+                    <ion-content class="padding">
+                     Los Objetivos seleccionados para este problema son: 
+                        <div class="list" ng-init="objetivosSeleccionados()">
+                            <ion-list show-reorder="data.showReorder">
+                                <ion-item ng-repeat="item in items" item="item">
+                                    {{ item.descripcion }}
+                                </ion-item>
+                            </ion-list>
+                        </div>
+                        <div class="button-bar">
+                            <a class="button button-stable icon ion-backspace-outline" ng-click="objetivosSelec.hide()">  Cancelar</a>
+                        </div>
+                    </ion-content>
+                </ion-modal-view>
+            </script>
+</ion-view>

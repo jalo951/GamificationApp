@@ -1,10 +1,34 @@
 angular.module('login.controllers', ['login.services'])
 
-.controller('loginController', function($rootScope, $scope, API, $window, $state, $ionicHistory) {
+.controller('loginController', function($ionicPopup, $ionicPlatform, $rootScope, $scope, API, $window, $state, $ionicHistory) {
 
     $scope.user = {
         email: '',
         contrasena: ''
+    };
+
+    $ionicPlatform.registerBackButtonAction(function(event) {
+        if (($state.current.name == "home") || ($state.current.name == "entrar")) {
+            $scope.showConfirm();
+        } else {
+            navigator.app.backHistory();
+        }
+    }, 100);
+
+    $scope.showConfirm = function() {
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'Salir',
+            template: '¿Desea salir de la aplicación?',
+            cancelText: 'No',
+            cancelType: 'button-positive',
+            okText: 'Sí',
+            okType: 'button-outline button-assertive'
+        });
+        confirmPopup.then(function(res) {
+            if (res) {
+                navigator.app.exitApp();
+            }
+        });
     };
 
     $scope.ingresar = function() { // Duda con ingresar
@@ -176,7 +200,7 @@ angular.module('login.controllers', ['login.services'])
 
 })
 
-.controller('mapController', function($rootScope, $scope, API, $window, $state) {
+.controller('mapController', function($rootScope, $scope, API, $window, $state, $ionicModal) {
     $scope.irPreguntas = function() {
         $state.go('app.preguntas');
     }
@@ -193,9 +217,57 @@ angular.module('login.controllers', ['login.services'])
         $state.go('app.objetivos');
     }
 
-        $scope.irTrabajoFinal = function() {
+    $scope.irTrabajoFinal = function() {
         $state.go('app.trabajoFinal');
     }
+     $scope.objetivosSeleccionados = function() {
+        API.preguntasUsuario($rootScope.getToken()).success(function(problemas) {
+            var i;
+            for (i = 0; i < problemas.length; i++) {
+                if (problemas[i].finalizado == false) {
+                    break;
+                }
+            }
+            API.verObjetivos(problemas[i]._id).success(function(data) {
+                var i;
+                var votosMax = 0;
+                $scope.items = [];
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].votos >= votosMax) {
+                        votosMax = data[i].votos;
+                    }
+                }
+
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].votos == votosMax) {
+                        $scope.items.push(data[i]);
+                    }
+                }
+
+                if ($scope.items.length == 0) {
+                    $scope.noData = true;
+                } else {
+                    $scope.noData = false;
+                }
+
+
+            }).error(function(data, status, headers, config) {
+                $rootScope.show(error);
+            });
+
+        });
+
+    }
+    $scope.mostrarObjetivosSelec = function() {
+        $scope.objetivosSelec.show();
+    }
+    
+    $ionicModal.fromTemplateUrl('objetivosSelec.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.objetivosSelec = modal;
+    });
 
 })
 
@@ -244,12 +316,12 @@ angular.module('login.controllers', ['login.services'])
         $scope.elemento.descripcion = pregunta.descripcion;
         $scope.elemento.fecha = new Date(pregunta.fechaLimite);
         $scope.elemento.id = pregunta._id;
-        API.mostrarInfo(pregunta.autor_id).success(function(data){
+        API.mostrarInfo(pregunta.autor_id).success(function(data) {
             $scope.elemento.nombreAutor = data[0].nombre;
             $scope.elemento.apellidoAutor = data[0].apellido;
-             $scope.modal.show();
+            $scope.modal.show();
         });
-       
+
     }
 
     $scope.createQuestion = function() {
@@ -343,7 +415,7 @@ angular.module('login.controllers', ['login.services'])
         var foto;
 
         console.log(genero);
-        if (!email || !contrasena || !nombre || !apellido || !contrasenaRep|| !genero) {
+        if (!email || !contrasena || !nombre || !apellido || !contrasenaRep || !genero) {
 
             $rootScope.show('No se admiten espacios vacíos');
 
@@ -352,9 +424,9 @@ angular.module('login.controllers', ['login.services'])
             if (contrasenaRep != contrasena) {
                 $rootScope.show('Las contraseñas no coinciden');
             } else {
-                if(genero == 'femenino'){
-                    foto= "http://res.cloudinary.com/udea/image/upload/v1437944503/55ad3491b827529b13f7ef89_u5yzvd.jpg";
-                }else{
+                if (genero == 'femenino') {
+                    foto = "http://res.cloudinary.com/udea/image/upload/v1437944503/55ad3491b827529b13f7ef89_u5yzvd.jpg";
+                } else {
                     console.log("masculino");
                     foto = "http://res.cloudinary.com/udea/image/upload/v1437944425/55ad3491b827529b13f7ef89_g79h5q.jpg";
                 }
@@ -667,12 +739,12 @@ angular.module('login.controllers', ['login.services'])
     }
 
     $scope.irModificar = function() {
-      //  $window.location.reload();
+        //  $window.location.reload();
         $window.location.href = ('#/app/modificar');
     }
 
-    $scope.irPerfil = function(){
-       // $window.location.reload();
+    $scope.irPerfil = function() {
+        // $window.location.reload();
         $window.location.href = ('#/app/perfil');
     }
 })
@@ -732,7 +804,7 @@ angular.module('login.controllers', ['login.services'])
             id_imagen: $scope.datosUsuario._id
         }, $rootScope.getToken()).success(function(data, status, headers, config) {
             $rootScope.show('Su foto de perfil ha sido cambiada con éxito');
-			$window.location.reload();
+            $window.location.reload();
 
         }).error(function(data, status, headers, config) {
             $rootScope.show(data.error);
@@ -757,5 +829,7 @@ angular.module('login.controllers', ['login.services'])
             $rootScope.show(data.error);
         })
     });
+
+
 
 })
