@@ -789,6 +789,7 @@ angular.module('login.controllers', ['login.services'])
                         $scope.items.push(preguntas[i]);
                     } else {
                         $scope.datosUsuario.nombrePreguntaActual = preguntas[i].titulo;
+                        $scope.datosUsuario.trabajoActual = preguntas[i].trabajo;
                     }
                 }
             });
@@ -798,18 +799,27 @@ angular.module('login.controllers', ['login.services'])
 
     $rootScope.$on('event:file:selected', function(event, data) {
 
+        console.log('Se intentó subir una imagen, los datos son:');
+        console.log(data.image);
 
-        API.anadirImagen({
-            data: data.image,
-            id_imagen: $scope.datosUsuario._id
-        }, $rootScope.getToken()).success(function(data, status, headers, config) {
-            $rootScope.show('Su foto de perfil ha sido cambiada con éxito');
-            $window.location.reload();
+        if(data.image != null) {
+            API.anadirImagen({
+                data: data.image,
+                id_imagen: $scope.datosUsuario._id
+            }, $rootScope.getToken()).success(function(data, status, headers, config) {
+                $rootScope.show('Su foto de perfil ha sido cambiada con éxito');
+                $window.location.reload();
 
-        }).error(function(data, status, headers, config) {
-            $rootScope.show(data.error);
-        })
+            }).error(function(data, status, headers, config) {
+                $rootScope.show(data.error);
+            })
+        }
     });
+
+
+    $scope.mostrarTrabajo = function() {
+        window.open($scope.datosUsuario.trabajoActual, '_system', 'location=yes');
+    }
 
     $scope.verPerfil();
 })
@@ -818,18 +828,27 @@ angular.module('login.controllers', ['login.services'])
 .controller('trabajoFinalController', function($rootScope, $scope, API, $window) {
 
 
+    $scope.mostrarTrabajo = function() {
+        window.open($scope.datosUsuario.trabajoActual, '_system', 'location=yes');
+    }
+
 
     $rootScope.$on('event:file:selected', function(event, data) {
-        API.subirTrabajo({
-            data: data.trabajo
-        }, $rootScope.getToken()).success(function(data, status, headers, config) {
-            $rootScope.show('Su archivo ha sido subido con éxito. La próxima vez que recargue la página podrá visualizarlo');
 
-        }).error(function(data, status, headers, config) {
-            $rootScope.show(data.error);
-        })
+        console.log('----------------- Se intentó subir una archivo --------------:');
+        console.log(data.trabajo);
+
+        if(data.trabajo != null) {
+            API.subirTrabajo({
+                data: data.trabajo
+            }, $rootScope.getToken()).success(function(data, status, headers, config) {
+                $rootScope.show('Su archivo ha sido subido con éxito. La próxima vez que recargue la página podrá visualizarlo');
+
+            }).error(function(data, status, headers, config) {
+                $rootScope.show(data.error);
+            })
+        }
     });
-
 
 
 })
