@@ -48,7 +48,7 @@ angular.module('login.controllers', ['login.services'])
                 $rootScope.setToken(data._id); // create a session kind of thing on the client side
                 $rootScope.refresh();
                 $rootScope.refrescar("Cargando...", 'home');
-                
+
             }).error(function(error) {
                 $rootScope.show(error.error);
             });
@@ -201,7 +201,7 @@ angular.module('login.controllers', ['login.services'])
 .controller('segundoNivelController', function($rootScope, $scope, API, $window, $state, $ionicModal) {
     $scope.preguntaUser = {
         preguntaTitulo: '',
-        preguntaDescripcion:''
+        preguntaDescripcion: ''
     }
 
     $scope.reto = function() {
@@ -224,7 +224,7 @@ angular.module('login.controllers', ['login.services'])
                     break;
                 }
             }
-            $scope.preguntaUser.preguntaTitulo= problemas[i].titulo;
+            $scope.preguntaUser.preguntaTitulo = problemas[i].titulo;
             $scope.preguntaUser.preguntaDescripcion = problemas[i].descripcion;
         });
     }
@@ -275,37 +275,41 @@ angular.module('login.controllers', ['login.services'])
     $scope.objetivosSeleccionados = function() {
         API.preguntasUsuario($rootScope.getToken()).success(function(problemas) {
             var i;
+            var problemaCurso = false;
             for (i = 0; i < problemas.length; i++) {
                 if (problemas[i].finalizado == false) {
+                    problemaCurso = true;
                     break;
                 }
             }
-            API.verObjetivos(problemas[i]._id).success(function(data) {
-                var i;
-                var votosMax = 0;
-                $scope.items = [];
-                for (i = 0; i < data.length; i++) {
-                    if (data[i].votos >= votosMax) {
-                        votosMax = data[i].votos;
+            if (problemaCurso) {
+                API.verObjetivos(problemas[i]._id).success(function(data) {
+                    var i;
+                    var votosMax = 0;
+                    $scope.items = [];
+                    for (i = 0; i < data.length; i++) {
+                        if (data[i].votos >= votosMax) {
+                            votosMax = data[i].votos;
+                        }
                     }
-                }
 
-                for (i = 0; i < data.length; i++) {
-                    if (data[i].votos == votosMax) {
-                        $scope.items.push(data[i]);
+                    for (i = 0; i < data.length; i++) {
+                        if (data[i].votos == votosMax) {
+                            $scope.items.push(data[i]);
+                        }
                     }
-                }
 
-                if ($scope.items.length == 0) {
-                    $scope.noData = true;
-                } else {
-                    $scope.noData = false;
-                }
+                    if ($scope.items.length == 0) {
+                        $scope.noData = true;
+                    } else {
+                        $scope.noData = false;
+                    }
 
 
-            }).error(function(data, status, headers, config) {
-                $rootScope.show(error);
-            });
+                }).error(function(data, status, headers, config) {
+                    $rootScope.show(error);
+                });
+            }
 
         });
 
@@ -920,27 +924,39 @@ angular.module('login.controllers', ['login.services'])
 .controller('trabajoFinalController', function($rootScope, $scope, API, $window) {
 
 
-    $scope.mostrarTrabajo = function() {
-        window.open($scope.datosUsuario.trabajoActual, '_system', 'location=yes');
-    }
+            $scope.mostrarTrabajo = function() {
+                window.open($scope.datosUsuario.trabajoActual, '_system', 'location=yes');
+            }
 
 
-    $rootScope.$on('event:file:selected', function(event, data) {
+            $rootScope.$on('event:file:selected', function(event, data) {
 
-        console.log('----------------- Se intentó subir una archivo --------------:');
-        console.log(data.trabajo);
+                console.log('----------------- Se intentó subir una archivo --------------:');
+                console.log(data.trabajo);
 
-        if (data.trabajo != null) {
-            API.subirTrabajo({
-                data: data.trabajo
-            }, $rootScope.getToken()).success(function(data, status, headers, config) {
-                $rootScope.show('Su archivo ha sido subido con éxito. La próxima vez que recargue la página podrá visualizarlo');
+                if (data.trabajo != null) {
+                    API.subirTrabajo({
+                        data: data.trabajo
+                    }, $rootScope.getToken()).success(function(data, status, headers, config) {
+                            $rootScope.show('Su archivo ha sido subido con éxito. La próxima vez que recargue la página podrá visualizarlo');
+                            API.preguntasUsuario($rootScope.getToken()).success(function(problemas) {
+                                var i;
+                                var preguntaBandera= false;
+                                for (i = 0; i < problemas.length; i++) {
+                                    if (problemas[i].finalizado == false) {
+                                        preguntaBandera = true;
+                                        break;
+                                    }
+                                }
+                                if(preguntaBandera){
+                                    API.reiniciarNivel(problemas[i]._id);
+                                }
+                            });
+                            }).error(function(data, status, headers, config) {
+                                $rootScope.show(data.error);
+                            })
+                        }
+                    });
 
-            }).error(function(data, status, headers, config) {
-                $rootScope.show(data.error);
+
             })
-        }
-    });
-
-
-})

@@ -336,6 +336,15 @@ angular.module('login.services', [])
                     problema_id: idProblema
                 }
             });
+        },
+
+        reiniciarNivel: function(idProblema){
+            return $http.get(base + '/reiniciarNivel', {
+                method: 'GET',
+                params: {
+                    pregunta_id: idProblema
+                }
+            });
         }
 
 
