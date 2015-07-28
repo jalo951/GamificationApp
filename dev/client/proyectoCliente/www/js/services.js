@@ -11,6 +11,13 @@ angular.module('login.services', [])
         });
     };
 
+    $rootScope.refresh = function(text) {
+        $window.location.reload();
+        $rootScope.loading = $ionicLoading.show({
+            template: '<p class="item-icon-left">' + text + '<ion-spinner class= "spinner-energized" icon="crescent"/></p>',
+            duration: 2000
+        });
+    };
     $rootScope.showAlert = function(titulo, cuerpo) {
         var alertPopup = $ionicPopup.alert({
             title: titulo,
