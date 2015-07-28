@@ -46,8 +46,9 @@ angular.module('login.controllers', ['login.services'])
                 contrasena: contrasena
             }).success(function(data) {
                 $rootScope.setToken(data._id); // create a session kind of thing on the client side
-                $rootScope.refresh("Cargando...");
-                $window.location.href = ('#/home');
+                $rootScope.refresh();
+                $rootScope.refrescar("Cargando...", 'home');
+                
             }).error(function(error) {
                 $rootScope.show(error.error);
             });
