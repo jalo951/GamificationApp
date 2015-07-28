@@ -197,9 +197,10 @@ angular.module('login.controllers', ['login.services'])
 
 })
 
-.controller('mapController', function($rootScope, $scope, API, $window, $state, $ionicModal) {
-    $scope.irPreguntas = function() {
-        $state.go('app.preguntas');
+.controller('segundoNivelController', function($rootScope, $scope, API, $window, $state, $ionicModal) {
+    $scope.preguntaUser = {
+        preguntaTitulo: '',
+        preguntaDescripcion:''
     }
 
     $scope.reto = function() {
@@ -214,10 +215,63 @@ angular.module('login.controllers', ['login.services'])
         $state.go('app.objetivos');
     }
 
+    $scope.verPregunta = function() {
+        API.preguntasUsuario($rootScope.getToken()).success(function(problemas) {
+            var i;
+            for (i = 0; i < problemas.length; i++) {
+                if (problemas[i].finalizado == false) {
+                    break;
+                }
+            }
+            $scope.preguntaUser.preguntaTitulo= problemas[i].titulo;
+            $scope.preguntaUser.preguntaDescripcion = problemas[i].descripcion;
+        });
+    }
+    $scope.mostrarPregunta = function() {
+        $scope.verPregunta();
+        $scope.preguntaActual.show();
+    }
+
+    $ionicModal.fromTemplateUrl('preguntaActual.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.preguntaActual = modal;
+    });
+
+
+})
+
+.controller('primerNivelController', function($rootScope, $scope, API, $window, $state, $ionicModal) {
+    $scope.irPreguntas = function() {
+        $state.go('app.preguntas');
+    }
+
+    $scope.reto = function() {
+        API.nuevoReto($rootScope.getToken()).success(function(data, status, headers, config) {
+            $rootScope.show("Conseguiste 5 puntos");
+        }).error(function(data, status, headers, config) {
+            $rootScope.show("Oops Error, por favor inténtelo más tarde");
+        });
+    }
+
+
+})
+
+.controller('tercerNivelController', function($rootScope, $scope, API, $window, $state, $ionicModal) {
+
+    $scope.reto = function() {
+        API.nuevoReto($rootScope.getToken()).success(function(data, status, headers, config) {
+            $rootScope.show("Conseguiste 5 puntos");
+        }).error(function(data, status, headers, config) {
+            $rootScope.show("Oops Error, por favor inténtelo más tarde");
+        });
+    }
+
     $scope.irTrabajoFinal = function() {
         $state.go('app.trabajoFinal');
     }
-     $scope.objetivosSeleccionados = function() {
+    $scope.objetivosSeleccionados = function() {
         API.preguntasUsuario($rootScope.getToken()).success(function(problemas) {
             var i;
             for (i = 0; i < problemas.length; i++) {
@@ -258,7 +312,7 @@ angular.module('login.controllers', ['login.services'])
     $scope.mostrarObjetivosSelec = function() {
         $scope.objetivosSelec.show();
     }
-    
+
     $ionicModal.fromTemplateUrl('objetivosSelec.html', {
         scope: $scope,
         animation: 'slide-in-up'
@@ -799,7 +853,7 @@ angular.module('login.controllers', ['login.services'])
         console.log('Se intentó subir una imagen, los datos son:');
         console.log(data.image);
 
-        if(data.image != null) {
+        if (data.image != null) {
             API.anadirImagen({
                 data: data.image,
                 id_imagen: $scope.datosUsuario._id
@@ -835,7 +889,7 @@ angular.module('login.controllers', ['login.services'])
         console.log('----------------- Se intentó subir una archivo --------------:');
         console.log(data.trabajo);
 
-        if(data.trabajo != null) {
+        if (data.trabajo != null) {
             API.subirTrabajo({
                 data: data.trabajo
             }, $rootScope.getToken()).success(function(data, status, headers, config) {

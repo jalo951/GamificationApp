@@ -51,7 +51,7 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
         views: {
             'menuContent': {
                 templateUrl: "templates/primerNivel.html",
-                controller: "mapController"
+                controller: "primerNivelController"
             }
         }
 
@@ -126,7 +126,7 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
         views: {
             "menuContent": {
                 templateUrl: "templates/segundoNivel.html",
-                controller: "mapController"
+                controller: "segundoNivelController"
             }
         }
     })
@@ -136,7 +136,7 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
         views: {
             "menuContent": {
                 templateUrl: "templates/tercerNivel.html",
-                controller: "mapController"
+                controller: "tercerNivelController"
             }
         }
     })

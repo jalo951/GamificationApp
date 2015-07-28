@@ -27,6 +27,11 @@
     top: 490px;
     left: 485px;
 }
+.infoPos {
+    position: absolute;
+    top: 230px;
+    left: 825px;
+}
 
 .rank {
     display: block;

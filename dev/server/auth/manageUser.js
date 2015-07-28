@@ -139,7 +139,6 @@ module.exports = function(server, db, nodemailer, cloudinary) {
         validateRequest.validate(req, res, db, function() {
             var user = req.params;
 
-            console.log(user);
             db.usuarios.findOne({
                 // _id: req.params.token
                 _id: db.ObjectId(req.params.token)
@@ -161,6 +160,7 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                         }, {
                             multi: false
                         }, function(err, data) {
+                            console.log(data);
                             res.writeHead(200, {
                                 'Content-Type': 'application/json; charset=utf-8'
                             });
@@ -413,38 +413,40 @@ module.exports = function(server, db, nodemailer, cloudinary) {
     server.post("/subirTrabajo", function(req, res, next) {
         var trabajo = req.params;
 
-/*
-        cloudinary.uploader.upload("my_file_name.docx",
-            function(result) { console.log(result); },
-            {
-                public_id: "sample_document.docx",
-                resource_type: "auto",
-                raw_convert: "aspose"
-            });
-*/
+        /*
+                cloudinary.uploader.upload("my_file_name.docx",
+                    function(result) { console.log(result); },
+                    {
+                        public_id: "sample_document.docx",
+                        resource_type: "auto",
+                        raw_convert: "aspose"
+                    });
+        */
 
         validateRequest.validate(req, res, db, function() {
 
 
-            cloudinary.uploader.upload(trabajo.data, function(result) 
-            {
-                
+            cloudinary.uploader.upload(trabajo.data, function(result) {
+
                 db.preguntas.find({
-                        $or: [{
-                            miembros_id: db.ObjectId(req.params.token)
-                        }, {
-                            autor_id: db.ObjectId(req.params.token)
-                        }]
+                    $or: [{
+                        miembros_id: db.ObjectId(req.params.token)
+                    }, {
+                        autor_id: db.ObjectId(req.params.token)
+                    }]
                 }, function(err, problema) {
 
                     console.log('-----------------------------------');
                     console.log(problema[0]._id);
                     db.preguntas.update({
                         _id: db.ObjectId(problema[0]._id)
-                    }, 
-                    {
-                        $set: {trabajo: result.url}
-                    }, {multi: false}, function(err, data) {
+                    }, {
+                        $set: {
+                            trabajo: result.url
+                        }
+                    }, {
+                        multi: false
+                    }, function(err, data) {
                         console.log(result);
                         res.writeHead(200, {
                             'Content-Type': 'application/json; charset=utf-8'
@@ -453,8 +455,7 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                     })
                 });
 
-            },
-            {
+            }, {
                 resource_type: "auto",
                 raw_convert: "aspose"
             });
@@ -469,27 +470,28 @@ module.exports = function(server, db, nodemailer, cloudinary) {
     server.post("/anadirImagen", function(req, res, next) {
         var imagen = req.params;
 
-        cloudinary.uploader.upload(imagen.data, function(result) 
-        {
+        cloudinary.uploader.upload(imagen.data, function(result) {
             db.usuarios.update({
                 _id: db.ObjectId(req.params.token)
-            }, 
-            {
-                $set: {foto: result.url}
-            }, {multi: false}, function(err, data) {
+            }, {
+                $set: {
+                    foto: result.url
+                }
+            }, {
+                multi: false
+            }, function(err, data) {
                 console.log(result);
                 res.writeHead(200, {
                     'Content-Type': 'application/json; charset=utf-8'
                 });
                 res.end(JSON.stringify(result));
             })
-        },
-        {
+        }, {
             public_id: req.params.token,
-            width: 200, 
-            height: 200, 
+            width: 200,
+            height: 200,
             crop: 'scale',
-            radius: 'max' 
+            radius: 'max'
         });
         return next();
     });
@@ -499,7 +501,9 @@ module.exports = function(server, db, nodemailer, cloudinary) {
 
     server.get('/cargarImagen', function(req, res, next) {
 
-        data = cloudinary.image(req.params.token, {alt: "Sample Image" });
+        data = cloudinary.image(req.params.token, {
+            alt: "Sample Image"
+        });
 
         res.writeHead(200, {
             'Content-Type': 'application/json; charset=utf-8'
@@ -513,7 +517,7 @@ module.exports = function(server, db, nodemailer, cloudinary) {
 
     server.get('/eliminarImagen', function(req, res, next) {
 
-        cloudinary.uploader.destroy(req.params.token, function(result) { 
+        cloudinary.uploader.destroy(req.params.token, function(result) {
             res.writeHead(200, {
                 'Content-Type': 'application/json; charset=utf-8'
             });
@@ -599,7 +603,7 @@ module.exports = function(server, db, nodemailer, cloudinary) {
         var banderaAutor = false;
         var banderaM1 = false;
         var banderaM2 = false;
-        
+
 
         db.preguntas.findOne({
             _id: db.ObjectId(req.params.problema_id)
@@ -689,5 +693,75 @@ module.exports = function(server, db, nodemailer, cloudinary) {
 
         return next();
     });
+    //#########################################################################################
+    server.get('/reiniciarNivel', function(req, res, next) {
+
+        db.preguntas.update({
+            _id: db.ObjectId(req.params.pregunta_id)
+        }, {
+            $set: {
+                finalizado: true
+            }
+        }, function(err, data) {
+            db.preguntas.findOne({
+                _id: db.ObjectId(req.params.pregunta_id)
+            }, function(err, preg) {
+                if (preg) {
+                    db.usuarios.update({
+                        _id: db.ObjectId(preg.autor_id)
+                    }, {
+                        $set: {
+                            nivel: 1
+                        }
+                    }, function(err, usuario1) {
+                        res.writeHead(200, {
+                            'Content-Type': 'application/json; charset=utf-8'
+                        });
+                        res.end(JSON.stringify(usuario));
+                    });
+                    db.usuarios.update({
+                        _id: db.ObjectId(preg.miembros_id[0])
+                    }, {
+                        $set: {
+                            nivel: 1
+                        }
+                    }, function(err, usuario1) {
+                        res.writeHead(200, {
+                            'Content-Type': 'application/json; charset=utf-8'
+                        });
+                        res.end(JSON.stringify(usuario1));
+                    });
+                    db.usuarios.update({
+                        _id: db.ObjectId(preg.miembros_id[1])
+                    }, {
+                        $set: {
+                            nivel: 1
+                        }
+                    }, function(err, usuario2) {
+                        res.writeHead(200, {
+                            'Content-Type': 'application/json; charset=utf-8'
+                        });
+                        res.end(JSON.stringify(usuario2));
+                    });
+                } else {
+                    res.writeHead(403, {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    });
+                    res.end(JSON.stringify({
+                        error: "error"
+                    }));
+                }
+
+            });
+            res.writeHead(200, {
+                'Content-Type': 'application/json; charset=utf-8'
+            });
+            res.end(JSON.stringify(data));
+
+        });
+
+        return next();
+    });
+    //########################################################################################
 
 };
