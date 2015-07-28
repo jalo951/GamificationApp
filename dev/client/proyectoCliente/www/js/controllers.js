@@ -46,8 +46,9 @@ angular.module('login.controllers', ['login.services'])
                 contrasena: contrasena
             }).success(function(data) {
                 $rootScope.setToken(data._id); // create a session kind of thing on the client side
-                $rootScope.refresh("Cargando...");
-                $window.location.href = ('#/home');
+                $rootScope.refresh();
+                $rootScope.refrescar("Cargando...", 'home');
+                
             }).error(function(error) {
                 $rootScope.show(error.error);
             });
@@ -800,7 +801,7 @@ angular.module('login.controllers', ['login.services'])
     }
 })
 
-.controller('perfilController', function($rootScope, $state, $scope, API, $window) {
+.controller('perfilController', function($ionicModal, $rootScope, $state, $scope, API, $window) {
     $scope.datosUsuario = {
         _id: '',
         nombre: '',
@@ -812,6 +813,39 @@ angular.module('login.controllers', ['login.services'])
         nombrePreguntaActual: '',
         foto: ''
     };
+
+    $scope.elemento = {
+        id: '',
+        titulo: '',
+        descripcion: '',
+        fecha: '',
+        nombreAutor: '',
+        apellidoAutor: '',
+        file: ''
+    };
+
+
+    $ionicModal.fromTemplateUrl('modalPregunta.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.modalPregunta = modal;
+    });
+
+    $scope.getInfo = function(pregunta) {
+
+        $scope.elemento.titulo = pregunta.titulo;
+        $scope.elemento.descripcion = pregunta.descripcion;
+        $scope.elemento.fecha = new Date(pregunta.fechaLimite);
+        $scope.elemento.id = pregunta._id;
+        $scope.elemento.file = pregunta.trabajo;
+        API.mostrarInfo(pregunta.autor_id).success(function(data) {
+            $scope.elemento.nombreAutor = data[0].nombre;
+            $scope.elemento.apellidoAutor = data[0].apellido;
+            $scope.modalPregunta.show();
+        });
+
+    }
 
     $scope.verPerfil = function() {
 

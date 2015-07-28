@@ -1,20 +1,14 @@
-<ion-view title="Login" hide-back-button="true" enable-menu-with-back-views="false">
+<ion-view view-title="Home">
     <ion-content>
         <div style="text-align: center; margin-top: 20px;">
             <img src="img/ionic.png" />
         </div>
         <div class="list" style="margin-top: 20px;">
-            <label class="item item-input item-stacked-label" style="text-align: center;">
-                <button class="button button-assertive" ng-click= "irModificar()">Modificar</button>
-            </label>
-            <label class="item item-input item-stacked-label" style="text-align: center;">
-                <button class="button button-assertive" ng-click="irPerfil()">Ver perfil</a>
-                </button>
-            </label>
-            <label class="item item-input item-stacked-label" style="text-align: center;">
-                <button class="button button-assertive" ng-click= "nivel()">Ir al mapa</a>
-                </button>
-            </label>
+            <button class="button button-outline button-block button-positive" ng-click="nivel()"> Ir al Mapa</button>
+            <button class="button button-block button-positive" ng-click="irModificar()"> Modificar perfil</button>
+            <button class="button button-block button-positive" ng-click="irPerfil()"> Visualizar perfil</button>
+            <button class="button button-block button-positive" ng-click="logout()"> Logout</button>
+            
         </div>
     </ion-content>
 </ion-view>
