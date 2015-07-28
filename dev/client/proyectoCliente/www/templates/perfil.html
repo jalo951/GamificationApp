@@ -59,9 +59,9 @@
                         {{elemento.nombreAutor}} {{elemento.apellidoAutor}}
                     </label>
                     <div class="item item-divider">Archivo asociado</div>
-                    <label class="item">
-                        <a href="{{elemento.file}}"> Descargar</a>
-                    </label>
+                    
+                        <a class="button button-positive" ng-click="mostrarTrabajo()"> Descargar </a>
+                    
                 </div>
                 <div class="button-bar">
                     <a class="button button-positive icon ion-backspace-outline" ng-click="modalPregunta.hide()">  Aceptar</a>

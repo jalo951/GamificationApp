@@ -406,7 +406,11 @@ angular.module('login.controllers', ['login.services'])
             }, $rootScope.getToken()).success(function(data, status, headers, config) {
                 $rootScope.show("Se ha unido a la pregunta " + $scope.elemento.titulo + ", Conseguiste 10 puntos");
                 $scope.modal.hide();
-                API.cambiarNivel($scope.elemento.id);
+                API.cambiarNivel($scope.elemento.id).success(function(data) {
+//··································································································································
+                }).error(function(data) {
+                    $rootScope.showAlert('Error', data.error);
+                });
                 $scope.refrescar();
             }).error(function(data, status, headers, config) {
                 $rootScope.showAlert('Error', data.error);
@@ -882,6 +886,11 @@ angular.module('login.controllers', ['login.services'])
         });
     }
 
+    $scope.mostrarTrabajo = function() {
+        console.log($scope.elemento.file);
+        window.open($scope.elemento.file, '_system', 'location=yes');
+    }
+
     $rootScope.$on('event:file:selected', function(event, data) {
 
         console.log('Se intentó subir una imagen, los datos son:');
@@ -902,9 +911,7 @@ angular.module('login.controllers', ['login.services'])
     });
 
 
-    $scope.mostrarTrabajo = function() {
-        window.open($scope.datosUsuario.trabajoActual, '_system', 'location=yes');
-    }
+
 
     $scope.verPerfil();
 })
