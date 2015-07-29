@@ -204,6 +204,7 @@ angular.module('login.controllers', ['login.services'])
         preguntaDescripcion: ''
     }
 
+
     $scope.reto = function() {
         API.nuevoReto($rootScope.getToken()).success(function(data, status, headers, config) {
             $rootScope.show("Conseguiste 5 puntos");
@@ -240,6 +241,22 @@ angular.module('login.controllers', ['login.services'])
         $scope.preguntaActual = modal;
     });
 
+    $scope.verificarNivel = function() {
+        if ($rootScope.getToken() == '') {
+            console.log("no token");
+            $rootScope.refresh();
+            $window.location.href = ('#/error');
+        } else {
+            API.mostrarInfo($rootScope.getToken()).success(function(data) {
+                if (data[0].nivel != 2) {
+                    $rootScope.refresh();
+                    //$rootScope.refrescar("Cargando...", 'error');
+                    $window.location.href = ('#/error');
+                }
+            });
+        }
+    }
+    $scope.verificarNivel();
 
 })
 
@@ -255,6 +272,24 @@ angular.module('login.controllers', ['login.services'])
             $rootScope.show("Oops Error, por favor inténtelo más tarde");
         });
     }
+
+    $scope.verificarNivel = function() {
+         if ($rootScope.getToken() == '') {
+            console.log("no token");
+            $rootScope.refresh();
+            $window.location.href = ('#/error');
+        } else {
+            API.mostrarInfo($rootScope.getToken()).success(function(data) {
+                if (data[0].nivel != 1) {
+                    $rootScope.refresh();
+                    //$rootScope.refrescar("Cargando...", 'error');
+                    $window.location.href = ('#/error');
+                }
+            });
+        }
+    }
+
+    $scope.verificarNivel();
 
 
 })
@@ -324,6 +359,23 @@ angular.module('login.controllers', ['login.services'])
     }).then(function(modal) {
         $scope.objetivosSelec = modal;
     });
+
+    $scope.verificarNivel = function() {
+         if ($rootScope.getToken() == '') {
+            console.log("no token");
+            $rootScope.refresh();
+            $window.location.href = ('#/error');
+        } else {
+            API.mostrarInfo($rootScope.getToken()).success(function(data) {
+                if (data[0].nivel != 3) {
+                    $rootScope.refresh();
+                    //$rootScope.refrescar("Cargando...", 'error');
+                    $window.location.href = ('#/error');
+                }
+            });
+        }
+    }
+    $scope.verificarNivel();
 
 })
 
@@ -917,39 +969,39 @@ angular.module('login.controllers', ['login.services'])
 .controller('trabajoFinalController', function($rootScope, $scope, API, $window) {
 
 
-            $scope.mostrarTrabajo = function() {
-                window.open($scope.datosUsuario.trabajoActual, '_system', 'location=yes');
-            }
+    $scope.mostrarTrabajo = function() {
+        window.open($scope.datosUsuario.trabajoActual, '_system', 'location=yes');
+    }
 
 
-            $rootScope.$on('event:file:selected', function(event, data) {
+    $rootScope.$on('event:file:selected', function(event, data) {
 
-                console.log('----------------- Se intentó subir una archivo --------------:');
-                console.log(data.trabajo);
+        console.log('----------------- Se intentó subir una archivo --------------:');
+        console.log(data.trabajo);
 
-                if (data.trabajo != null) {
-                    API.subirTrabajo({
-                        data: data.trabajo
-                    }, $rootScope.getToken()).success(function(data, status, headers, config) {
-                            $rootScope.show('Su archivo ha sido subido con éxito. La próxima vez que recargue la página podrá visualizarlo');
-                            API.preguntasUsuario($rootScope.getToken()).success(function(problemas) {
-                                var i;
-                                var preguntaBandera= false;
-                                for (i = 0; i < problemas.length; i++) {
-                                    if (problemas[i].finalizado == false) {
-                                        preguntaBandera = true;
-                                        break;
-                                    }
-                                }
-                                if(preguntaBandera){
-                                    API.reiniciarNivel(problemas[i]._id);
-                                }
-                            });
-                            }).error(function(data, status, headers, config) {
-                                $rootScope.show(data.error);
-                            })
+        if (data.trabajo != null) {
+            API.subirTrabajo({
+                data: data.trabajo
+            }, $rootScope.getToken()).success(function(data, status, headers, config) {
+                $rootScope.show('Su archivo ha sido subido con éxito. La próxima vez que recargue la página podrá visualizarlo');
+                API.preguntasUsuario($rootScope.getToken()).success(function(problemas) {
+                    var i;
+                    var preguntaBandera = false;
+                    for (i = 0; i < problemas.length; i++) {
+                        if (problemas[i].finalizado == false) {
+                            preguntaBandera = true;
+                            break;
                         }
-                    });
-
-
+                    }
+                    if (preguntaBandera) {
+                        API.reiniciarNivel(problemas[i]._id);
+                    }
+                });
+            }).error(function(data, status, headers, config) {
+                $rootScope.show(data.error);
             })
+        }
+    });
+
+
+})

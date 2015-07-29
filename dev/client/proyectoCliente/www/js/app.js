@@ -161,6 +161,10 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
             }
         }
     })
+    .state('error',{
+         url: "/error",
+        templateUrl: "templates/error.html"
+    })
 
     .state('home', {
         url: "/home",
