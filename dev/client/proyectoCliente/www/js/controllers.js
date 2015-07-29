@@ -907,7 +907,7 @@ angular.module('login.controllers', ['login.services'])
 
 
     $scope.mostrarTrabajo = function() {
-        window.open($scope.datosUsuario.trabajoActual, '_system', 'location=yes');
+        window.open($scope.elemento.file, '_system', 'location=yes');
     }
 
     $scope.verPerfil();
