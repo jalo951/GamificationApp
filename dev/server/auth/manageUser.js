@@ -573,8 +573,8 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                         var opciones = {
                             from: config.mailer.defaultFromAddress, // sender address
                             to: author.email, // list of receivers
-                            subject: 'Recuperar contraseña ✔', // Subject line
-                            html: '¡Enhorabuena! Tú y tus compañeros de equipo han subido de nivel'
+                            subject: 'Has subido de nivel ✔', // Subject line
+                            html: '¡Enhorabuena! Tú y tus compañeros de equipo han alcanzado el nivel 2'
                                 //text: 'Hola, ' + dbUser.nombre + ', con este correo podrás reestablecer tu password.'
                         };
 
@@ -636,8 +636,8 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                         var opciones = {
                             from: config.mailer.defaultFromAddress, // sender address
                             to: member.email, // list of receivers
-                            subject: 'Recuperar contraseña ✔', // Subject line
-                            html: '¡Enhorabuena! Tú y tus compañeros de equipo han subido de nivel'
+                            subject: 'Has subido de nivel ✔', // Subject line
+                            html: '¡Enhorabuena! Tú y tus compañeros de equipo han alcanzado el nivel 2'
                                 //text: 'Hola, ' + dbUser.nombre + ', con este correo podrás reestablecer tu password.'
                         };
 
@@ -691,8 +691,8 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                         var opciones = {
                             from: config.mailer.defaultFromAddress, // sender address
                             to: member2.email, // list of receivers
-                            subject: 'Recuperar contraseña ✔', // Subject line
-                            html: '¡Enhorabuena! Tú y tus compañeros de equipo han subido de nivel'
+                            subject: 'Has subido de nivel ✔', // Subject line
+                            html: '¡Enhorabuena! Tú y tus compañeros de equipo han alcanzado el nivel 2'
                                 //text: 'Hola, ' + dbUser.nombre + ', con este correo podrás reestablecer tu password.'
                         };
 
@@ -797,8 +797,8 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                                                 var opciones = {
                                                     from: config.mailer.defaultFromAddress, // sender address
                                                     to: author.email, // list of receivers
-                                                    subject: 'Recuperar contraseña ✔', // Subject line
-                                                    html: '¡Enhorabuena! Tú y tus compañeros de equipo han subido de nivel'
+                                                    subject: 'Has subido de nivel ✔', // Subject line
+                                                    html: '¡Enhorabuena! Tú y tus compañeros de equipo han alcanzado el nivel 3'
                                                         //text: 'Hola, ' + dbUser.nombre + ', con este correo podrás reestablecer tu password.'
                                                 };
 
@@ -860,8 +860,8 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                                                 var opciones = {
                                                     from: config.mailer.defaultFromAddress, // sender address
                                                     to: member.email, // list of receivers
-                                                    subject: 'Recuperar contraseña ✔', // Subject line
-                                                    html: '¡Enhorabuena! Tú y tus compañeros de equipo han subido de nivel'
+                                                    subject: 'Has subido de nivel ✔', // Subject line
+                                                    html: '¡Enhorabuena! Tú y tus compañeros de equipo han alcanzado el nivel 3'
                                                         //text: 'Hola, ' + dbUser.nombre + ', con este correo podrás reestablecer tu password.'
                                                 };
 
@@ -915,8 +915,8 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                                                 var opciones = {
                                                     from: config.mailer.defaultFromAddress, // sender address
                                                     to: member2.email, // list of receivers
-                                                    subject: 'Recuperar contraseña ✔', // Subject line
-                                                    html: '¡Enhorabuena! Tú y tus compañeros de equipo han subido de nivel'
+                                                    subject: 'Has subido de nivel ✔', // Subject line
+                                                    html: '¡Enhorabuena! Tú y tus compañeros de equipo han alcanzado el nivel 3'
                                                         //text: 'Hola, ' + dbUser.nombre + ', con este correo podrás reestablecer tu password.'
                                                 };
 
@@ -987,10 +987,45 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                             voto: false
                         }
                     }, function(err, usuario) {
+                        db.usuarios.findOne({
+                            _id: db.ObjectId(preg.autor_id)
+                        }, function(err, member0) {
+
+
+                            //Enviar correo notificando subir nivel%
+
+                            //Destinatarios
+                            console.log("Enviando correo a: ", member0.email);
+
+
+                            var opciones = {
+                                from: config.mailer.defaultFromAddress, // sender address
+                                to: member0.email, // list of receivers
+                                subject: 'Has finalizado el juego ✔', // Subject line
+                                html: '¡Enhorabuena! Tú y tus compañeros de equipo han superado todas las pruebas y han concluido exitosamente la investigación.'
+                                    //text: 'Hola, ' + dbUser.nombre + ', con este correo podrás reestablecer tu password.'
+                            };
+
+                            transporter.sendMail(opciones, function(error, info) {
+                                if (error) {
+                                    console.log(error);
+                                } else {
+                                    console.log('Message sent: ' + info.response);
+                                }
+                            });
+
+                            //Enviar correo notificando subir nivel%
+
+                            res.writeHead(200, {
+                                'Content-Type': 'application/json; charset=utf-8'
+                            });
+                            res.end(JSON.stringify(usuario));
+                        });
+
                         res.writeHead(200, {
                             'Content-Type': 'application/json; charset=utf-8'
                         });
-                        res.end(JSON.stringify(usuario));
+                        res.end(JSON.stringify(usuarios));
                     });
                     db.usuarios.update({
                         _id: db.ObjectId(preg.miembros_id[0])
@@ -1001,6 +1036,41 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                             voto: false
                         }
                     }, function(err, usuario1) {
+                        db.usuarios.findOne({
+                            _id: db.ObjectId(preg.miembros_id[0])
+                        }, function(err, member1) {
+
+
+                            //Enviar correo notificando subir nivel%
+
+                            //Destinatarios
+                            console.log("Enviando correo a: ", member1.email);
+
+
+                            var opciones = {
+                                from: config.mailer.defaultFromAddress, // sender address
+                                to: member1.email, // list of receivers
+                                subject: 'Has finalizado el juego ✔', // Subject line
+                                html: '¡Enhorabuena! Tú y tus compañeros de equipo han superado todas las pruebas y han concluido exitosamente la investigación.'
+                                    //text: 'Hola, ' + dbUser.nombre + ', con este correo podrás reestablecer tu password.'
+                            };
+
+                            transporter.sendMail(opciones, function(error, info) {
+                                if (error) {
+                                    console.log(error);
+                                } else {
+                                    console.log('Message sent: ' + info.response);
+                                }
+                            });
+
+                            //Enviar correo notificando subir nivel%
+
+                            res.writeHead(200, {
+                                'Content-Type': 'application/json; charset=utf-8'
+                            });
+                            res.end(JSON.stringify(usuario1));
+                        });
+
                         res.writeHead(200, {
                             'Content-Type': 'application/json; charset=utf-8'
                         });
@@ -1015,6 +1085,42 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                             voto: false
                         }
                     }, function(err, usuario2) {
+
+                        db.usuarios.findOne({
+                            _id: db.ObjectId(preg.miembros_id[1])
+                        }, function(err, member2) {
+
+
+                            //Enviar correo notificando subir nivel%
+
+                            //Destinatarios
+                            console.log("Enviando correo a: ", member2.email);
+
+
+                            var opciones = {
+                                from: config.mailer.defaultFromAddress, // sender address
+                                to: member2.email, // list of receivers
+                                subject: 'Has finalizado el juego ✔', // Subject line
+                                html: '¡Enhorabuena! Tú y tus compañeros de equipo han superado todas las pruebas y han concluido exitosamente la investigación.'
+                                    //text: 'Hola, ' + dbUser.nombre + ', con este correo podrás reestablecer tu password.'
+                            };
+
+                            transporter.sendMail(opciones, function(error, info) {
+                                if (error) {
+                                    console.log(error);
+                                } else {
+                                    console.log('Message sent: ' + info.response);
+                                }
+                            });
+
+                            //Enviar correo notificando subir nivel%
+
+                            res.writeHead(200, {
+                                'Content-Type': 'application/json; charset=utf-8'
+                            });
+                            res.end(JSON.stringify(usuario2));
+                        });
+
                         res.writeHead(200, {
                             'Content-Type': 'application/json; charset=utf-8'
                         });

@@ -189,7 +189,7 @@ angular.module('login.controllers', ['login.services'])
     }
 
     $scope.irObjetivos = function() {
-        $state.go('app.objetivos');
+        $rootScope.refrescar("Cargando...",'app.objetivos');
     }
 
     $scope.verPregunta = function() {
@@ -236,6 +236,7 @@ angular.module('login.controllers', ['login.services'])
 .controller('primerNivelController', function($rootScope, $scope, API, $state) {
     $scope.irPreguntas = function() {
         $state.go('app.preguntas');
+        $rootScope.refresh();
     }
 
     $scope.reto = function() {
@@ -706,6 +707,7 @@ angular.module('login.controllers', ['login.services'])
     }).then(function(modal) {
         $scope.perfilUsuarios = modal;
     });
+    
 })
 
 .controller('objetivosController', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {

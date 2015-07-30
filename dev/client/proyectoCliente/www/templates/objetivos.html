@@ -1,7 +1,6 @@
-<ion-view view-title="Lista de objetivos">
+<ion-view view-title="Objetivos">
     <ion-nav-buttons side="right">
         <button class="button button-icon button-clear ion-compose" ng-click="limpiarObjetivo()">
-            Agregar objetivo
         </button>
     </ion-nav-buttons>
     <ion-content>
@@ -33,9 +32,9 @@
                             <span class="input-label" type="text">{{objetivo.autorNombre}} {{objetivo.autorApellido}}</span>
                         </label>
                         <div class="range">
-                            <i class="icon ion-volume-low"></i>
+                            <i class="icon ion-android-remove-circle"></i>
                             <input type="range" name="volume" ng-model="objetivo.votos" min="1" max="5" value="3">
-                            <i class="icon ion-volume-high"></i>
+                            <i class="icon ion-android-add-circle"></i>
                             <span class="input-label" type="text">{{objetivo.votos}}</span>
                         </div>
                     </div>

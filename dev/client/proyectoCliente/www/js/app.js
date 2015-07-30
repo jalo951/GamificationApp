@@ -14,7 +14,7 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
 .config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
 
-    .state('app', {
+        .state('app', {
         url: "/app",
         abstract: true,
         templateUrl: "templates/menu.html",
@@ -146,19 +146,29 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
     })
 
     .state('app.perfil', {
-            url: "/perfil",
-            views: {
-                "menuContent": {
-                    templateUrl: "templates/perfil.html",
-                    controller: "perfilController"
-                }
+        url: "/perfil",
+        views: {
+            "menuContent": {
+                templateUrl: "templates/perfil.html",
+                controller: "perfilController"
             }
-        })
+        }
+    })
 
     .state('error', {
-            url: "/error",
-            templateUrl: "templates/error.html"
-        })
+        url: "/error",
+        templateUrl: "templates/error.html"
+    })
+
+    .state('app.acerca', {
+        url: "/acerca",
+        views: {
+            "menuContent": {
+                templateUrl: "templates/acerca.html",
+                controller: "homeController"
+            }
+        }
+    })
 
     .state('home', {
         url: "/home",
