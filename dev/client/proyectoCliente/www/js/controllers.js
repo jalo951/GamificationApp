@@ -243,7 +243,6 @@ angular.module('login.controllers', ['login.services'])
 
     $scope.verificarNivel = function() {
         if ($rootScope.getToken() == '') {
-            console.log("no token");
             $rootScope.refresh();
             $window.location.href = ('#/error');
         } else {

@@ -972,9 +972,11 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                         _id: db.ObjectId(preg.autor_id)
                     }, {
                         $set: {
-                            nivel: 1
+                            nivel: 1,
+                            creacionObjetivo:false,
+                            voto: false
                         }
-                    }, function(err, usuario1) {
+                    }, function(err, usuario) {
                         res.writeHead(200, {
                             'Content-Type': 'application/json; charset=utf-8'
                         });
@@ -984,7 +986,9 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                         _id: db.ObjectId(preg.miembros_id[0])
                     }, {
                         $set: {
-                            nivel: 1
+                           nivel: 1,
+                            creacionObjetivo:false,
+                            voto: false
                         }
                     }, function(err, usuario1) {
                         res.writeHead(200, {
@@ -996,7 +1000,9 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                         _id: db.ObjectId(preg.miembros_id[1])
                     }, {
                         $set: {
-                            nivel: 1
+                            nivel: 1,
+                            creacionObjetivo:false,
+                            voto: false
                         }
                     }, function(err, usuario2) {
                         res.writeHead(200, {
