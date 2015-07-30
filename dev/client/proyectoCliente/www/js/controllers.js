@@ -273,7 +273,7 @@ angular.module('login.controllers', ['login.services'])
     }
 
     $scope.verificarNivel = function() {
-         if ($rootScope.getToken() == '') {
+        if ($rootScope.getToken() == '') {
             console.log("no token");
             $rootScope.refresh();
             $window.location.href = ('#/error');
@@ -360,7 +360,7 @@ angular.module('login.controllers', ['login.services'])
     });
 
     $scope.verificarNivel = function() {
-         if ($rootScope.getToken() == '') {
+        if ($rootScope.getToken() == '') {
             console.log("no token");
             $rootScope.refresh();
             $window.location.href = ('#/error');
@@ -684,7 +684,17 @@ angular.module('login.controllers', ['login.services'])
     $scope.mostrarDatos();
 })
 
-.controller('rankingController', function($rootScope, $scope, API, $window) {
+.controller('rankingController', function($rootScope, $scope, API, $ionicModal, $window) {
+    $scope.datosOtroUsuario = {
+        _id: '',
+        nombre: '',
+        apellido: '',
+        nivel: '',
+        puntos: '',
+        email: '',
+        nombrePreguntaActual: '',
+        foto: ''
+    };
 
     $scope.visualizarRanking = function() {
         API.verRanking($rootScope.getToken()).success(function(data) {
@@ -702,6 +712,41 @@ angular.module('login.controllers', ['login.services'])
             $rootScope.show("Hay un errorcito, qué pena");
         });
     }
+
+    $scope.verPerfilOtros = function(usuario) {
+        $scope.datosOtroUsuario._id = '';
+        $scope.datosOtroUsuario.nombre = '';
+        $scope.datosOtroUsuario.apellido = '';
+        $scope.datosOtroUsuario.nivel = '';
+        $scope.datosOtroUsuario.puntos = '';
+        $scope.datosOtroUsuario.email = '';
+        $scope.datosOtroUsuario.foto = "";
+        $scope.datosOtroUsuario._id = usuario._id;
+        $scope.datosOtroUsuario.nombre = usuario.nombre;
+        $scope.datosOtroUsuario.apellido = usuario.apellido;
+        $scope.datosOtroUsuario.nivel = usuario.nivel;
+        $scope.datosOtroUsuario.puntos = usuario.puntos;
+        $scope.datosOtroUsuario.email = usuario.email;
+        $scope.datosOtroUsuario.foto = usuario.foto;
+        API.preguntasUsuario($scope.datosOtroUsuario._id).success(function(preguntas) {
+            var i;
+            $scope.items = [];
+            for (i = 0; i < preguntas.length; i++) {
+                if (preguntas[i].finalizado) {
+                    $scope.items.push(preguntas[i]);
+                } else {
+                    $scope.datosOtroUsuario.nombrePreguntaActual = preguntas[i].titulo;
+                }
+            }
+        });
+        $scope.perfilUsuarios.show();
+    }
+    $ionicModal.fromTemplateUrl('perfilUsuarios.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.perfilUsuarios = modal;
+    });
 })
 
 .controller('objetivosController', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {

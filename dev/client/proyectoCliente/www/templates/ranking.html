@@ -2,16 +2,57 @@
     <ion-content>
         <div class="list" ng-init="visualizarRanking()">
             <ion-list show-reorder="data.showReorder">
-                <ion-item ng-repeat="user in users" item="users">
+                <ion-item ng-repeat="user in users" item="users" ng-click="verPerfilOtros(user)">
                     <a class="item item-avatar item-checkbox">
                         <n>{{$index + 1}}</n>
                         <img ng-src="{{user.foto}}" width="60" height="60" style="margin-left: 30px;">
                         <label class="rank" style="margin-top:-70px; margin-left:100px;">
-                        <h1>{{user.nombre}}</h1>
-                        <h2>{{user.puntos}} Puntos</h2>
+                            <h1>{{user.nombre}}</h1>
+                            <h2>{{user.puntos}} Puntos</h2>
                         </label>
                     </a>
                 </ion-item>
             </ion-list>
         </div>
+        <script id="perfilUsuarios.html" type="text/ng-template">
+            <ion-modal-view>
+                <ion-header-bar class="bar bar-header bar-positive">
+                    <h1 class="title">{{datosOtroUsuario.nombre}}</h1>
+                    <button class="button button-clear button-primary" ng-click="perfilUsuarios.hide()">Cancelar</button>
+                </ion-header-bar>
+                <ion-content class="padding">
+                    <a class="item item-thumbnail-left" href="#">
+                        <img ng-src="{{datosOtroUsuario.foto}}">
+                        <h2>{{datosOtroUsuario.nombre}} {{datosOtroUsuario.apellido}}</h2>
+                        <p>{{datosOtroUsuario.email}}</p>
+                    </a>
+                    <a class="item item-avatar" href="#">
+                        <i class="icon ion-flag"></i>
+                        <h2>Puntos: </h2>
+                        <h1>{{datosOtroUsuario.puntos}}</h1>
+                    </a>
+                    <a class="item item-avatar" href="#">
+                        <i class="icon ion-ribbon-b"></i>
+                        <h2>Nivel: </h2>
+                        <h1>{{datosOtroUsuario.nivel}}</h1>
+                    </a>
+                    <a class="item item-avatar" href="#">
+                        <i class="icon ion-document"></i>
+                        <h2>Investigación en curso: </h2>
+                        <h1>{{datosUsuario.nombrePreguntaActual}}</h1>
+                    </a>
+                    <div class="item item-divider">
+                Investigaciones Realizadas
+            </div>
+            <ion-list>
+                <ion-item ng-repeat="item in items" item="item">
+                    <a class="item item-icon-left item-button-right">
+                        <i class="icon ion-checkmark-round"></i> {{item.titulo}}
+                    </a>
+                </ion-item>
+            </ion-list>
+        </div>
+                </ion-content>
+            </ion-modal-view>
+        </script>
     </ion-content>
