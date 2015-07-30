@@ -679,6 +679,7 @@ angular.module('login.controllers', ['login.services'])
         $scope.datosOtroUsuario.puntos = '';
         $scope.datosOtroUsuario.email = '';
         $scope.datosOtroUsuario.foto = '';
+         $scope.datosOtroUsuario.nombrePreguntaActual = '';
         $scope.datosOtroUsuario._id = usuario._id;
         $scope.datosOtroUsuario.nombre = usuario.nombre;
         $scope.datosOtroUsuario.apellido = usuario.apellido;

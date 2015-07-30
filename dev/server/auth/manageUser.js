@@ -438,21 +438,31 @@ module.exports = function(server, db, nodemailer, cloudinary) {
 
                     console.log('-----------------------------------');
                     console.log(problema[0]._id);
-                    db.preguntas.update({
-                        _id: db.ObjectId(problema[0]._id)
-                    }, {
-                        $set: {
-                            trabajo: result.url
+                    var i;
+                    var bandera = false;
+                    for (i = 0; i < problema.length; i++) {
+                        if (problema[i].finalizado == false) {
+                            bandera = true;
+                            break;
                         }
-                    }, {
-                        multi: false
-                    }, function(err, data) {
-                        console.log(result);
-                        res.writeHead(200, {
-                            'Content-Type': 'application/json; charset=utf-8'
-                        });
-                        res.end(JSON.stringify(result));
-                    })
+                    }
+                    if (bandera) {
+                        db.preguntas.update({
+                            _id: db.ObjectId(problema[i]._id)
+                        }, {
+                            $set: {
+                                trabajo: result.url
+                            }
+                        }, {
+                            multi: false
+                        }, function(err, data) {
+                            console.log(result);
+                            res.writeHead(200, {
+                                'Content-Type': 'application/json; charset=utf-8'
+                            });
+                            res.end(JSON.stringify(result));
+                        })
+                    }
                 });
 
             }, {
@@ -536,178 +546,178 @@ module.exports = function(server, db, nodemailer, cloudinary) {
             _id: db.ObjectId(req.params._id)
         }, function(err, data) {
             if (data.miembros_id.length == 2) {
-               db.usuarios.update({
-                   _id: db.ObjectId(data.autor_id)
-               }, {
-                   $inc: {
-                       nivel: 1
-                   }
-               }, {
-                   multi: false
-               }, function(err, autor) {
+                db.usuarios.update({
+                    _id: db.ObjectId(data.autor_id)
+                }, {
+                    $set: {
+                        nivel: 2
+                    }
+                }, {
+                    multi: false
+                }, function(err, autor) {
 
 
 
 
 
-                   db.usuarios.findOne({
-                       _id: db.ObjectId(data.autor_id)
-                   }, function(err, author) {
+                    db.usuarios.findOne({
+                        _id: db.ObjectId(data.autor_id)
+                    }, function(err, author) {
 
-                       //Enviar correo notificando subir nivel%
+                        //Enviar correo notificando subir nivel%
 
-                       //Destinatarios
-                       console.log("Enviando correo a: ", author.email);
-
-
-                       var opciones = {
-                           from: config.mailer.defaultFromAddress, // sender address
-                           to: author.email, // list of receivers
-                           subject: 'Recuperar contraseña ✔', // Subject line
-                           html: '¡Enhorabuena! Tú y tus compañeros de equipo han subido de nivel'
-                               //text: 'Hola, ' + dbUser.nombre + ', con este correo podrás reestablecer tu password.'
-                       };
-
-                       transporter.sendMail(opciones, function(error, info) {
-                           if (error) {
-                               console.log(error);
-                           } else {
-                               console.log('Message sent: ' + info.response);
-                           }
-                       });
-
-                       //Enviar correo notificando subir nivel%
-
-                       res.writeHead(200, {
-                           'Content-Type': 'application/json; charset=utf-8'
-                       });
-                       res.end(JSON.stringify(author));
+                        //Destinatarios
+                        console.log("Enviando correo a: ", author.email);
 
 
+                        var opciones = {
+                            from: config.mailer.defaultFromAddress, // sender address
+                            to: author.email, // list of receivers
+                            subject: 'Recuperar contraseña ✔', // Subject line
+                            html: '¡Enhorabuena! Tú y tus compañeros de equipo han subido de nivel'
+                                //text: 'Hola, ' + dbUser.nombre + ', con este correo podrás reestablecer tu password.'
+                        };
 
-                   });
+                        transporter.sendMail(opciones, function(error, info) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                console.log('Message sent: ' + info.response);
+                            }
+                        });
+
+                        //Enviar correo notificando subir nivel%
+
+                        res.writeHead(200, {
+                            'Content-Type': 'application/json; charset=utf-8'
+                        });
+                        res.end(JSON.stringify(author));
 
 
+
+                    });
 
 
 
 
 
-                   res.writeHead(200, {
-                       'Content-Type': 'application/json; charset=utf-8'
-                   });
-                   res.end(JSON.stringify(autor));
-               });
+
+
+                    res.writeHead(200, {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    });
+                    res.end(JSON.stringify(autor));
+                });
 
 
 
 
 
-               db.usuarios.update({
-                   _id: db.ObjectId(data.miembros_id[0])
-               }, {
-                   $inc: {
-                       nivel: 1
-                   }
-               }, {
-                   multi: false
-               }, function(err, miembro) {
-                   db.usuarios.findOne({
-                       _id: db.ObjectId(data.miembros_id[0])
-                   }, function(err, member) {
+                db.usuarios.update({
+                    _id: db.ObjectId(data.miembros_id[0])
+                }, {
+                    $set: {
+                        nivel: 2
+                    }
+                }, {
+                    multi: false
+                }, function(err, miembro) {
+                    db.usuarios.findOne({
+                        _id: db.ObjectId(data.miembros_id[0])
+                    }, function(err, member) {
 
 
-                       //Enviar correo notificando subir nivel%
+                        //Enviar correo notificando subir nivel%
 
-                       //Destinatarios
-                       //console.log("Enviando correo a: ", member.email);
-
-
-                       var opciones = {
-                           from: config.mailer.defaultFromAddress, // sender address
-                           to: member.email, // list of receivers
-                           subject: 'Recuperar contraseña ✔', // Subject line
-                           html: '¡Enhorabuena! Tú y tus compañeros de equipo han subido de nivel'
-                               //text: 'Hola, ' + dbUser.nombre + ', con este correo podrás reestablecer tu password.'
-                       };
-
-                       transporter.sendMail(opciones, function(error, info) {
-                           if (error) {
-                               console.log(error);
-                           } else {
-                               console.log('Message sent: ' + info.response);
-                           }
-                       });
-
-                       //Enviar correo notificando subir nivel%
-
-                       res.writeHead(200, {
-                           'Content-Type': 'application/json; charset=utf-8'
-                       });
-                       res.end(JSON.stringify(author));
+                        //Destinatarios
+                        //console.log("Enviando correo a: ", member.email);
 
 
+                        var opciones = {
+                            from: config.mailer.defaultFromAddress, // sender address
+                            to: member.email, // list of receivers
+                            subject: 'Recuperar contraseña ✔', // Subject line
+                            html: '¡Enhorabuena! Tú y tus compañeros de equipo han subido de nivel'
+                                //text: 'Hola, ' + dbUser.nombre + ', con este correo podrás reestablecer tu password.'
+                        };
 
-                   });
+                        transporter.sendMail(opciones, function(error, info) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                console.log('Message sent: ' + info.response);
+                            }
+                        });
 
-                   res.writeHead(200, {
-                       'Content-Type': 'application/json; charset=utf-8'
-                   });
-                   res.end(JSON.stringify(miembro));
+                        //Enviar correo notificando subir nivel%
 
-               });
-
-
-               db.usuarios.update({
-                   _id: db.ObjectId(data.miembros_id[1])
-               }, {
-                   $inc: {
-                       nivel: 1
-                   }
-               }, {
-                   multi: false
-               }, function(err, miembro2) {
-                   db.usuarios.findOne({
-                       _id: db.ObjectId(data.miembros_id[1])
-                   }, function(err, member2) {
-
-
-                       //Enviar correo notificando subir nivel%
-
-                       //Destinatarios
-                       console.log("Enviando correo a: ", member2.email);
+                        res.writeHead(200, {
+                            'Content-Type': 'application/json; charset=utf-8'
+                        });
+                        res.end(JSON.stringify(author));
 
 
-                       var opciones = {
-                           from: config.mailer.defaultFromAddress, // sender address
-                           to: member2.email, // list of receivers
-                           subject: 'Recuperar contraseña ✔', // Subject line
-                           html: '¡Enhorabuena! Tú y tus compañeros de equipo han subido de nivel'
-                               //text: 'Hola, ' + dbUser.nombre + ', con este correo podrás reestablecer tu password.'
-                       };
 
-                       transporter.sendMail(opciones, function(error, info) {
-                           if (error) {
-                               console.log(error);
-                           } else {
-                               console.log('Message sent: ' + info.response);
-                           }
-                       });
+                    });
 
-                       //Enviar correo notificando subir nivel%
+                    res.writeHead(200, {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    });
+                    res.end(JSON.stringify(miembro));
 
-                       res.writeHead(200, {
-                           'Content-Type': 'application/json; charset=utf-8'
-                       });
-                       res.end(JSON.stringify(miembro2));
-                   });
+                });
 
-                   res.writeHead(200, {
-                       'Content-Type': 'application/json; charset=utf-8'
-                   });
-                   res.end(JSON.stringify(miembro2));
 
-               });
+                db.usuarios.update({
+                    _id: db.ObjectId(data.miembros_id[1])
+                }, {
+                    $set: {
+                        nivel: 2
+                    }
+                }, {
+                    multi: false
+                }, function(err, miembro2) {
+                    db.usuarios.findOne({
+                        _id: db.ObjectId(data.miembros_id[1])
+                    }, function(err, member2) {
+
+
+                        //Enviar correo notificando subir nivel%
+
+                        //Destinatarios
+                        console.log("Enviando correo a: ", member2.email);
+
+
+                        var opciones = {
+                            from: config.mailer.defaultFromAddress, // sender address
+                            to: member2.email, // list of receivers
+                            subject: 'Recuperar contraseña ✔', // Subject line
+                            html: '¡Enhorabuena! Tú y tus compañeros de equipo han subido de nivel'
+                                //text: 'Hola, ' + dbUser.nombre + ', con este correo podrás reestablecer tu password.'
+                        };
+
+                        transporter.sendMail(opciones, function(error, info) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                console.log('Message sent: ' + info.response);
+                            }
+                        });
+
+                        //Enviar correo notificando subir nivel%
+
+                        res.writeHead(200, {
+                            'Content-Type': 'application/json; charset=utf-8'
+                        });
+                        res.end(JSON.stringify(miembro2));
+                    });
+
+                    res.writeHead(200, {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    });
+                    res.end(JSON.stringify(miembro2));
+
+                });
             }
 
             res.writeHead(200, {
@@ -763,8 +773,8 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                                         db.usuarios.update({
                                             _id: db.ObjectId(dato.autor_id)
                                         }, {
-                                            $inc: {
-                                                nivel: 1
+                                            $set: {
+                                                nivel: 3
                                             }
                                         }, {
                                             multi: false
@@ -830,8 +840,8 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                                         db.usuarios.update({
                                             _id: db.ObjectId(dato.miembros_id[0])
                                         }, {
-                                            $inc: {
-                                                nivel: 1
+                                            $set: {
+                                                nivel: 3
                                             }
                                         }, {
                                             multi: false
@@ -885,8 +895,8 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                                         db.usuarios.update({
                                             _id: db.ObjectId(dato.miembros_id[1])
                                         }, {
-                                            $inc: {
-                                                nivel: 1
+                                            $set: {
+                                                nivel: 3
                                             }
                                         }, {
                                             multi: false
@@ -973,7 +983,7 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                     }, {
                         $set: {
                             nivel: 1,
-                            creacionObjetivo:false,
+                            creacionObjetivo: false,
                             voto: false
                         }
                     }, function(err, usuario) {
@@ -986,8 +996,8 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                         _id: db.ObjectId(preg.miembros_id[0])
                     }, {
                         $set: {
-                           nivel: 1,
-                            creacionObjetivo:false,
+                            nivel: 1,
+                            creacionObjetivo: false,
                             voto: false
                         }
                     }, function(err, usuario1) {
@@ -1001,7 +1011,7 @@ module.exports = function(server, db, nodemailer, cloudinary) {
                     }, {
                         $set: {
                             nivel: 1,
-                            creacionObjetivo:false,
+                            creacionObjetivo: false,
                             voto: false
                         }
                     }, function(err, usuario2) {
