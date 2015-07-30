@@ -1,14 +1,7 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
 angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.directives'])
 
 .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
-        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-        // for form inputs)
         if (window.cordova && window.cordova.plugins.Keyboard) {
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
         }
@@ -21,7 +14,7 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
 .config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
 
-        .state('app', {
+    .state('app', {
         url: "/app",
         abstract: true,
         templateUrl: "templates/menu.html",
@@ -131,7 +124,7 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
         }
     })
 
-     .state('app.tercerNivel', {
+    .state('app.tercerNivel', {
         url: "/tercerNivel",
         views: {
             "menuContent": {
@@ -153,18 +146,19 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
     })
 
     .state('app.perfil', {
-        url: "/perfil",
-        views: {
-            "menuContent": {
-                templateUrl: "templates/perfil.html",
-                controller: "perfilController"
+            url: "/perfil",
+            views: {
+                "menuContent": {
+                    templateUrl: "templates/perfil.html",
+                    controller: "perfilController"
+                }
             }
-        }
-    })
-    .state('error',{
-         url: "/error",
-        templateUrl: "templates/error.html"
-    })
+        })
+
+    .state('error', {
+            url: "/error",
+            templateUrl: "templates/error.html"
+        })
 
     .state('home', {
         url: "/home",

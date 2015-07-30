@@ -1,6 +1,3 @@
-/**
- * Created by Sandeep on 29/08/14.
- */
 angular.module('login.directives',[])
 
 	.directive('browseFile',['$rootScope',function($rootScope){
