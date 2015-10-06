@@ -1,7 +1,7 @@
 var restify     =   require('restify');
 var mongojs     =   require('mongojs');
 var morgan      =   require('morgan');
-var db          =   mongojs('mongodb://root:root@ds061391.mongolab.com:61391/integrador', ['usuarios', 'retos', 'preguntas', 'objetivos']);
+var db          =   mongojs('mongodb://root:root@ds061391.mongolab.com:61391/integrador', ['usuarios', 'retos', 'preguntas', 'objetivos'], {authMechanism: 'ScramSHA1'});
 var server      =   restify.createServer();
 var nodemailer 	=	require('nodemailer');
 var config		=	require('./config')
