@@ -35,3 +35,4 @@ cloudinary.config({
 var manageUsers = require('./auth/manageUser')(server, db, nodemailer, cloudinary);
 var manageLists = require('./list/manageList')(server, db);
 var manageRanking = require('./ranking/manageRanking')(server,db);
+var form = require('./retos/form')(server,db);

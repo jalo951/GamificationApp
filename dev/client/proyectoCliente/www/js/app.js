@@ -145,6 +145,28 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
 
     })
 
+     .state('app.reto1', {
+        url: "/reto1",
+        views: {
+            "menuContent": {
+                templateUrl: "templates/reto1.html",
+                controller: "Reto1Controller"
+            }
+        }
+
+    })
+
+     .state('app.reto2', {
+        url: "/reto2",
+        views: {
+            "menuContent": {
+                templateUrl: "templates/reto2.html",
+                controller: "Reto2Controller"
+            }
+        }
+
+    })
+
     .state('app.perfil', {
         url: "/perfil",
         views: {

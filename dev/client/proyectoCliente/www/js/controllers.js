@@ -991,3 +991,136 @@ angular.module('login.controllers', ['login.services'])
         }
     });
 })
+
+.controller('Reto1Controller', function($rootScope, $scope, API, $window) {
+
+    $scope.respuesta = {
+        respuestaCorrecta1:'',
+        respuestaCorrecta2: '',
+        respuesta1 : '',
+        respuesta2 : '',
+        pregunta1: '',
+        pregunta2: '',
+        data1: [],
+        data2: []
+    };
+
+   $scope.verFormulario = function(){
+            API.mostrarFormulario($rootScope.getToken()).success(function(data) {
+                console.log(data);
+                $scope.items = [];
+                $scope.respuesta.pregunta1 = data[0].pregunta;
+                $scope.respuesta.data1.push(data[0].opcionA);
+                $scope.respuesta.data1.push(data[0].opcionB);
+                $scope.respuesta.data1.push(data[0].opcionC);
+                $scope.respuesta.data1.push(data[0].opcionD);
+                $scope.respuesta.respuestaCorrecta1 = data[0].respuesta;
+                $scope.respuesta.pregunta2 = data[1].pregunta;
+                $scope.respuesta.data2.push(data[1].opcionA);
+                $scope.respuesta.data2.push(data[1].opcionB);
+                $scope.respuesta.data2.push(data[1].opcionC);
+                $scope.respuesta.data2.push(data[1].opcionD);
+                $scope.respuesta.respuestaCorrecta2 = data[1].respuesta;
+
+            }).error(function(data, status, headers, config) {
+                $rootScope.show(error);
+            });
+   }
+
+   $scope.calificarRespuestas = function(){
+        var puntaje = 0;
+        if($scope.respuesta.respuesta1 == $scope.respuesta.respuestaCorrecta1) puntaje ++;
+        if($scope.respuesta.respuesta2 == $scope.respuesta.respuestaCorrecta2) puntaje ++;
+        if(puntaje != 0){
+            API.puntajeReto1( $rootScope.getToken(), puntaje).success(function(data){
+                $rootScope.show("Felicidades, ganaste "+ puntaje + " puntos");
+            }).error(function(error) {
+                    $rootScope.show("Ha ocurrido un error, no 9se agregaron los puntos obtenidos");
+            });
+        }else{
+            $rootScope.show("No has contestado ninguna pregunta correctamente, no obtienes puntos ");   
+        }
+   }
+})
+
+.controller('Reto2Controller', function($rootScope, $scope, API, $window) {
+
+    
+
+     $scope.missesAllowed = 6;
+     var alphabet = 'abcdefghijklmnñopqrstuvwxyz';
+
+    var words = [
+  'Rails', 'AngularJS', 'Bootstrap', 'Ruby', 'JavaScript',
+  'authentication', 'function', 'array', 'object', 'sublime',
+  'github', 'agile', 'route', 'database', 'model', 'view',
+   'controller', 'terminal', 'array', 'data', 'inheritance',
+  'Heroku', 'scope',  'closure'
+  ];
+var getRandomWord = function() {
+    return words[Math.floor(Math.random() * words.length)];
+  };
+
+   var makeLetters = function(word){
+    var wordSec= word.split('');
+    var wordChose = [];
+    for (var i = 0; i < wordSec.length; i++){
+        wordChose[i] = {nameLetter: wordSec[i], chosen: false};
+    }
+    
+    return wordChose;
+ };
+
+  $scope.play = function(){
+    $scope.letters = makeLetters(alphabet);
+    $scope.secretWord = makeLetters(getRandomWord());
+    console.log($scope.secretWord);
+    $scope.numMisses = 0;
+    $scope.win = false;
+    $scope.lost = false;
+  }
+
+  $scope.play();
+  
+  var checkForEndOfGame = function(){
+    var allLetters = true;
+    for(var i = 0; i < $scope.secretWord.length; i++){
+        if(!$scope.secretWord[i].chosen){
+            allLetters = false;
+            break;
+        }
+    }
+    if(allLetters){
+        $scope.win = true;
+    }else{
+        if($scope.numMisses == $scope.missesAllowed ){
+            $scope.lost = true;
+        }
+    }
+
+   
+  };
+
+  $scope.try = function(letter){
+    console.log(letter.nameLetter);
+    letter.chosen = true;
+    var found = false;
+    for(var i = 0; i < $scope.secretWord.length; i++ ){
+        if(letter.nameLetter == $scope.secretWord[i].nameLetter){
+            $scope.secretWord.chosen = true;
+            found = true;
+        }
+    }
+    if(found == false){
+         $scope.numMisses++;
+    }
+    checkForEndOfGame();
+
+  }
+ 
+
+
+  
+
+
+})
