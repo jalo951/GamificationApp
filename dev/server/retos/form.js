@@ -33,4 +33,16 @@ module.exports = function(server, db) {
         return next();
     });
 
+    server.get("/palabrasReto2", function(req, res, next) {
+        validateRequest.validate(req, res, db, function() {
+            db.retos.find({reto : 2},function(err, list) {
+                res.writeHead(200, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                });
+                res.end(JSON.stringify(list));
+            });
+        });
+        return next();
+    });
+
  }

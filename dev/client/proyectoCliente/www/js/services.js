@@ -367,5 +367,14 @@ angular.module('login.services', [])
             });
         },
 
+         palabras: function(token){
+           return $http.get(base + '/palabrasReto2', {
+                method: 'GET',
+                params: {
+                    token: token
+                }
+            }); 
+        },
+
     }
 });

@@ -189,7 +189,7 @@ angular.module('login.controllers', ['login.services'])
     }
 
     $scope.irObjetivos = function() {
-        $rootScope.refrescar("Cargando...",'app.objetivos');
+        $rootScope.refrescar("Cargando...", 'app.objetivos');
     }
 
     $scope.verPregunta = function() {
@@ -680,7 +680,7 @@ angular.module('login.controllers', ['login.services'])
         $scope.datosOtroUsuario.puntos = '';
         $scope.datosOtroUsuario.email = '';
         $scope.datosOtroUsuario.foto = '';
-         $scope.datosOtroUsuario.nombrePreguntaActual = '';
+        $scope.datosOtroUsuario.nombrePreguntaActual = '';
         $scope.datosOtroUsuario._id = usuario._id;
         $scope.datosOtroUsuario.nombre = usuario.nombre;
         $scope.datosOtroUsuario.apellido = usuario.apellido;
@@ -707,7 +707,7 @@ angular.module('login.controllers', ['login.services'])
     }).then(function(modal) {
         $scope.perfilUsuarios = modal;
     });
-    
+
 })
 
 .controller('objetivosController', function($rootScope, $scope, API, $timeout, $ionicModal, $window) {
@@ -995,132 +995,142 @@ angular.module('login.controllers', ['login.services'])
 .controller('Reto1Controller', function($rootScope, $scope, API, $window) {
 
     $scope.respuesta = {
-        respuestaCorrecta1:'',
+        respuestaCorrecta1: '',
         respuestaCorrecta2: '',
-        respuesta1 : '',
-        respuesta2 : '',
+        respuesta1: '',
+        respuesta2: '',
         pregunta1: '',
         pregunta2: '',
         data1: [],
         data2: []
     };
 
-   $scope.verFormulario = function(){
-            API.mostrarFormulario($rootScope.getToken()).success(function(data) {
-                console.log(data);
-                $scope.items = [];
-                $scope.respuesta.pregunta1 = data[0].pregunta;
-                $scope.respuesta.data1.push(data[0].opcionA);
-                $scope.respuesta.data1.push(data[0].opcionB);
-                $scope.respuesta.data1.push(data[0].opcionC);
-                $scope.respuesta.data1.push(data[0].opcionD);
-                $scope.respuesta.respuestaCorrecta1 = data[0].respuesta;
-                $scope.respuesta.pregunta2 = data[1].pregunta;
-                $scope.respuesta.data2.push(data[1].opcionA);
-                $scope.respuesta.data2.push(data[1].opcionB);
-                $scope.respuesta.data2.push(data[1].opcionC);
-                $scope.respuesta.data2.push(data[1].opcionD);
-                $scope.respuesta.respuestaCorrecta2 = data[1].respuesta;
+    $scope.verFormulario = function() {
+        API.mostrarFormulario($rootScope.getToken()).success(function(data) {
+            console.log(data);
+            $scope.items = [];
+            $scope.respuesta.pregunta1 = data[0].pregunta;
+            $scope.respuesta.data1.push(data[0].opcionA);
+            $scope.respuesta.data1.push(data[0].opcionB);
+            $scope.respuesta.data1.push(data[0].opcionC);
+            $scope.respuesta.data1.push(data[0].opcionD);
+            $scope.respuesta.respuestaCorrecta1 = data[0].respuesta;
+            $scope.respuesta.pregunta2 = data[1].pregunta;
+            $scope.respuesta.data2.push(data[1].opcionA);
+            $scope.respuesta.data2.push(data[1].opcionB);
+            $scope.respuesta.data2.push(data[1].opcionC);
+            $scope.respuesta.data2.push(data[1].opcionD);
+            $scope.respuesta.respuestaCorrecta2 = data[1].respuesta;
 
-            }).error(function(data, status, headers, config) {
-                $rootScope.show(error);
-            });
-   }
+        }).error(function(data, status, headers, config) {
+            $rootScope.show(error);
+        });
+    }
 
-   $scope.calificarRespuestas = function(){
+    $scope.calificarRespuestas = function() {
         var puntaje = 0;
-        if($scope.respuesta.respuesta1 == $scope.respuesta.respuestaCorrecta1) puntaje ++;
-        if($scope.respuesta.respuesta2 == $scope.respuesta.respuestaCorrecta2) puntaje ++;
-        if(puntaje != 0){
-            API.puntajeReto1( $rootScope.getToken(), puntaje).success(function(data){
-                $rootScope.show("Felicidades, ganaste "+ puntaje + " puntos");
+        if ($scope.respuesta.respuesta1 == $scope.respuesta.respuestaCorrecta1) puntaje++;
+        if ($scope.respuesta.respuesta2 == $scope.respuesta.respuestaCorrecta2) puntaje++;
+        if (puntaje != 0) {
+            API.puntajeReto1($rootScope.getToken(), puntaje).success(function(data) {
+                $rootScope.show("Felicidades, ganaste " + puntaje + " puntos");
             }).error(function(error) {
-                    $rootScope.show("Ha ocurrido un error, no 9se agregaron los puntos obtenidos");
+                $rootScope.show("Ha ocurrido un error, no 9se agregaron los puntos obtenidos");
             });
-        }else{
-            $rootScope.show("No has contestado ninguna pregunta correctamente, no obtienes puntos ");   
+        } else {
+            $rootScope.show("No has contestado ninguna pregunta correctamente, no obtienes puntos ");
         }
-   }
+    }
 })
 
 .controller('Reto2Controller', function($rootScope, $scope, API, $window) {
 
-    
+    $scope.missesAllowed = 5;
+    var alphabet = 'abcdefghijklmnñopqrstuvwxyz';
+    var words = [];
+    var images = ["01.png", "02.png", "03.png", "04.png", "05.png", "06.png"];
+    $scope.play = function() {
+        API.palabras($rootScope.getToken()).success(function(data) {
+            var categ = data[Math.floor(Math.random() * data.length)];
+            $scope.categoria = categ.categoria;
+            words = categ.palabras;
+            $scope.letters = makeLetters(alphabet);
+            $scope.secretWord = makeLetters(getRandomWord());
+            $scope.numMisses = 0;
+            $scope.win = false;
+            $scope.lost = false;
+            $scope.image = "img/" + images[0];
 
-     $scope.missesAllowed = 6;
-     var alphabet = 'abcdefghijklmnñopqrstuvwxyz';
+        });
 
-    var words = [
-  'Rails', 'AngularJS', 'Bootstrap', 'Ruby', 'JavaScript',
-  'authentication', 'function', 'array', 'object', 'sublime',
-  'github', 'agile', 'route', 'database', 'model', 'view',
-   'controller', 'terminal', 'array', 'data', 'inheritance',
-  'Heroku', 'scope',  'closure'
-  ];
-var getRandomWord = function() {
-    return words[Math.floor(Math.random() * words.length)];
-  };
-
-   var makeLetters = function(word){
-    var wordSec= word.split('');
-    var wordChose = [];
-    for (var i = 0; i < wordSec.length; i++){
-        wordChose[i] = {nameLetter: wordSec[i], chosen: false};
     }
-    
-    return wordChose;
- };
+    var getRandomWord = function() {
+        return words[Math.floor(Math.random() * words.length)];
+    };
 
-  $scope.play = function(){
-    $scope.letters = makeLetters(alphabet);
-    $scope.secretWord = makeLetters(getRandomWord());
-    console.log($scope.secretWord);
-    $scope.numMisses = 0;
-    $scope.win = false;
-    $scope.lost = false;
-  }
-
-  $scope.play();
-  
-  var checkForEndOfGame = function(){
-    var allLetters = true;
-    for(var i = 0; i < $scope.secretWord.length; i++){
-        if(!$scope.secretWord[i].chosen){
-            allLetters = false;
-            break;
+    var makeLetters = function(word) {
+        var wordSec = word.split('');
+        var wordChose = [];
+        for (var i = 0; i < wordSec.length; i++) {
+            if (wordSec[i] != "-") {
+                wordChose[i] = {
+                    nameLetter: wordSec[i],
+                    chosen: false
+                };
+            }else{
+                wordChose[i] = {
+                    nameLetter: wordSec[i],
+                    chosen: true
+                };
+            }
         }
-    }
-    if(allLetters){
-        $scope.win = true;
-    }else{
-        if($scope.numMisses == $scope.missesAllowed ){
-            $scope.lost = true;
+
+        return wordChose;
+    };
+
+
+    $scope.play();
+
+    var checkForEndOfGame = function() {
+        var allLetters = true;
+        for (var i = 0; i < $scope.secretWord.length; i++) {
+            if (!$scope.secretWord[i].chosen) {
+                allLetters = false;
+                break;
+            }
         }
-    }
-
-   
-  };
-
-  $scope.try = function(letter){
-    console.log(letter.nameLetter);
-    letter.chosen = true;
-    var found = false;
-    for(var i = 0; i < $scope.secretWord.length; i++ ){
-        if(letter.nameLetter == $scope.secretWord[i].nameLetter){
-            $scope.secretWord.chosen = true;
-            found = true;
+        if (allLetters) {
+            $scope.win = true;
+        } else {
+            if ($scope.numMisses == $scope.missesAllowed) {
+                $scope.lost = true;
+            }
         }
+
+
+    };
+
+    $scope.try = function(letter) {
+        console.log(letter.nameLetter);
+        letter.chosen = true;
+        var found = false;
+        for (var i = 0; i < $scope.secretWord.length; i++) {
+            if (letter.nameLetter == $scope.secretWord[i].nameLetter) {
+                $scope.secretWord[i].chosen = true;
+                found = true;
+            }
+        }
+        if (found == false) {
+            $scope.numMisses++;
+            $scope.image = "img/" + images[$scope.numMisses];
+        }
+        checkForEndOfGame();
+
     }
-    if(found == false){
-         $scope.numMisses++;
-    }
-    checkForEndOfGame();
-
-  }
- 
 
 
-  
+
+
 
 
 })

@@ -1,33 +1,38 @@
 <ion-view view-title="Reto">
-<ion-nav-buttons side="right">
-</ion-nav-buttons>
-<ion-content>
-
-<h1>Hangman!</h1>
-    <div class="container">
-      <div class="well">
-        <div class="secretWord">
-          <ul class="list-inline">
-            <li ng-repeat="letter in secretWord">
-              <span ng-hide="letter.chosen">_</span>
-              <span ng-show="letter.chosen">{{letter.nameLetter}}</span>
-            </li>
-          </ul>
+    <ion-nav-buttons side="right">
+    </ion-nav-buttons>
+    <ion-content>
+        <h1>Hangman!</h1>
+        <div class="container">
+            <div class="well">
+                <div style="text-align: center; margin-top: 20px;">
+                    <img src="{{image}}" />
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <span>Categoría: {{categoria}} </span>
+                </div>
+                <div class="secretWord" id="navcontainer">
+                    <ul class="list-inline">
+                        <li ng-repeat="letter in secretWord">
+                            <span ng-hide="letter.chosen">_</span>
+                            <span ng-show="letter.chosen">{{letter.nameLetter}}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div id="navcontainer" class="letters" ng-hide="win || lost">
+                    <ul class="list-inline">
+                        <li ng-repeat="letterAlphabet in letters">
+                            <button class="btn-primary letter-button" ng-disabled="letterAlphabet.chosen" ng-click="try(letterAlphabet);">{{letterAlphabet.nameLetter}}</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <p>
+                <span ng-hide="win || lost">You have {{ missesAllowed - numMisses }} guesses remaining.</span>
+                <span ng-show="win">Well done!</span>
+                <span ng-show="lost">Sorry, please try again!.</span>
+            </p>
         </div>
-
-        <div class="letters" ng-hide="win || lost">
-          <ul class="list-inline">
-            <li ng-repeat="letterAlphabet in letters">
-              <button class="btn-primary letter-button" ng-disabled="letterAlphabet.chosen" ng-click="try(letterAlphabet);">{{letterAlphabet.nameLetter}}</button>
-            </li>
-          </ul>
-        </div>
-       </div> 
-           <p>
-          <span ng-hide="win || lost">You have {{ missesAllowed - numMisses }} guesses remaining.</span>
-          <span ng-show="win">Well done!</span>
-          <span ng-show="lost">Sorry, please try again!.</span>
-        </p>        
-      </div>
-      
-    <button ng-click="play();" class="btn btn-primary btn-large">New Game</button>
+        <button ng-click="play();" class="btn btn-primary btn-large">New Game</button>
+    </ion-content>
+</ion-view>
