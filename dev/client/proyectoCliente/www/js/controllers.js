@@ -240,11 +240,18 @@ angular.module('login.controllers', ['login.services'])
     }
 
     $scope.reto = function() {
-        API.nuevoReto($rootScope.getToken()).success(function(data, status, headers, config) {
+       /* API.nuevoReto($rootScope.getToken()).success(function(data, status, headers, config) {
             $rootScope.show("¡Bien hecho! Conseguiste 5 puntos");
         }).error(function(data, status, headers, config) {
             $rootScope.show("Ha ocurrido un error, por favor inténtelo más tarde");
-        });
+        });*/
+        var retoSelect = Math.floor(Math.random() * 2);
+        if(retoSelect == 0){
+            $state.go('app.reto1');
+        }
+        if(retoSelect == 1){
+            $state.go('app.reto2');
+        }
     }
 
     $scope.verificarNivel = function() {
@@ -267,11 +274,12 @@ angular.module('login.controllers', ['login.services'])
 .controller('tercerNivelController', function($rootScope, $scope, API, $state, $ionicModal) {
 
     $scope.reto = function() {
-        API.nuevoReto($rootScope.getToken()).success(function(data, status, headers, config) {
+        /*API.nuevoReto($rootScope.getToken()).success(function(data, status, headers, config) {
             $rootScope.show("Conseguiste 5 puntos");
         }).error(function(data, status, headers, config) {
             $rootScope.show("Ha ocurrido un error, por favor inténtelo más tarde");
-        });
+        });*/
+
     }
 
     $scope.irTrabajoFinal = function() {
@@ -1048,7 +1056,7 @@ angular.module('login.controllers', ['login.services'])
     $scope.missesAllowed = 5;
     var alphabet = 'abcdefghijklmnñopqrstuvwxyz';
     var words = [];
-    var images = ["01.png", "02.png", "03.png", "04.png", "05.png", "06.png"];
+    var images = ["01.png", "02.png", "03.png", "04.png", "05.png", "06.png", "07.png"];
     $scope.play = function() {
         API.palabras($rootScope.getToken()).success(function(data) {
             var categ = data[Math.floor(Math.random() * data.length)];
@@ -1077,7 +1085,7 @@ angular.module('login.controllers', ['login.services'])
                     nameLetter: wordSec[i],
                     chosen: false
                 };
-            }else{
+            } else {
                 wordChose[i] = {
                     nameLetter: wordSec[i],
                     chosen: true
@@ -1101,13 +1109,18 @@ angular.module('login.controllers', ['login.services'])
         }
         if (allLetters) {
             $scope.win = true;
+            $scope.image = "img/" + images[6];
+            API.nuevoReto($rootScope.getToken()).success(function(data, status, headers, config) {
+                $rootScope.show("Conseguiste 5 puntos");
+            }).error(function(data, status, headers, config) {
+                $rootScope.show("Ha ocurrido un error, por favor inténtelo más tarde");
+            });
         } else {
             if ($scope.numMisses == $scope.missesAllowed) {
                 $scope.lost = true;
+                showWord();
             }
         }
-
-
     };
 
     $scope.try = function(letter) {
@@ -1128,7 +1141,11 @@ angular.module('login.controllers', ['login.services'])
 
     }
 
-
+    var showWord = function() {
+        for (var i = 0; i < $scope.secretWord.length; i++) {
+            $scope.secretWord[i].chosen = true;
+        }
+    }
 
 
 

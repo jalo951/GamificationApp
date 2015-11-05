@@ -2,7 +2,7 @@
     <ion-nav-buttons side="right">
     </ion-nav-buttons>
     <ion-content>
-        <h1>Hangman!</h1>
+        <h1 style="text-align: center;">Hangman!</h1>
         <div class="container">
             <div class="well">
                 <div style="text-align: center; margin-top: 20px;">
@@ -27,12 +27,12 @@
                     </ul>
                 </div>
             </div>
-            <p>
-                <span ng-hide="win || lost">You have {{ missesAllowed - numMisses }} guesses remaining.</span>
-                <span ng-show="win">Well done!</span>
-                <span ng-show="lost">Sorry, please try again!.</span>
+            <p style="text-align: center;">
+                <span ng-hide="win || lost">Tienes {{ missesAllowed - numMisses }} intento(s) restante(s).</span>
+                <span ng-show="win">¡Bien hecho!</span>
+                <span ng-show="lost">Has perdido, ¡inténtalo de nuevo!</span>
             </p>
         </div>
-        <button ng-click="play();" class="btn btn-primary btn-large">New Game</button>
+        <button ng-click="play();" class="btn-primary letter-button btn btn-primary btn-large">Nuevo juego</button>
     </ion-content>
 </ion-view>
