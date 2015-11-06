@@ -181,11 +181,13 @@ angular.module('login.controllers', ['login.services'])
 
 
     $scope.reto = function() {
-        API.nuevoReto($rootScope.getToken()).success(function(data, status, headers, config) {
-            $rootScope.show("Conseguiste 5 puntos");
-        }).error(function(data, status, headers, config) {
-            $rootScope.show("Ha ocurrido un error, por favor inténtelo más tarde");
-        });
+        var retoSelect = Math.floor(Math.random() * 2);
+        if (retoSelect == 0) {
+            $state.go('app.reto1');
+        }
+        if (retoSelect == 1) {
+            $state.go('app.reto2');
+        }
     }
 
     $scope.irObjetivos = function() {
@@ -240,17 +242,19 @@ angular.module('login.controllers', ['login.services'])
     }
 
     $scope.reto = function() {
-       /* API.nuevoReto($rootScope.getToken()).success(function(data, status, headers, config) {
-            $rootScope.show("¡Bien hecho! Conseguiste 5 puntos");
-        }).error(function(data, status, headers, config) {
-            $rootScope.show("Ha ocurrido un error, por favor inténtelo más tarde");
-        });*/
+        /* API.nuevoReto($rootScope.getToken()).success(function(data, status, headers, config) {
+             $rootScope.show("¡Bien hecho! Conseguiste 5 puntos");
+         }).error(function(data, status, headers, config) {
+             $rootScope.show("Ha ocurrido un error, por favor inténtelo más tarde");
+         });*/
         var retoSelect = Math.floor(Math.random() * 2);
-        if(retoSelect == 0){
-            $state.go('app.reto1');
+        if (retoSelect == 0) {
+            $rootScope.refrescar('Cargando..','app.reto1');
+            $rootScope.hide();
         }
-        if(retoSelect == 1){
-            $state.go('app.reto2');
+        if (retoSelect == 1) {
+             $rootScope.refrescar('Cargando..','app.reto2');
+             $rootScope.hide();
         }
     }
 
@@ -279,6 +283,13 @@ angular.module('login.controllers', ['login.services'])
         }).error(function(data, status, headers, config) {
             $rootScope.show("Ha ocurrido un error, por favor inténtelo más tarde");
         });*/
+        var retoSelect = Math.floor(Math.random() * 2);
+        if (retoSelect == 0) {
+            $state.go('app.reto1');
+        }
+        if (retoSelect == 1) {
+            $state.go('app.reto2');
+        }
 
     }
 
@@ -1001,6 +1012,8 @@ angular.module('login.controllers', ['login.services'])
 })
 
 .controller('Reto1Controller', function($rootScope, $scope, API, $window) {
+    $scope.res1 = '';
+    $scope.res2 = '';
 
     $scope.respuesta = {
         respuestaCorrecta1: '',
@@ -1014,8 +1027,8 @@ angular.module('login.controllers', ['login.services'])
     };
 
     $scope.verFormulario = function() {
+
         API.mostrarFormulario($rootScope.getToken()).success(function(data) {
-            console.log(data);
             $scope.items = [];
             $scope.respuesta.pregunta1 = data[0].pregunta;
             $scope.respuesta.data1.push(data[0].opcionA);
@@ -1037,13 +1050,23 @@ angular.module('login.controllers', ['login.services'])
 
     $scope.calificarRespuestas = function() {
         var puntaje = 0;
-        if ($scope.respuesta.respuesta1 == $scope.respuesta.respuestaCorrecta1) puntaje++;
-        if ($scope.respuesta.respuesta2 == $scope.respuesta.respuestaCorrecta2) puntaje++;
+        if ($scope.respuesta.respuesta1 == $scope.respuesta.respuestaCorrecta1){
+             puntaje++;
+            $scope.res1 = "Correcto";
+        }else{
+            $scope.res1 = "Incorrecto";
+        }
+        if ($scope.respuesta.respuesta2 == $scope.respuesta.respuestaCorrecta2) {
+            puntaje++;
+            $scope.res2 = "Correcto"
+        }else{
+            $scope.res2 = "Incorrecto";
+        }
         if (puntaje != 0) {
             API.puntajeReto1($rootScope.getToken(), puntaje).success(function(data) {
                 $rootScope.show("Felicidades, ganaste " + puntaje + " puntos");
             }).error(function(error) {
-                $rootScope.show("Ha ocurrido un error, no 9se agregaron los puntos obtenidos");
+                $rootScope.show("Ha ocurrido un error, no se agregaron los puntos obtenidos");
             });
         } else {
             $rootScope.show("No has contestado ninguna pregunta correctamente, no obtienes puntos ");
@@ -1052,6 +1075,7 @@ angular.module('login.controllers', ['login.services'])
 })
 
 .controller('Reto2Controller', function($rootScope, $scope, API, $window) {
+
 
     $scope.missesAllowed = 5;
     var alphabet = 'abcdefghijklmnñopqrstuvwxyz';

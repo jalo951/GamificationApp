@@ -1,27 +1,31 @@
 <ion-view view-title="Reto">
     <ion-nav-buttons side="right">
-        <button class="button button-icon button-clear ion-compose" >
-        </button>
     </ion-nav-buttons>
     <ion-content>
 
     <div class="list" ng-init="verFormulario()">
             <div class="item item-divider"> 
-Selected Value: {{ respuesta.respuesta1 }}
+                {{ respuesta.pregunta1 }}
             </div>               
-
-            {{ respuesta.pregunta1 }}
             <ion-radio ng-repeat="item in respuesta.data1" ng-model="respuesta.respuesta1" ng-value="item" name="respuesta1">
               {{item}}
             </ion-radio>
-
-            <div class="item item-divider"> 
-               Selected Value: {{ respuesta.respuesta2 }}
+            <div class="item item-divider" style="text-align: center;">
+                {{res1}}
             </div>
-            {{ respuesta.pregunta2 }}
+            <div class="item item-divider">
+            </div>
+            <div class="item item-divider"> 
+               {{ respuesta.pregunta2 }}
+            </div>
             <ion-radio ng-repeat="item in respuesta.data2" ng-model="respuesta.respuesta2" name="respuesta2" ng-value="item">
               {{item}}
             </ion-radio>
+            <div class="item item-divider" style="text-align: center;">
+                {{res2}}
+            </div>
+            <div class="item item-divider">
+            </div>
            <button class="button button-block button-positive" ng-click="calificarRespuestas()">Calificar</button>
 
         </div>
