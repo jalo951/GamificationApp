@@ -1,0 +1,36 @@
+<ion-view view-title="Tercer nivel">
+    <ionContent header-shrink scroll-event-interval="5">
+        <div style="height: 45px;"></div>
+        <ion-scroll zooming="true" direction="xy" style="height: 100%; width: 100%;" has-bouncing="false">
+            <div style="width: 2040px; height: 1148px; background: url('img/tercerNivel.jpg')"></div>
+            <!--<img ng-lick="show('Soy un reto!')" src="img/reto.png" class="posicion"></img>-->
+            <button class="objetivoPos button button-icon" ng-click="mostrarObjetivosSelec()"><img src="img/objetivo.png"></img>
+            </button>
+             <button class="reto3 button button-icon" ng-click="mostrarObjetivosSelec()"><img src="img/reto.png"></img>
+            </button>
+            <button class="articuloPos button button-icon" ng-click="irTrabajoFinal()"><img src="img/articulo.png"></img>
+            </button>
+        </ion-scroll>
+        <ionContent>
+            <script id="objetivosSelec.html" type="text/ng-template">
+                <ion-modal-view>
+                    <ion-header-bar class="bar bar-header bar-positive">
+                        <h1 class="title">Objetivos</h1>
+                        <button class="button button-clear button-primary" ng-click="objetivosSelec.hide()">Cancelar</button>
+                    </ion-header-bar>
+                    <ion-content class="padding">
+                     Los Objetivos seleccionados para este problema son: 
+                        <div class="list" ng-init="objetivosSeleccionados()">
+                            <ion-list show-reorder="data.showReorder">
+                                <ion-item ng-repeat="item in items" item="item">
+                                    {{ item.descripcion }}
+                                </ion-item>
+                            </ion-list>
+                        </div>
+                        <div class="button-bar">
+                            <a class="button button-stable icon ion-backspace-outline" ng-click="objetivosSelec.hide()">  Cancelar</a>
+                        </div>
+                    </ion-content>
+                </ion-modal-view>
+            </script>
+</ion-view>

@@ -1,0 +1,71 @@
+<ion-view view-title="Preguntas">
+    <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear ion-compose" ng-click="limpiar()">
+        </button>
+    </ion-nav-buttons>
+    <ion-content>
+        <div class="list" ng-init="refrescar()">
+            <ion-list show-reorder="data.showReorder">
+                <ion-item ng-repeat="item in items" item="item" ng-click="question(item)">
+                    {{ item.titulo }}
+                </ion-item>
+            </ion-list>
+        </div>
+    </ion-content>
+    <script id="modal.html" type="text/ng-template">
+        <ion-modal-view>
+            <ion-header-bar class="bar bar-header bar-positive">
+                <h1 class="title">{{elemento.titulo}}</h1>
+                <button class="button button-clear button-primary" ng-click="modal.hide()">Cancelar</button>
+            </ion-header-bar>
+            <ion-content class="padding">
+                <div class="list">
+                    <div class="item item-divider">Descripción</div>
+                    <label class="item item-text-wrap">
+                        {{elemento.descripcion}}
+                    </label>
+                    <div class="item item-divider">Autor</div>
+                    <label class="item item-text-wrap">
+                        {{elemento.nombreAutor}} {{elemento.apellidoAutor}}
+                    </label>
+                    <div class="item item-divider">Fecha límite para unirse</div>
+                    <label class="item">
+                        <span class="input-label" type= "Date">{{elemento.fecha | date:'yyyy-MM-dd'}}</span>
+                    </label>
+                </div>
+                <div class="button-bar">
+                    <a class="button button-stable icon ion-backspace-outline" ng-click="modal.hide()">  Cancelar</a>
+                    <a class="button button-positive icon ion-ios-people" ng-click="unirse()">  Unirse</a>
+                </div>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+    <script id="newQuestion.html" type="text/ng-template">
+        <ion-modal-view>
+            <ion-header-bar class="bar bar-header bar-positive">
+                <h1 class="title">Nueva pregunta</h1>
+                <button class="button button-clear button-primary" ng-click="newQuestion.hide()">Cancelar</button>
+            </ion-header-bar>
+            <ion-content class="padding">
+                <div class="list">
+                    <div class="item item-divider">Título</div>
+                    <label class="item item-input">
+                        <input ng-model="elemento.titulo" type="text">
+                    </label>
+                    <div class="item item-divider">Descripción</div>
+                    <label class="item item-input">
+                        <textarea ng-model="elemento.descripcion" rows="5"></textarea>
+                    </label>
+                    <div class="item item-divider">Fecha límite para unirse</div>
+                    <label class="item item-input">
+                        <input placeholder="aaaa-mm-dd" ng-model="elemento.fecha" type="Date">
+                    </label>
+                </div>
+                <div class="button-bar">
+                    <a class="button button-stable icon ion-backspace-outline" ng-click="newQuestion.hide()">  Cancelar</a>
+                    <a class="button button-positive icon ion-ios-compose-outline" ng-click="createQuestion()">  Crear</a>
+                </div>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+</ion-view>

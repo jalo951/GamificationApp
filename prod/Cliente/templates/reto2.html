@@ -1,0 +1,41 @@
+<ion-view view-title="Reto">
+    <ion-nav-buttons side="right">
+    </ion-nav-buttons>
+    <ion-content>
+        <h1 style="text-align: center;">Hangman!</h1>
+        <div class="container">
+            <div class="well">
+                <div style="text-align: center; margin-top: 20px;">
+                    <img src="{{image}}" width="50%" heigth="50%" />
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <span>Categoría: {{categoria}} </span>
+                </div>
+                <div class="secretWord" id="navcontainer">
+                    <ul class="list-inline">
+                        <li ng-repeat="letter in secretWord">
+                            <span ng-hide="letter.chosen">_</span>
+                            <span ng-show="letter.chosen">{{letter.nameLetter}}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div id="navcontainer" class="letters" ng-hide="win || lost">
+                    <ul class="list-inline">
+                        <li ng-repeat="letterAlphabet in letters">
+                            <button class="btn-primary letter-button" ng-disabled="letterAlphabet.chosen" ng-click="try(letterAlphabet);">{{letterAlphabet.nameLetter}}</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <p style="text-align: center;">
+                <span ng-hide="win || lost">Tienes {{ missesAllowed - numMisses }} intento(s) restante(s).</span>
+                <span ng-show="win">¡Bien hecho!</span>
+                <span ng-show="lost">Has perdido, ¡inténtalo de nuevo!</span>
+            </p>
+        </div>
+        <div style="text-align: center;">
+            <button ng-click="play();" class="btn btn-primary btn-large">Nuevo juego</button>
+        </div>
+        
+    </ion-content>
+</ion-view>

@@ -1,0 +1,52 @@
+<ion-view view-title="Crear cuenta">
+    <ion-nav-bar class="bar-positive">
+        <ion-nav-buttons side="primary">
+            <button class="button button-clear icon ion-arrow-left-c" ng-click="goBack()">
+                Volver
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-content>
+        <div style="text-align: center; margin-top: 20px;">
+            <img src="img/ionic.png" />
+        </div>
+        <div class="list" style="margin-top: 20px;">
+            <div class="item item-divider icon ion-email">
+                Correo electrónico
+            </div>
+            <label class="item item-input item-stacked-label">
+                <input type="email" ng-model="user.email" placeholder="Ingrese su e-mail">
+            </label>
+            <div class="item item-divider icon ion-person">
+                Nombre
+            </div>
+            <label class="item item-input item-stacked-label">
+                <input type="text" ng-model="user.nombre" placeholder="Ingrese su nombre">
+            </label>
+            <div class="item item-divider icon ion-person">
+                Apellido
+            </div>
+            <label class="item item-input item-stacked-label">
+                <input type="text" ng-model="user.apellido" placeholder="Ingrese su apellido">
+            </label>
+            <div class="item item-divider icon ion-person-stalker">
+                Género
+            </div>
+            <ion-radio icon="ion-woman" ng-value="'femenino'" ng-model="user.genero">Femenino</ion-radio>
+            <ion-radio icon="ion-man" ng-value="'masculino'" ng-model="user.genero">Masculino</ion-radio>
+            <div class="item item-divider icon ion-key">
+                Contraseña
+            </div>
+            <label class="item item-input item-stacked-label">
+                <input type="password" ng-model="user.contrasena">
+            </label>
+            <div class="item item-divider icon ion-key">
+                Confirmar contraseña
+            </div>
+            <label class="item item-input item-stacked-label">
+                <input type="password" ng-model="user.contrasenaRep">
+            </label>
+            <button class="button button-block button-positive" ng-click="registrar()"> Registrar</button>
+        </div>
+    </ion-content>
+</ion-view>

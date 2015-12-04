@@ -1,0 +1,32 @@
+<ion-view view-title="Segundo nivel">
+    <ionContent header-shrink scroll-event-interval="5">
+        <div style="height: 45px;"></div>
+        <ion-scroll zooming="true" direction="xy" style="height: 100%; width: 100%;" has-bouncing="false">
+            <div style="width: 1920px; height: 1080px; background: url('img/segundoNivel.jpg')"></div>
+            <!--<img ng-lick="show('Soy un reto!')" src="img/reto.png" class="posicion"></img>-->
+            <button class="reto3 button button-icon" ng-click="reto()"><img src="img/reto.png"></img>
+            </button>
+            <button class="objetivoPos button button-icon" ng-click="irObjetivos()"><img src="img/objetivo.png"></img>
+            </button>
+            <button class="preguntaPos button button-icon" ng-click="mostrarPregunta()"><img src="img/pregunta.png"></img>
+            </button>
+        </ion-scroll>
+        <ionContent>
+            <script id="preguntaActual.html" type="text/ng-template">
+                <ion-modal-view>
+                    <ion-header-bar class="bar bar-header bar-positive">
+                        <h1 class="title">{{preguntaUser.preguntaTitulo}}</h1>
+                        <button class="button button-clear button-primary" ng-click="preguntaActual.hide()">Cancelar</button>
+                    </ion-header-bar>
+                    <ion-content class="padding">
+                        <div class="item item-divider">Descripción</div>
+                        <label class="item item-text-wrap">
+                            {{preguntaUser.preguntaDescripcion}}
+                        </label>
+                        <div class="button-bar">
+                            <a class="button button-stable icon ion-backspace-outline" ng-click="preguntaActual.hide()">  Cancelar</a>
+                        </div>
+                    </ion-content>
+                </ion-modal-view>
+            </script>
+</ion-view>

@@ -1,0 +1,72 @@
+<ion-view view-title="{{datosUsuario.nombre}} {{datosUsuario.apellido}}">
+    <ion-content>
+        <div style="text-align: center; margin-top: 20px;">
+            <img ng-src="{{datosUsuario.foto}}">
+        </div>
+        <browse-file></browse-file>
+        <!--Directive 1-->
+        <div style="text-align: center; margin-top: 20px;">
+            <a class="item item-thumbnail-right" href="#">
+                <h1>{{datosUsuario.nombre}}  {{datosUsuario.apellido}}</h1>
+                <p> {{datosUsuario.email}}</p>
+            </a>
+        </div>
+        <div class="item item-divider"> Información general</div>
+        <div class="list">
+            <a class="item item-avatar" href="#">
+                <i class="icon ion-flag"></i>
+                <h2>Puntos: </h2>
+                <h1>{{datosUsuario.puntos}}</h1>
+            </a>
+            <a class="item item-avatar" href="#">
+                <i class="icon ion-ribbon-b"></i>
+                <h2>Nivel: </h2>
+                <h1>{{datosUsuario.nivel}}</h1>
+            </a>
+            <a class="item item-avatar" href="#">
+                <i class="icon ion-document"></i>
+                <h2>Investigación en curso: </h2>
+                <h1>{{datosUsuario.nombrePreguntaActual}}</h1>
+            </a>
+            <div class="item item-divider">
+                Investigaciones Realizadas
+            </div>
+            <ion-list>
+                <ion-item ng-repeat="item in items" item="item">
+                    <a class="item item-icon-left item-button-right">
+                        <i class="icon ion-checkmark-round"></i> {{item.titulo}}
+                        <button class="button button-positive" ng-click="getInfo(item)">
+                            Ver
+                        </button>
+                    </a>
+                </ion-item>
+            </ion-list>
+        </div>
+    </ion-content>
+    <script id="modalPregunta.html" type="text/ng-template">
+        <ion-modal-view>
+            <ion-header-bar class="bar bar-header bar-positive">
+                <h1 class="title">{{elemento.titulo}}</h1>
+            </ion-header-bar>
+            <ion-content class="padding">
+                <div class="list">
+                    <div class="item item-divider">Descripción</div>
+                    <label class="item item-text-wrap">
+                        {{elemento.descripcion}}
+                    </label>
+                    <div class="item item-divider">Autor</div>
+                    <label class="item item-text-wrap">
+                        {{elemento.nombreAutor}} {{elemento.apellidoAutor}}
+                    </label>
+                    <div class="item item-divider">Archivo asociado</div>
+                    
+                        <a class="button button-positive" ng-click="mostrarTrabajo()"> Descargar </a>
+                    
+                </div>
+                <div class="button-bar">
+                    <a class="button button-positive icon ion-backspace-outline" ng-click="modalPregunta.hide()">  Aceptar</a>
+                </div>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+</ion-view>
