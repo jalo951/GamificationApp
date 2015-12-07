@@ -340,7 +340,62 @@ module.exports = function(server, db) {
     });
 
     //#######################################################################################################
+    server.post("/nuevoEstado", function(req, res, next) {
+        validateRequest.validate(req, res, db, function() {
+            console.log(req.params);
 
+            db.estadoArte.insert({
+                    descripcion: req.params.descripcion,
+                    autor_id: db.ObjectId(req.params.token),
+                    problema_id: db.ObjectId(req.params.problema_id),
+                    titulo: req.params.titulo,
+                    link: req.params.url
+                },
+                function(err, data) {
 
+                    if (err) {
+                        res.writeHead(400, {
+                            'Content-Type': 'application/json; charset=utf-8'
+                        });
+                        res.end(JSON.stringify({
+                            error: err,
+                            message: "Ooops Error inesperado, por favor intente más tarde"
+                        }));
+
+                    } else {
+
+                        db.usuarios.update({
+                            _id: db.ObjectId(req.params.token)
+                        }, {
+                            $inc: {
+                                puntos: 2
+                            }
+                        }, function(err, data) {
+                            res.writeHead(200, {
+                                'Content-Type': 'application/json; charset=utf-8'
+                            });
+                            res.end(JSON.stringify(data));
+                        });
+
+                    }
+                });
+        });
+        return next();
+    });
+    //####################################################################################################################
+    server.get("/verEstado", function(req, res, next) {
+        db.estadoArte.find({
+            problema_id: db.ObjectId(req.params._idProblema)
+        }, function(err, list) {
+            res.writeHead(200, {
+                'Content-Type': 'application/json; charset=utf-8'
+            });
+
+            res.end(JSON.stringify(list));
+        });
+
+        return next();
+    });
+    //#######################################################################################################################3
 
 }

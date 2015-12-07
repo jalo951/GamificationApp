@@ -190,7 +190,7 @@ angular.module('login.controllers', ['login.services'])
             $rootScope.refrescar('Cargando..', 'app.reto2');
             $rootScope.hide();
         }
-        if(retoSelect == 2){
+        if (retoSelect == 2) {
             $rootScope.refrescar('Cargando..', 'app.reto3');
             $rootScope.hide();
         }
@@ -198,6 +198,10 @@ angular.module('login.controllers', ['login.services'])
 
     $scope.irObjetivos = function() {
         $rootScope.refrescar("Cargando...", 'app.objetivos');
+    }
+
+     $scope.irEstadoArte = function() {
+        $rootScope.refrescar("Cargando...", 'app.estadoArte');
     }
 
     $scope.verPregunta = function() {
@@ -262,7 +266,7 @@ angular.module('login.controllers', ['login.services'])
             $rootScope.refrescar('Cargando..', 'app.reto2');
             $rootScope.hide();
         }
-        if(retoSelect == 2){
+        if (retoSelect == 2) {
             $rootScope.refrescar('Cargando..', 'app.reto3');
             $rootScope.hide();
         }
@@ -302,7 +306,7 @@ angular.module('login.controllers', ['login.services'])
             $rootScope.refrescar('Cargando..', 'app.reto2');
             $rootScope.hide();
         }
-        if(retoSelect == 2){
+        if (retoSelect == 2) {
             $rootScope.refrescar('Cargando..', 'app.reto3');
             $rootScope.hide();
         }
@@ -1239,6 +1243,90 @@ angular.module('login.controllers', ['login.services'])
                 $rootScope.show("No has contestado ninguna pregunta correctamente, no obtienes puntos ");
             }
         }
+    })
+    .controller('EstadoArteController', function($rootScope, $scope, API, $timeout, $ionicModal,$window ) {
 
+        $scope.estadoA = {
+            _id: '',
+            titulo: '',
+            descripcion: '',
+            url: '',
+            problema_id: '',
+            autorNombre: '',
+            autorApellido: ''
+        };
 
+        $scope.visualizarEstadoArte = function() {
+            API.preguntasUsuario($rootScope.getToken()).success(function(problemas) {
+                var i;
+                for (i = 0; i < problemas.length; i++) {
+                    if (problemas[i].finalizado == false) {
+                        break;
+                    }
+                }
+                
+                $scope.estadoA.problema_id = problemas[i]._id;
+                API.verEstadoArte(problemas[i]._id).success(function(data) {
+
+                    $scope.publicaciones = [];
+                    for (var i = 0; i < data.length; i++) {
+                        $scope.publicaciones.push(data[i]);
+                    };
+                    if ($scope.publicaciones.length == 0) {
+                        $scope.noData = true;
+                    } else {
+                        $scope.noData = false;
+                    }
+
+                    if(!data){
+                        console.log("no hay datos");
+                    }
+
+                }).error(function(data, status, headers, config,error) {
+                    $rootScope.show(error);
+                });
+
+            });
+
+        }
+
+        $scope.anadirEstadoArte = function() {
+            var descripcion = $scope.estadoA.descripcion;
+            var titulo = $scope.estadoA.titulo;
+            var link = $scope.estadoA.url;
+            var problema = $scope.estadoA.problema_id;
+            if (!descripcion || !titulo || !link) {
+                $rootScope.show("No se admiten campos vacíos");
+            } else {
+                API.nuevoEstado({
+                    descripcion: descripcion,
+                    titulo: titulo,
+                    url: link,
+                    problema_id: problema
+                }, $rootScope.getToken()).success(function(data) {
+                    $rootScope.show("Has publicado en el estado de arte, ganaste 2 puntos");
+                    $scope.newState.hide();
+                    $scope.visualizarEstadoArte();
+                }).error(function(error) {
+                    $rootScope.show("Ha ocurrido un error, no se agregó el objetivo");
+                });
+            }
+        }
+
+        $scope.limpiarObjetivo = function() {
+            $scope.estadoA.titulo = '';
+            $scope.estadoA.url = '';
+            $scope.estadoA.descripcion = '';
+            $scope.newState.show();
+        }
+
+        $ionicModal.fromTemplateUrl('newState.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+            $scope.newState = modal;
+        });
+
+        /*
+        */
     })

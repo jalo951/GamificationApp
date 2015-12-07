@@ -145,7 +145,7 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
 
     })
 
-     .state('app.reto1', {
+    .state('app.reto1', {
         url: "/reto1",
         views: {
             "menuContent": {
@@ -156,7 +156,7 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
 
     })
 
-     .state('app.reto2', {
+    .state('app.reto2', {
         url: "/reto2",
         views: {
             "menuContent": {
@@ -167,12 +167,23 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
 
     })
 
-     .state('app.reto3', {
+    .state('app.reto3', {
         url: "/reto3",
         views: {
             "menuContent": {
                 templateUrl: "templates/reto3.html",
                 controller: "Reto3Controller"
+            }
+        }
+
+    })
+
+    .state('app.estadoArte', {
+        url: "/estadoArte",
+        views: {
+            "menuContent": {
+                templateUrl: "templates/estadoDelArte.html",
+                controller: "EstadoArteController"
             }
         }
 
@@ -198,6 +209,15 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
         views: {
             "menuContent": {
                 templateUrl: "templates/acerca.html",
+                controller: "homeController"
+            }
+        }
+    })
+    .state('app.enlaces', {
+        url: "/enlaces",
+        views: {
+            "menuContent": {
+                templateUrl: "templates/enlaces.html",
                 controller: "homeController"
             }
         }
