@@ -375,6 +375,14 @@ angular.module('login.services', [])
                 }
             }); 
         },
+        mostrarParejas: function(token){
+             return $http.get(base + '/parejasReto3', {
+                method: 'GET',
+                params: {
+                    token: token
+                }
+            });
+        },
 
     }
 });

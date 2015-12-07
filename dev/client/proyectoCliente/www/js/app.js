@@ -167,6 +167,17 @@ angular.module('login', ['ionic', 'login.controllers', 'login.services', 'login.
 
     })
 
+     .state('app.reto3', {
+        url: "/reto3",
+        views: {
+            "menuContent": {
+                templateUrl: "templates/reto3.html",
+                controller: "Reto3Controller"
+            }
+        }
+
+    })
+
     .state('app.perfil', {
         url: "/perfil",
         views: {

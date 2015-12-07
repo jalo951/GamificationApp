@@ -1,0 +1,43 @@
+<ion-view view-title="Reto3">
+    <ion-nav-buttons side="right">
+    </ion-nav-buttons>
+    <ion-content>
+        <div class="row">
+            <div class="col">
+                <div class="list" ng-init="verFormulario3()">
+                    <ion-list show-reorder="data.showReorder">
+                        <ion-item ng-repeat="item in items track by $index" item="item" ng-init="paso=$index;">
+                            <label class="item item-input  item-select">
+                                <div class="input-label">
+                                    {{ item }}
+                                </div>
+                                <select data-ng-model="letra.letraSel[paso]">
+                                    <option>a</option>
+                                    <option>b</option>
+                                    <option>c</option>
+                                    <option>d</option>
+                                    <option>e</option>
+                                    <option>f</option>
+                                </select>
+                            </label>
+                            
+                        </ion-item>
+                    </ion-list>
+                </div>
+            </div>
+            <div class='col'>
+                <div class="list" ng-init="verFormulario3()">
+                    <ion-list show-reorder="data.showReorder">
+                        <ion-item ng-repeat="def in definicion track by $index" item="definicion">
+                            <label class="item item-text-wrap">
+                                {{def}}
+                            </label>
+                        </ion-item>
+                    </ion-list>
+                </div>
+            </div>
+        </div <div class="button-bar">
+        <a class="button button-block button-positive" ng-click="calificarRespuestas()">Calificar</a>
+        </div>
+    </ion-content>
+</ion-view>
