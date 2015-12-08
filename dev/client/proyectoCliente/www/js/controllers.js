@@ -198,10 +198,12 @@ angular.module('login.controllers', ['login.services'])
 
     $scope.irObjetivos = function() {
         $rootScope.refrescar("Cargando...", 'app.objetivos');
+         $rootScope.hide();
     }
 
      $scope.irEstadoArte = function() {
         $rootScope.refrescar("Cargando...", 'app.estadoArte');
+         $rootScope.hide();
     }
 
     $scope.verPregunta = function() {
