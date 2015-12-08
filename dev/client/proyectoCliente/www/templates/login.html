@@ -1,25 +1,43 @@
 <ion-view view-title="Login">
-    <ion-content>
+    <ion-content verflow-scroll="true" padding="'true'" class="background">
         <div style="text-align: center; margin-top: 20px;">
             <img src="img/ionic.png" />
         </div>
-        <div class="list" style="margin-top: 20px;">
-            <div class="item item-divider icon ion-email">
-                Correo electrónico
-            </div>
-            <label class="item item-input item-stacked-label">
-                <input type="email" ng-model="user.email">
-            </label>
-            <div class="item item-divider icon ion-key">
-                Contraseña
-            </div>
-            <label class="item item-input item-stacked-label">
-                <input type="password" ng-model="user.contrasena">
-            </label>
+        <form class="list">
+            <ion-list>
+                <label class="item item-input">
+                    <span class="input-label">Correo Electrónico</span>
+                    <input type="email" placeholder="" ng-model="user.email">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Contraseña</span>
+                    <input type="password" placeholder="" ng-model="user.contrasena">
+                </label>
+            </ion-list>
+            <div class="spacer" style="height: 40px;"></div>
             <button class="button button-block button-positive" ng-click="ingresar()"> Ingresar</button>
             <button class="button button-block button-outline button-dark" ng-click="irRegistro()">Crear una cuenta</button>
-            <button class="button button-small button-block button-clear button-dark" ng-click="irPassword()">Olvidé mi contraseña</button>
-            </button>
-        </div>
+             <button class="button button-small button-block button-clear button-dark" ng-click="irPassword()">Olvidé mi contraseña</button>
+        </form>
+      
     </ion-content>
-</ion-view>
+<!--</ion-view> 
+<ion-view title="Login">
+    <ion-content overflow-scroll="true" padding="'true'" class="has-header">
+        <form class="list">
+            <ion-list>
+                <label class="item item-input">
+                    <span class="input-label">Username</span>
+                    <input type="email" placeholder="" ng-model="user.email">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Password</span>
+                    <input type="password" placeholder="" ng-model="user.contrasena">
+                </label>
+            </ion-list>
+            <div class="spacer" style="height: 40px;"></div>
+            <button class="button button-stable button-block ">Log in</button>
+            <a href="#" onclick="window.open('/signup', '_system', 'location=yes'); return false;" class="button button-positive button-clear button-block ">Or create an account</a>
+        </form>
+    </ion-content>
+</ion-view>-->
