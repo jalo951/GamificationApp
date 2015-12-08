@@ -7,10 +7,10 @@
                 <div class="list" ng-init="verFormulario3()">
                     <ion-list show-reorder="data.showReorder">
                         <ion-item ng-repeat="item in items track by $index" item="item" ng-init="paso=$index;">
-                            <label class="item item-input  item-select">
-                                <div class="input-label">
+                            <label class="item  item-text-wrap ">
+                                
                                     {{ item }}
-                                </div>
+
                                 <select data-ng-model="letra.letraSel[paso]">
                                     <option>a</option>
                                     <option>b</option>
